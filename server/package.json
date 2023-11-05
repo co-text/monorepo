@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node ./dist/esm/server.js"
   },
   "author": "",
   "type": "module",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/server": "^1.9.2",
+    "@cmmn/server": "1.9.4",
     "@fastify/cookie": "^9.1.0",
     "@fastify/websocket": "^8.2.0",
     "@inhauth/core": "^1.0.0",

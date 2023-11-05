@@ -13,12 +13,14 @@
     "compile:watch": "cmmn compile --watch",
     "bundle": "cmmn bundle",
     "bundle:watch": "cmmn bundle --watch",
-    "serve": "cmmn serve"
+    "serve": "cmmn serve",
+    "server:watch": "node ./server/dist/esm/server.js",
+    "ci": "npm run compile && npm run bundle --prod"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/tools": "^1.9.2"
+    "@cmmn/tools": "1.9.4"
   }
 }
