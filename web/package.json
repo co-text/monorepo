@@ -22,15 +22,6 @@
       "module": "es",
       "html": "./entry/index.html",
       "platform": "browser",
-      "external": [
-        "luxon",
-        "@cotext*",
-        "@cmmn*",
-        "msgpackr/pack"
-      ],
-      "alias": {
-        "luxon": "luxon/build/es6/luxon.js"
-      },
       "mount": {
         "/assets": "./assets"
       },

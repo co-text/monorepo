@@ -12,9 +12,9 @@
   "module": "./dist/esm/index.js",
   "browser": "./dist/bundle/index.browser.js",
   "exports": {
-    "import": "./dist/bundle/index.node.js",
     "browser": "./dist/bundle/index.browser.js",
     "types": "./dist/typings/index.d.ts",
+    "require": "./dist/bundle/index.node.cjs",
     "default": "./dist/bundle/index.node.js"
   },
   "dependencies": {
