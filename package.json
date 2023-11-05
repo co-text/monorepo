@@ -15,12 +15,12 @@
     "bundle:watch": "cmmn bundle --watch",
     "serve": "cmmn serve",
     "server:watch": "node ./server/dist/esm/server.js",
-    "ci": "cmmn compile && cmmn bundle --prod"
+    "ci": "cmmn compile && cmmn bundle && cmmn bundle --prod"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/tools": "1.9.4"
+    "@cmmn/tools": "1.9.6"
   }
 }

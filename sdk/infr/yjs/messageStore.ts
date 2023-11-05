@@ -1,8 +1,8 @@
-import {ContextJSON, MessageJSON} from "@cotext/sdk";
 import {SyncStore} from "@cmmn/sync";
 import {cell, Cell} from "@cmmn/cell";
 import {compare, ResolvablePromise, utc} from "@cmmn/core";
-import {Context, Message}from "@cotext/sdk";
+import {ContextJSON, MessageJSON} from "@domain";
+import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
 
 export class MessageStore extends SyncStore{

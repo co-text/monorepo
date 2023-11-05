@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/app": "1.9.4",
-    "@cmmn/cell": "1.9.4",
-    "@cmmn/core": "1.9.4",
-    "@cmmn/ui": "1.9.4",
+    "@cmmn/app": "1.9.6",
+    "@cmmn/cell": "1.9.6",
+    "@cmmn/core": "1.9.6",
+    "@cmmn/ui": "1.9.6",
+    "@cotext/sdk": "1.0.0",
     "is-mobile": "^4.0.0"
   },
   "cmmn": {
@@ -22,6 +23,10 @@
       "module": "es",
       "html": "./entry/index.html",
       "platform": "browser",
+      "external": [
+        "@cotext*",
+        "@cmmn*"
+      ],
       "mount": {
         "/assets": "./assets"
       },

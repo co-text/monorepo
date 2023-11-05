@@ -10,7 +10,7 @@
   "license": "ISC",
   "main": "./dist/bundle/index.node.js",
   "module": "./dist/esm/index.js",
-  "browser": "./dist/bundle/index.browser.js",
+  "browser": "dist/bundle/index.browser.js",
   "exports": {
     "browser": "./dist/bundle/index.browser.js",
     "types": "./dist/typings/index.d.ts",
@@ -18,11 +18,11 @@
     "default": "./dist/bundle/index.node.js"
   },
   "dependencies": {
-    "@cmmn/cell": "1.9.4",
-    "@cmmn/core": "1.9.4",
-    "@cmmn/domain": "1.9.4",
-    "@cmmn/infr": "1.9.3",
-    "@cmmn/sync": "1.9.4",
+    "@cmmn/cell": "1.9.6",
+    "@cmmn/core": "1.9.6",
+    "@cmmn/domain": "1.9.6",
+    "@cmmn/infr": "1.9.4",
+    "@cmmn/sync": "1.9.6",
     "lib0": "0.2.47",
     "jose": "^5.1.0"
   },
