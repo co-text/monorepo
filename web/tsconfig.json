@@ -1,0 +1,21 @@
+{
+  "extends": "@cmmn/tools/compile/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+      "@proxy": ["./proxy/index.ts"]
+    }
+  },
+
+  "include": [
+    "**/*.json",
+    "**/*.ts",
+    "**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "dist"
+  ]
+}

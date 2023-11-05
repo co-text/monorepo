@@ -1,0 +1,41 @@
+{
+  "name": "@cotext/sdk",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "main": "./dist/bundle/index.node.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/bundle/index.browser.js",
+  "exports": {
+    "import": "./dist/bundle/index.node.js",
+    "browser": "./dist/bundle/index.browser.js",
+    "types": "./dist/typings/index.d.ts",
+    "default": "./dist/bundle/index.node.js"
+  },
+  "dependencies": {
+    "@cmmn/cell": "^1.9.2",
+    "@cmmn/core": "^1.9.2",
+    "@cmmn/domain": "^1.9.2",
+    "@cmmn/infr": "^1.9.0",
+    "@cmmn/sync": "^1.9.2",
+    "lib0": "0.2.47",
+    "jose": "^5.1.0"
+  },
+  "cmmn": {
+    "index": {
+      "input": "dist/esm/index.js",
+      "module": "es",
+      "external": [
+        "@cmmn*",
+        "@cotext*",
+        "luxon",
+        "msgpackr/pack"
+      ]
+    }
+  }
+}

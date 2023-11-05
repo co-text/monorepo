@@ -1,0 +1,24 @@
+{
+  "name": "@cotext/monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "sdk",
+    "web",
+    "server"
+  ],
+  "scripts": {
+    "compile": "cmmn compile",
+    "compile:watch": "cmmn compile --watch",
+    "bundle": "cmmn bundle",
+    "bundle:watch": "cmmn bundle --watch",
+    "serve": "cmmn serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cmmn/tools": "^1.9.2"
+  }
+}

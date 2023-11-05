@@ -1,0 +1,13 @@
+{
+  "extends": "@cmmn/tools/compile/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./sdk" },
+    { "path": "./web" },
+    { "path": "./server" }
+  ]
+}
