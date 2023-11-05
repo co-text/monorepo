@@ -1,6 +1,6 @@
 version: '3.5'
 
-name: context
+name: context-prod
 services:
   backend:
     image: ghcr.io/co-text/server:latest
@@ -29,8 +29,6 @@ services:
       dockerfile: nginx.dockerfile
 
     ports:
-      - "3000:80"
-      - "80:80"
       - "8080:80"
     restart: always
     networks:
