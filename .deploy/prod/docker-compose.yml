@@ -1,0 +1,40 @@
+version: '3.5'
+
+name: context
+services:
+  backend:
+    image: ghcr.io/co-text/server:latest
+    build:
+      context: ../../server
+      dockerfile: server.dockerfile
+    networks:
+      main:
+    restart: always
+
+  front:
+    image: ghcr.io/co-text/web:latest
+    build:
+      context: ../../web
+      dockerfile: web.dockerfile
+    networks:
+      main:
+    restart: always
+
+  nginx:
+    image: ghcr.io/co-text/nginx:latest
+    build:
+      context: ../../nginx
+      dockerfile: nginx.dockerfile
+    restart: always
+    networks:
+      main:
+    depends_on:
+      - backend
+      - front
+    links:
+      - backend
+      - front
+
+networks:
+  main:
+    driver: bridge

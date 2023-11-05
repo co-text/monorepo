@@ -34,19 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: web docker
-        working-directory: ./web
+        working-directory: ./.deploy/prod
         run: |
-          docker build . -f web.dockerfile -t $IMAGE_NAME
-          docker push $IMAGE_NAME
-        env:
-          IMAGE_NAME: ghcr.io/co-text/web:latest
-
-
-      - name: server docker
-        working-directory: ./server
-        run: |
-          docker build . -f server.dockerfile -t $IMAGE_NAME
-          docker push $IMAGE_NAME
-        env:
-          IMAGE_NAME: ghcr.io/co-text/server:latest
-        
+          docker compose build
+          docker compose push
