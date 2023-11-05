@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@cmmn/server": "1.9.4",
+    "@cmmn/core": "1.9.4",
+    "@cmmn/sync": "1.9.4",
     "@fastify/cookie": "^9.1.0",
     "@fastify/websocket": "^8.2.0",
     "@inhauth/core": "^1.0.0",

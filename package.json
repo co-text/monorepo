@@ -15,7 +15,7 @@
     "bundle:watch": "cmmn bundle --watch",
     "serve": "cmmn serve",
     "server:watch": "node ./server/dist/esm/server.js",
-    "ci": "npm run compile && npm run bundle --prod"
+    "ci": "cmmn compile && cmmn bundle --prod"
   },
   "keywords": [],
   "author": "",
