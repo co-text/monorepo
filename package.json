@@ -5,8 +5,9 @@
   "private": true,
   "workspaces": [
     "sdk",
-    "web",
-    "server"
+    "server",
+    "web/tree",
+    "web/lifecycle"
   ],
   "scripts": {
     "compile": "cmmn compile",
