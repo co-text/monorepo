@@ -49,7 +49,9 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: subsitutte variables in docker
-        run: sed  s/\$\{GITHUB_SHA\}/${GITHUB_SHA}/g ./docker-compose.yml > ./docker-compose.yml
+        run: |
+          sed  s/${{ '${{GITHUB_SHA}}' }}/${{GITHUB_SHA}}/g ./docker-compose.yml > ./docker-compose.yml
+          cat ./docker-compose.yml
         working-directory: ./.deploy/prod
 
       - name: Azure CLI script
