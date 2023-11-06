@@ -42,5 +42,14 @@ jobs:
           docker compose build
           docker compose push
 
-      - name: deploy to Azure
-        run: curl ${{ secrets.AZURE_WEB_HOOK }} -H "" -d ""
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az webapp config appsettings set --resource-group Context --name co-text --multicontainer-config-type compose --multicontainer-config-file ./.deploy/prod/docker-compose.yml
