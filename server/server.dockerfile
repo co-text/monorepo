@@ -1,6 +1,6 @@
 FROM node:20-alpine
-COPY dist/esm /app
-COPY package.json /app
 WORKDIR /app
+COPY package.json /app
 RUN npm i
+COPY dist/esm /app
 CMD [ "node", "server.js" ]
