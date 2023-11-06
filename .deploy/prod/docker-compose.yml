@@ -3,7 +3,7 @@ version: '3.5'
 name: context-prod
 services:
   backend:
-    image: ghcr.io/co-text/server:latest
+    image: "ghcr.io/co-text/server:${GITHUB_SHA}"
     build:
       context: ../../server
       dockerfile: server.dockerfile
@@ -14,7 +14,7 @@ services:
     restart: always
 
   front:
-    image: ghcr.io/co-text/web:latest
+    image: "ghcr.io/co-text/web:${GITHUB_SHA}"
     build:
       context: ../../web
       dockerfile: web.dockerfile
@@ -23,7 +23,7 @@ services:
     restart: always
 
   nginx:
-    image: ghcr.io/co-text/nginx:latest
+    image: "ghcr.io/co-text/nginx:${GITHUB_SHA}"
     build:
       context: ../../nginx
       dockerfile: nginx.dockerfile
