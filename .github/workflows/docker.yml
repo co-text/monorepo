@@ -49,10 +49,10 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: subsitutte variables in docker
-        run: |
-          sed  s/${{ '${{GITHUB_SHA}}' }}/${{GITHUB_SHA}}/g ./docker-compose.yml > ./docker-compose.yml
-          cat ./docker-compose.yml
-        working-directory: ./.deploy/prod
+        uses: franzbischoff/replace_envs@v1
+        with:
+          from_file: './.deploy/prod/docker-compose.yml'
+          to_file: './.deploy/prod/docker-compose.yml'
 
       - name: Azure CLI script
         uses: azure/CLI@v1
