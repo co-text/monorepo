@@ -52,4 +52,4 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az webapp config appsettings set --resource-group Context --name co-text --multicontainer-config-type compose --multicontainer-config-file ./.deploy/prod/docker-compose.yml
+            az webapp config container set --resource-group Context --name co-text --multicontainer-config-type compose --multicontainer-config-file ./.deploy/prod/docker-compose.yml
