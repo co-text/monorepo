@@ -1,5 +1,5 @@
 import {Application, Builder} from "@cmmn/app";
-import {Locator, useStreamDomain} from "../../../../cmmn/domain/dist/typings/entry/proxy";
+import {Locator, useStreamDomain} from "@cmmn/domain/proxy";
 import {Routes} from "./routes";
 import {Container, Injectable} from "@cmmn/core";
 import {AppRootComponent} from "./app-root.component";

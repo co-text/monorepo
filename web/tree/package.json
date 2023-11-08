@@ -1,5 +1,5 @@
 {
-  "name": "@cotext/web",
+  "name": "@cotext/tree",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/app": "1.9.6",
-    "@cmmn/cell": "1.9.6",
-    "@cmmn/core": "1.9.6",
-    "@cmmn/ui": "1.9.6",
+    "@cmmn/app": "1.9.10",
+    "@cmmn/cell": "1.9.10",
+    "@cmmn/core": "1.9.10",
+    "@cmmn/ui": "1.9.10",
     "@cotext/sdk": "1.0.0",
     "is-mobile": "^4.0.0"
   },

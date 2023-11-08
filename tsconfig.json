@@ -2,12 +2,14 @@
   "extends": "@cmmn/tools/compile/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "inlineSourceMap": true
   },
   "files": [],
   "include": [],
   "references": [
     { "path": "./sdk" },
-    { "path": "./web" },
+    { "path": "./web/tree" },
+    { "path": "./web/lifecycle" },
     { "path": "./server" }
   ]
 }

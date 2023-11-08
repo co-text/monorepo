@@ -6,6 +6,39 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@cmmn/app": "1.9.10",
+    "@cmmn/cell": "1.9.10",
+    "@cmmn/core": "1.9.10",
+    "@cmmn/ui": "1.9.10",
+    "@cotext/sdk": "1.0.0",
+    "is-mobile": "^4.0.0"
+  },
+  "cmmn": {
+    "main": {
+      "input": "dist/esm/entry/main.js",
+      "module": "es",
+      "html": "./entry/index.html",
+      "platform": "browser",
+      "external": [
+        "@cotext*",
+        "@cmmn*",
+        "luxon",
+        "msgpackr/pack"
+      ],
+      "alias": {
+        "luxon": "luxon/build/es6/luxon.js"
+      },
+      "mount": {
+        "/assets": "./assets"
+      },
+      "browser": true,
+      "port": 4002,
+      "proxy": {
+        "/api": "http://localhost:4004/api"
+      }
+    }
+  },
   "author": "",
   "license": "ISC"
 }

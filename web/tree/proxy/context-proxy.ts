@@ -1,4 +1,4 @@
-import {ModelKey, ModelMap, ModelProxy, proxy} from "../../../../cmmn/domain/dist/typings/entry/proxy";
+import {ModelKey, ModelMap, ModelProxy, proxy} from "@cmmn/domain/proxy";
 import {Context, Message}from "@cotext/sdk";
 import {IContextActions} from "@cotext/sdk";
 import {IMessageProxy, MessageProxy} from "./message-proxy";

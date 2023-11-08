@@ -22,6 +22,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/tools": "1.9.6"
+    "@cmmn/tools": "1.9.10"
   }
 }

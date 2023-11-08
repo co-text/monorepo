@@ -18,11 +18,11 @@
     "default": "./dist/bundle/index.node.js"
   },
   "dependencies": {
-    "@cmmn/cell": "1.9.6",
-    "@cmmn/core": "1.9.6",
-    "@cmmn/domain": "1.9.6",
-    "@cmmn/infr": "1.9.4",
-    "@cmmn/sync": "1.9.6",
+    "@cmmn/cell": "1.9.10",
+    "@cmmn/core": "1.9.10",
+    "@cmmn/domain": "1.9.10",
+    "@cmmn/infr": "1.9.10",
+    "@cmmn/sync": "1.9.10",
     "lib0": "0.2.47",
     "jose": "^5.1.0"
   },

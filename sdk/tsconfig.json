@@ -22,7 +22,8 @@
       "@domain": [
         "domain/index.ts"
       ]
-    }
+    },
+    "inlineSourceMap": true
   },
 
   "include": [
