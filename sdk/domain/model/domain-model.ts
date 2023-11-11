@@ -33,7 +33,7 @@ export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDom
         return {
             Contexts: Array.from(this.Contexts.keys()),
             Selection: this.Selection,
-            Servers: this.repository.Provider.ServerState,
+            Servers: {},//this.repository.Provider.ServerState,
             // Networks: new Map(Array.from(this.repository.Networks.toMap().entries())
             //     .map(([key, network]) => [key, network.map])),
             // Messages: (this.factory as Factory).MessageMap.map(x => x.State),
@@ -41,6 +41,7 @@ export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDom
     }
 
     async CreateContext(uri: string, parentURI: string): Promise<void> {
+        if (this.Contexts.has(uri)) return ;
         this.Contexts.create(uri, parentURI);
         // for (const parent of context.Parents) {
         //     console.warn('TODO:')

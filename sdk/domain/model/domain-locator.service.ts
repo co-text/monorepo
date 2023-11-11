@@ -1,17 +1,18 @@
 import {Container, Injectable} from "@cmmn/core";
 import {ContextModel} from "./context-model";
-import {RootLocator} from "@cmmn/domain/worker";
+import {Locator, RootLocator} from "@cmmn/domain/worker";
 import {YjsRepository} from "@infr/yjs/yjsRepository";
 import {DomainModel} from "@domain/model/domain-model";
 
 @Injectable()
 export class DomainLocator extends RootLocator {
 
-    constructor(private container: Container) {
+    constructor(container: Container) {
         super(null);
         // @ts-ignore
         this.root = container.get<DomainModel>(DomainModel, [
-            {provide: DomainLocator, useValue: this}
+            {provide: DomainLocator, useValue: this},
+            {provide: Locator, useValue: this}
         ])
     }
 

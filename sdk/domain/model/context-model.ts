@@ -44,8 +44,7 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
     }
 
 
-    async CreateMessage(message: Message, index: number = this.State.Messages.length): Promise<void> {
-        await this.contextStore.Sync;
+    async CreateMessage(message: Message, index: number = this.State.Messages.length) {
         if (!message.id)
             message.id = Fn.ulid();
         if (message.ContextURI && message.ContextURI !== this.URI) {

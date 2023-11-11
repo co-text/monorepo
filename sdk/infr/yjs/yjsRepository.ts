@@ -11,10 +11,10 @@ import { ISyncProvider, LocalSyncProvider } from "@cmmn/sync";
 export class YjsRepository {
 
     private map = new Map<string, MessageStore>();
-
-    public Provider = new WebRtcProvider(
-        [`${location.origin.replace(/^http/, 'ws')}/api`],
-    );
+    //
+    // public Provider = new WebRtcProvider(
+    //     [`${location.origin.replace(/^http/, 'ws')}/api`],
+    // );
 
     constructor(private tokenStore: ResourceTokenStore,
                 private api: ResourceTokenApi) {
@@ -33,7 +33,9 @@ export class YjsRepository {
     GetOrAdd(uri: string, parentURI): MessageStore {
         return this.map.getOrAdd(uri, uri => {
             const store = new MessageStore(uri);
+            console.log(uri, parentURI);
             this.getProviders(uri, parentURI).then(async providers => {
+                console.log(providers);
                 for (let provider of providers) {
                     provider.addAdapter(store.adapter);
                 }
@@ -55,19 +57,19 @@ export class YjsRepository {
     // public Networks = new ObservableMap<string, Network>();
 
     private async getProviders(uri: string, parentURI: string): Promise<ISyncProvider[]>{
-        const user = await this.api.GetUserInfo();
-        const token = await this.api.GetToken(uri, parentURI);
-        const room = this.Provider.joinRoom(uri, {
-            token: token,
-            user: user?.id
-        });
+        // const user = await this.api.GetUserInfo();
+        // const token = await this.api.GetToken(uri, parentURI);
+        // const room = this.Provider.joinRoom(uri, {
+        //     token: token,
+        //     user: user?.id
+        // });
 // @ts-ignore
 //         room.on('network', network => {
 //             console.log(network);
 //             this.Networks.set(uri, network);
 //         })
+        console.log(uri, parentURI);
         return [
-            room,
             new LocalSyncProvider(uri),
         ];
     }

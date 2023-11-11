@@ -1,5 +1,4 @@
-import {Context, Message}from "@cotext/sdk";
-
+import {Context, Message}from "@model";
 
 export type IMessageActions = {
     Attach(uri: string): Promise<void>;
@@ -14,7 +13,7 @@ export type IMessageActions = {
 export type IContextActions = {
     RemoveMessage(uri: string): Promise<void>;
 
-    CreateMessage(message: Message, index?: number): Promise<void>;
+    CreateMessage(message: Message, index?: number): void;
 }
 
 export type IDomainActions = {

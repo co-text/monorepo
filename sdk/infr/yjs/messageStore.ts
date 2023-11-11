@@ -14,6 +14,7 @@ export class MessageStore extends SyncStore{
 
     constructor(protected URI: string) {
         super(URI);
+        this.context.Set({URI: URI} as any)
     }
     @cell
     private messages = this.getSet<string>('messages');
