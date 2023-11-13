@@ -4,6 +4,7 @@ import {compare, Fn, ResolvablePromise, utc} from "@cmmn/core";
 import {ContextJSON, MessageJSON} from "@domain";
 import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
+import {BroadcastSync} from "@infr/yjs/broadcast-sync";
 
 export class MessageStore extends SyncStore{
 
@@ -16,6 +17,8 @@ export class MessageStore extends SyncStore{
         super(URI);
         this.context.Set({URI: URI} as any)
     }
+
+    private sync = new BroadcastSync(this['doc'], this.URI);
     @cell
     private messages = this.getSet<string>('messages');
 

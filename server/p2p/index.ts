@@ -11,7 +11,7 @@ import {identifyService} from "libp2p/identify";
 import {gossipsub} from "@chainsafe/libp2p-gossipsub";
 import {pubsubPeerDiscovery} from "@libp2p/pubsub-peer-discovery";
 
-const node = await createLibp2p({
+export const node = await createLibp2p({
     transports: [
         webSockets({
             filter: filter.all

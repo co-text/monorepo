@@ -1,4 +1,4 @@
-import {Injectable, serialize} from "@cmmn/core";
+import {deserialize, Injectable, ResolvablePromise, serialize} from "@cmmn/core";
 import {createLibp2p, Libp2p} from "libp2p";
 import {webRTC, webRTCDirect} from "@libp2p/webrtc";
 import {webSockets} from "@libp2p/websockets";
@@ -11,12 +11,12 @@ import { yamux } from '@chainsafe/libp2p-yamux'
 import { gossipsub, GossipSub } from '@chainsafe/libp2p-gossipsub'
 import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
 import {DocAdapter} from "@cmmn/sync";
+import {container} from "../container";
 @Injectable()
 export class P2PService {
     private node: Libp2p;
     public Init = this.init();
-    private serverPeerId = '12D3KooWATwHirVDJopnYsfX9tHJwyiVgCHZZ2QtyPcJmAG9cwZY';
-    constructor() {
+    constructor(private serverPeerId: string) {
     }
 
     async init(){
@@ -82,7 +82,7 @@ export class P2PService {
             // `/ip4/127.0.0.1/tcp/4005/p2p-circuit/webrtc/p2p/${dialer.peerId}`
         ));
         this.node.addEventListener('connection:open', (e) => {
-            console.log('open', e.detail);
+            // console.log('open', e.detail);
             // updatePeerList()
         })
         this.node.handle('/cotext/data/1.0.0', (e) => {
@@ -124,35 +124,68 @@ export class P2PService {
 
     public async joinRoom(uri: string){
         await this.Init;
-        const room = new P2PRoom(uri, this.pubsub);
-        this.rooms.set(uri, room);
+        this.rooms.getOrAdd(uri, uri => new P2PRoom(uri, this.pubsub, this.node.peerId.toString()));
     }
 
 }
 
 export class P2PRoom{
-    private docAdapter = new DocAdapter(this.uri);
+    private channel = new BroadcastChannel(this.uri);
     private dataTopic = `${this.uri}.data`;
-    constructor(private uri, private pubsub: GossipSub) {
-
+    public peers = new Set<string>([this.myPeerId]);
+    private replicaID = new ResolvablePromise<string>();
+    constructor(private uri: string,
+                private pubsub: GossipSub,
+                private myPeerId: string) {
+        this.pubsub.addEventListener('gossipsub:message', e => {
+            const peers = this.pubsub.getPeers();
+            for (let peer of peers) {
+                if (this.peers.has(peer.toString())) continue;
+                this.peers.add(peer.toString());
+                this.welcome(peer);
+            }
+        });
         this.pubsub.subscribe(this.dataTopic);
-        this.pubsub.addEventListener('message', e => {
+        this.pubsub.addEventListener('message', async e => {
             if (e.detail.topic !== this.dataTopic) return;
-            this.docAdapter.send(e.detail.data);
+            const message = deserialize(e.detail.data) as BroadcastSyncMessage;
+            if (!message.targetID)
+                this.channel.postMessage(message);
+            if (message.targetID != this.myPeerId)
+                return;
+            this.channel.postMessage({
+                ...message,
+                targetID: await this.replicaID
+            });
+            console.log('state applied', await this.replicaID);
         })
-        this.docAdapter.on('message', m => {
-            console.log(uri, m)
-            this.pubsub.publish(this.dataTopic, m);
+        this.channel.addEventListener('message', async (e: MessageEvent<BroadcastSyncMessage>) => {
+            if (this.replicaID.isResolved && (await this.replicaID) !== e.data.senderID){
+                throw new Error(`Not implemented: change doc`)
+            }
+            if (!this.replicaID.isResolved) {
+                this.replicaID.resolve(e.data.senderID);
+            }
+            this.pubsub.publish(this.dataTopic, serialize(e.data));
         });
     }
 
+    welcome(peer){
+        this.join(peer.toString());
+    }
 
     join(senderID: string){
-        this.docAdapter.send(serialize({
-            type: "join",
+        console.log('join', senderID);
+        this.channel.postMessage({
+            type: "getState",
             senderID: senderID,
-            docID: this.uri
-        }))
+        } as BroadcastSyncMessage);
     }
 }
 
+export type BroadcastSyncMessage = {
+    type: 'update'|'state'|'getState';
+    targetID: string | undefined;
+    senderID: string;
+    data: Uint8Array;
+}
