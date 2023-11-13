@@ -13,12 +13,12 @@ export class ResourceTokenStore {
         const request = await Request.fetch('/api/context?uri=' + uri, {
             headers: {
                 'authorization': JSON.stringify({ user: 'andrey' }),
-                "Resource-Token": parentToken
+                "resource-token": parentToken
             }
         });
         if (!request.ok)
             return null;
-        const token = request.headers.get('ResourceToken');
+        const token = request.headers.get('resource-token');
         return token;
     }
 

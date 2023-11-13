@@ -2,8 +2,11 @@ import {ITemplate} from "@cmmn/ui";
 import {Message} from "@cotext/sdk";
 
 export const template: ITemplate<IState, IEvents> = (html, state, events) => html`
-    <input value=${state.message.Content} 
-           placeholder="Task text">
+    <div>
+        <input id=${state.message.id}
+               value=${state.message.Content} 
+               placeholder="Task text">
+    </div>
 `;
 
 export type IState = {

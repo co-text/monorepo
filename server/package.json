@@ -10,15 +10,24 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/server": "1.9.10",
-    "@cmmn/core": "1.9.10",
-    "@cmmn/sync": "1.9.10",
+    "@chainsafe/libp2p-yamux": "5.0.2",
+    "@chainsafe/libp2p-gossipsub": "10.1.0",
+    "@cmmn/core": "1.9.12",
+    "@cmmn/server": "1.9.12",
+    "@cmmn/sync": "1.9.12",
     "@fastify/cookie": "^9.1.0",
+    "@fastify/cors": "^8.4.1",
     "@fastify/websocket": "^8.2.0",
     "@inhauth/core": "^1.0.0",
-    "jose": "5.1.0",
+    "@libp2p/pubsub-peer-discovery": "9.0.2",
+    "@libp2p/webrtc": "3.2.11",
+    "@libp2p/websockets": "7.0.13",
+    "@libp2p/webtransport": "3.1.10",
+    "@multiformats/multiaddr": "12.1.10",
     "fastify": "^4.24.3",
+    "jose": "5.1.0",
     "jwt-decode": "^4.0.0",
+    "libp2p": "0.46.21",
     "node-fetch": "^3.3.2"
   }
 }

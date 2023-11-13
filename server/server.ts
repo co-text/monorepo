@@ -5,6 +5,10 @@ import cookiePlugin from "@fastify/cookie";
 import {InhauthContainer} from "./inhauth/index";
 import {ServerContainer} from "./container";
 import * as controllers from "./controllers/index";
+import cors from "@fastify/cors";
+import "./p2p/index";
+
+
 async function run() {
     const server = await Server
         // @ts-ignore
@@ -18,6 +22,11 @@ async function run() {
 
 function getFastify(opts){
     const instance = fastify(opts);
+    instance.register(cors,{
+        origin: true,
+        allowedHeaders: 'resource-token, Authorization',
+        exposedHeaders: 'resource-token',
+    });
     instance.register(websocketPlugin as any);
     instance.register(cookiePlugin);
     return instance;

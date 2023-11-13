@@ -13,12 +13,12 @@ export class ResourceTokenApi extends Api {
         const parentToken = parentURI ? await this.GetToken(parentURI) : undefined;
         const request = await this.fetch('/api/context?uri=' + uri, {
             headers: parentURI ? {
-                "Resource-Token": parentToken
+                "resource-token": parentToken
             } : {}
         });
         if (!request.ok)
             return null;
-        const token = request.headers.get('ResourceToken');
+        const token = request.headers.get('resource-token');
         this.passwords.set(uri, {version: 1, password: 'hi'})
         return token;
     }
@@ -31,7 +31,7 @@ export class ResourceTokenApi extends Api {
     // public withParentURI(parentURI: string): ResourceTokenApi {
     //     const token = this.GetToken(parentURI);
     //     return super.withHeaders(token.then(t => ({
-    //         "Resource-Token": t
+    //         "resource-token": t
     //     })));
     // }
 

@@ -12,6 +12,27 @@ export class MessageComponent extends HtmlComponent<IState, IEvents> {
     constructor() {
         super();
     }
+    created = new Date();
+    disconnectPosition: DOMRect;
+    disconnectedCallback() {
+        this.disconnectPosition = this.element.getBoundingClientRect();
+        super.disconnectedCallback();
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        if (this.disconnectPosition) {
+            this.once('render', () => {
+                const connectPosition = this.element.getBoundingClientRect();
+                console.log(connectPosition, this.disconnectPosition);
+                const diff = {
+                    x: connectPosition.x - this.disconnectPosition.x,
+                    y: connectPosition.y - this.disconnectPosition.y,
+                };
+                // c
+                // this.element.style.transform = `translate(${-diff.x}px, ${-diff.y}px)`;
+            });
+        }
+    }
 
     @event('input', {passive: true, selector: 'input'})
     onChange(e: InputEvent){

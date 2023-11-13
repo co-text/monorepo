@@ -7,11 +7,16 @@
     "serve": "cmmn serve"
   },
   "dependencies": {
-    "@cmmn/app": "1.9.10",
-    "@cmmn/cell": "1.9.10",
-    "@cmmn/core": "1.9.10",
-    "@cmmn/ui": "1.9.10",
+    "@cmmn/app": "1.9.12",
+    "@cmmn/cell": "1.9.12",
+    "@cmmn/core": "1.9.12",
+    "@cmmn/ui": "1.9.12",
     "@cotext/sdk": "1.0.0",
+    "@libp2p/webrtc": "3.2.11",
+    "@libp2p/pubsub": "8.0.10",
+    "@libp2p/webtransport": "3.1.10",
+    "@multiformats/multiaddr": "12.1.10",
+    "libp2p": "0.46.21",
     "is-mobile": "^4.0.0"
   },
   "cmmn": {

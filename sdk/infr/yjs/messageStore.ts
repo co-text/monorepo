@@ -1,6 +1,6 @@
 import {SyncStore} from "@cmmn/sync";
 import {cell, Cell} from "@cmmn/cell";
-import {compare, ResolvablePromise, utc} from "@cmmn/core";
+import {compare, Fn, ResolvablePromise, utc} from "@cmmn/core";
 import {ContextJSON, MessageJSON} from "@domain";
 import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
@@ -91,21 +91,25 @@ export class MessageStore extends SyncStore{
         }
     })
 
+    private messageCells = new Map<string, Cell>();
     GetMessageCell(id: string) {
-        const obj = this.getObjectCell<MessageJSON>(id);
-        obj.on('change', e => {
-            cell.set(Message.FromJSON(e.value));
+        return this.messageCells.getOrAdd(id, id => {
+            const obj = this.getObjectCell<MessageJSON>(id);
+            const objCell = new Cell(obj);
+            obj.on('change', e => {
+                cell.set(Message.FromJSON(e.value));
+            });
+            const cell = new Cell(() => {
+                const result = objCell.get().Value;
+                return result && Message.FromJSON(result);
+            }, {
+                compare,
+                onExternal: value => {
+                    obj.Diff(Message.ToJSON(value));
+                }
+            });
+            return cell;
         });
-        const cell = new Cell(() => {
-            const result = obj.Value;
-            return result && Message.FromJSON(result);
-        }, {
-            compare,
-            onExternal: value => {
-                obj.Diff(Message.ToJSON(value));
-            }
-        });
-        return cell;
     }
 }
 

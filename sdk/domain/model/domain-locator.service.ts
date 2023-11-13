@@ -3,6 +3,7 @@ import {ContextModel} from "./context-model";
 import {Locator, RootLocator} from "@cmmn/domain/worker";
 import {YjsRepository} from "@infr/yjs/yjsRepository";
 import {DomainModel} from "@domain/model/domain-model";
+import {MessageModel} from "@domain/model/message-model";
 
 @Injectable()
 export class DomainLocator extends RootLocator {
@@ -29,6 +30,9 @@ export class DomainLocator extends RootLocator {
 
     public GetContext(uri: string): ContextModel | undefined {
         return this.Root.Contexts.get(uri);
+    }
+    public GetMessage(contextUri: string, id: string): MessageModel | undefined {
+        return this.GetContext(contextUri)?.Messages.get(id);
     }
 
 
