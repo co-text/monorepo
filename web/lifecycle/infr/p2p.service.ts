@@ -47,7 +47,18 @@ export class P2PService {
                     filter: all
                 }),
                 // support dialing/listening on WebRTC addresses
-                webRTC(),
+                webRTC({
+                    rtcConfiguration: {
+                        iceServers: [{
+                            urls: [
+                                'stun:stun1.l.google.com:19302',
+                                'stun:stun2.l.google.com:19302',
+                                'stun:stun3.l.google.com:19302',
+                                'stun:stun4.l.google.com:19302',
+                            ]
+                        }]
+                    }
+                }),
                 // support dialing/listening on Circuit Relay addresses
                 circuitRelayTransport({
                     // make a reservation on any discovered relays - this will let other
