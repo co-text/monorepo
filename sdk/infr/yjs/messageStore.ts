@@ -1,6 +1,6 @@
 import {SyncStore} from "@cmmn/sync";
 import {cell, Cell} from "@cmmn/cell";
-import {compare, Fn, ResolvablePromise, utc} from "@cmmn/core";
+import {compare, Fn, getOrAdd, orderBy, ResolvablePromise, utc} from "@cmmn/core";
 import {ContextJSON, MessageJSON} from "@domain";
 import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
@@ -19,6 +19,10 @@ export class MessageStore extends SyncStore{
     }
 
     private sync = new BroadcastSync(this['doc'], this.URI);
+    public addProvider(){
+        // @ts-ignore
+        this.store.subscribe(this.doc, this.name);
+    }
     @cell
     private messages = this.getSet<string>('messages');
 
@@ -30,11 +34,11 @@ export class MessageStore extends SyncStore{
         const state = this.GetState();
         if (!state.Context.URI) {
             this.context.Diff({
-                CreatedAt: utc().toISO(),
+                CreatedAt: utc().toISOString(),
                 id: this.URI,
                 URI: this.URI,
                 IsRoot: true,
-                UpdatedAt: utc().toISO(),
+                UpdatedAt: utc().toISOString(),
             })
         }
         this.Sync.resolve();
@@ -64,13 +68,13 @@ export class MessageStore extends SyncStore{
         if (!state.Context)
             return Context.FromJSON({URI: this.URI} as any);
         const context = Context.FromJSON(state.Context);
-        const ordered = Array.from(state.Messages).orderBy(x => x);
+        const ordered = orderBy(state.Messages, x => x);
         context.Messages = context.Permutation?.Invoke(ordered) ?? ordered;
         return context;
     }, {
         compare,
         onExternal: value => {
-            value.Permutation = Permutation.Diff(value.Messages.orderBy(x => x), value.Messages);
+            value.Permutation = Permutation.Diff(orderBy(value.Messages, x => x), value.Messages);
             this.context.Diff(Context.ToJSON(value));
             const existed = new Set(this.messages);
             for (let id of value.Messages) {
@@ -96,7 +100,7 @@ export class MessageStore extends SyncStore{
 
     private messageCells = new Map<string, Cell>();
     GetMessageCell(id: string) {
-        return this.messageCells.getOrAdd(id, id => {
+        return getOrAdd(this.messageCells, id, id => {
             const obj = this.getObjectCell<MessageJSON>(id);
             const objCell = new Cell(obj);
             obj.on('change', e => {

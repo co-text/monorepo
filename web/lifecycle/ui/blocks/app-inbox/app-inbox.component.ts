@@ -1,4 +1,4 @@
-import {component, HtmlComponent, event} from "@cmmn/ui";
+import {component, HtmlComponent, event, select} from "@cmmn/ui";
 import {template, IState, IEvents} from "./app-inbox.template";
 import style from "./app-inbox.style.less";
 import {Injectable} from "@cmmn/core";
@@ -10,6 +10,7 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
 
     constructor(private inbox: InboxStore) {
         super();
+        console.log(inbox)
     }
 
     get State() {
@@ -19,7 +20,8 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
     }
 
     add(){
-        this.inbox.CreateMessage()
+        // this.inbox.CreateMessage()
+        this.modal.showModal();
     }
     take(id: string){
         this.inbox.MoveToCurrent(id);
@@ -33,4 +35,8 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
 
         }
     }
+
+    @select('dialog')
+    modal!: HTMLDialogElement;
+
 }

@@ -38,13 +38,20 @@ export const node = await createLibp2p({
     services: {
         pubsub: gossipsub({
             canRelayMessage: true,
-            allowPublishToZeroPeers: true
+            allowPublishToZeroPeers: true,
         }),
         identify: identifyService(),
-        relay: circuitRelayServer()
+        relay: circuitRelayServer({
+            reservations: {
+                maxReservations: 2
+            }
+        })
     }
 })
 await node.start()
-node.addEventListener('peer:discovery', e => console.warn('+', e.detail.id));
-node.addEventListener('peer:disconnect', e => console.warn('-', e.detail.toString()));
+node.addEventListener('peer:discovery', e => console.warn('+', e.detail.id.toString()));
+node.addEventListener('peer:disconnect', e => {
+    console.warn('-', e.detail.toString())
+    node.services.relay.reservations.delete(e.detail);
+});
 console.log('multiaddrs:', node.getMultiaddrs());

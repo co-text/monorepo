@@ -1,4 +1,4 @@
-import {DateTime, utc} from "@cmmn/core";
+import {utc} from "@cmmn/core";
 import {User} from "./user";
 import {MessageJSON} from "@cotext/sdk";
 
@@ -6,8 +6,8 @@ export class Message {
     public Content: string;
     public Description?: string;
     public Author?: User;
-    public CreatedAt: DateTime;
-    public UpdatedAt: DateTime;
+    public CreatedAt: Date;
+    public UpdatedAt: Date;
     public ContextURI: string;
     public SubContextURI?: string;
     public Action?: string;
@@ -22,7 +22,7 @@ export class Message {
             return false;
         if (message2.id !== message1.id)
             return false;
-        return message2.UpdatedAt.equals(message1.UpdatedAt);
+        return +message2.UpdatedAt == +message1.UpdatedAt;
     }
 
     static FromJSON(m: MessageJSON): Message{

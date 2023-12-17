@@ -12,7 +12,6 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> {
         super();
     }
 
-
     setUser(user: string){
         this.userStore.user.set(user);
     }

@@ -1,5 +1,5 @@
 import { Cell } from "@cmmn/cell";
-import { DateTime, Disposable } from "@cmmn/core";
+import { Disposable } from "@cmmn/core";
 import {EditorItem} from "./types";
 
 export class ElementBind extends Disposable {
@@ -16,7 +16,7 @@ export class ElementBind extends Disposable {
     }
 
     public hasChanges(item: EditorItem) {
-        return !this.item.State?.UpdatedAt.equals(item.State.UpdatedAt) ||
+        return this.item.State?.UpdatedAt !== item.State.UpdatedAt ||
             this.item.Index !== item.Index ||
             this.id !== item.Path.join(':') ||
             this.element.textContent !== item.State.Content;

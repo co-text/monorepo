@@ -5,7 +5,8 @@
     "resolveJsonModule": true,
     "paths": {
       "@ui": ["./ui/container.ts"],
-      "@stores/*": ["./stores/*"]
+      "@stores/*": ["./stores/*"],
+      "@infr/*": ["./infr/*"]
     }
   },
 

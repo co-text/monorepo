@@ -16,4 +16,31 @@ app-inbox {
         padding: 1em;
         border-radius: 1em;
     }
+
+}
+
+dialog[open]{
+    &::backdrop{
+        transition: 1s ease allow-discrete;
+        backdrop-filter: blur(2px);
+        background-color: #FFF3;
+    }
+    transition: 1s ease allow-discrete;
+    opacity: 1;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 6px;
+    box-shadow: #666666 0 0 6px;
+    min-width: 300px;
+    padding: 1em;
+}
+@starting-style {
+    dialog[open] {
+        &::backdrop{
+            backdrop-filter: blur(0px);
+            background-color: rgb(0 0 0 / 0);
+        }
+        background-color: #A66666;
+        opacity: 0;
+    }
 }
