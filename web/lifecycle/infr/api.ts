@@ -8,13 +8,12 @@ export class Api {
                 private p2p: P2PService) {
     }
 
-    private origin = 'localhost:4004';
     // private provider = new WebRtcProvider(
     //     [`ws://${this.origin}/api`]
     // );
 
     getPeerId(){
-        return fetch(`http://${this.origin}/api/peer`).then(x => x.text());
+        return fetch(`/api/peer`).then(x => x.text());
     }
     @Fn.cache()
     async initP2P(){
