@@ -25,7 +25,7 @@ services:
   nginx:
     image: "ghcr.io/co-text/nginx:${GITHUB_SHA}"
     build:
-      context: ../../nginx
+      context: ../nginx
       dockerfile: nginx.dockerfile
 
     ports:
