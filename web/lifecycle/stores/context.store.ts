@@ -1,6 +1,6 @@
 import {ModelLike} from "@cmmn/domain/worker";
 import {Context, DomainLocator, IContextActions, IMessageActions, Message} from "@cotext/sdk";
-import {utc} from "@cmmn/core";
+import {Fn, utc} from "@cmmn/core";
 import {Api} from "../infr/api";
 export class ContextStore{
 
@@ -17,6 +17,7 @@ export class ContextStore{
     }
     CreateMessage() {
         this.context.Actions.CreateMessage({
+            id: Fn.ulid(),
             Content: '',
             CreatedAt: utc(),
             UpdatedAt: utc(),

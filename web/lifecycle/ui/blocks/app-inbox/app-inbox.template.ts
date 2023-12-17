@@ -8,12 +8,6 @@ export const template: ITemplate<IState, IEvents> = (html, state, events) => htm
         <button .message=${x.State} onclick=${events.take(e => e.target.message.id)}>-></button>
     </div>`)}
     <button class="add" onclick=${events.add()}>add</button>
-    <dialog>
-        Input text
-        <form method="dialog">
-            <button>Закрыть</button>
-        </form>
-    </dialog>
 `;
 
 export type IState = {

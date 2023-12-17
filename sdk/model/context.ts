@@ -11,7 +11,6 @@ export class Context {
     public Parents: Array<string> = [];
     // public Access?: Array<AccessRule> = [];
     // public Sorting?: Sorting;
-    public Permutation?: Permutation;
     public Storage: Omit<Storage, keyof { Root, Contexts, Messages }>;
     // public Parents: Array<string> = [];
     public IsRoot: boolean;
@@ -22,7 +21,6 @@ export class Context {
 
 
     static FromJSON(c: ContextJSON): Context {
-        const permutation = c.Permutation ? Permutation.Parse(c.Permutation) : null;
         return Object.assign(new Context(), {
             URI: c.URI,
             id: c.id,
@@ -31,7 +29,6 @@ export class Context {
             IsRoot: c.IsRoot,
             UpdatedAt: utc(c.UpdatedAt),
             CreatedAt: utc(c.CreatedAt),
-            Permutation: permutation,
             Messages: [],
         });
     }
@@ -44,10 +41,6 @@ export class Context {
             UpdatedAt: c.UpdatedAt.toJSON(),
             CreatedAt: c.CreatedAt?.toJSON(),
             IsRoot: c.IsRoot,
-            // Sorting: Sorting[c.],
-            Permutation: c.Permutation?.toString(),
-            // MessageURIs: c.Messages,
-            // ParentsURIs: c.Parents
         };
     }
 

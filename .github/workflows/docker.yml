@@ -26,8 +26,8 @@ jobs:
 
       - name: build app
         run: |
-          npm i
-          npm run ci
+          yarn
+          yarn run ci
 
 
       - name: Log in to the Container registry

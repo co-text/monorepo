@@ -1,36 +1,35 @@
 import {IMessageActions} from "@domain/contracts/actions";
 import {Context, Message}from "@cotext/sdk";
 import {ModelLike} from "@cmmn/domain/worker";
-import {MessageStore} from "@infr/yjs/messageStore";
 import {ContextModel} from "./context-model";
 import {DomainLocator} from "@domain/model/domain-locator.service";
+import {MessageStore} from "../../sync/messageStore";
 
 export class MessageModel implements ModelLike<Message, IMessageActions>, IMessageActions {
 
     Actions = this;
-    private $state = this.contextStore.GetMessageCell(this.id)
 
     public get Context(): ContextModel {
-        return this.locator.GetContext(this.$state.get().ContextURI);
+        return this.locator.GetContext(this.store.State.ContextURI);
     }
 
     public get SubContext() {
-        return this.$state.get()?.SubContextURI && this.locator.GetOrCreateContext(this.$state.get().SubContextURI, this.Context.URI);
+        return this.store.State?.SubContextURI && this.locator.GetOrCreateContext(this.store.State.SubContextURI, this.Context.URI);
     }
 
 
     constructor(private readonly locator: DomainLocator,
-                private contextStore: MessageStore,
+                private store: MessageStore,
                 public id: string) {
 
     }
 
     public get State() {
-        return this.$state.get();
+        return this.store.State;
     }
 
     public set State(value: Readonly<Message>) {
-        this.$state.set(value);
+        this.store.State = value;
     }
 
 

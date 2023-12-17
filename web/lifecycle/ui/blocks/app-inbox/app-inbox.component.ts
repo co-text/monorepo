@@ -20,8 +20,8 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
     }
 
     add(){
-        // this.inbox.CreateMessage()
-        this.modal.showModal();
+        this.inbox.CreateMessage()
+        // this.modal.showModal();
     }
     take(id: string){
         this.inbox.MoveToCurrent(id);
@@ -35,8 +35,5 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
 
         }
     }
-
-    @select('dialog')
-    modal!: HTMLDialogElement;
 
 }

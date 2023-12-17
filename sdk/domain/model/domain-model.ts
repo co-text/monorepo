@@ -2,7 +2,6 @@ import {ModelLike, Locator} from "@cmmn/domain/worker";
 import {IDomainActions} from "@cotext/sdk";
 import {DomainState}from "@cotext/sdk";
 import {cell} from "@cmmn/cell";
-import {YjsRepository} from "@infr/yjs/yjsRepository";
 import {Injectable} from "@cmmn/core";
 import {ContextMap} from "@domain/model/context-map";
 import {SelectionState} from "../../model/storage";
@@ -10,13 +9,12 @@ import {SelectionState} from "../../model/storage";
 @Injectable()
 export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDomainActions {
     @cell
-    public Contexts = new ContextMap(this.locator as any, this.repository);
+    public Contexts = new ContextMap(this.locator as any);
 
     @cell
     public Selection: SelectionState = {};
 
-    constructor(private locator: Locator,
-                private repository: YjsRepository) {
+    constructor(private locator: Locator) {
         globalThis['domain'] = this;
         // this.useLastUpdate = true;
     }

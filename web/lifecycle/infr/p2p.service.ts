@@ -149,6 +149,9 @@ export class P2PService {
         getOrAdd(this.rooms, uri, uri => new P2PRoom(uri, this.pubsub, this.node.peerId.toString()));
     }
 
+    public dispose(){
+        return this.node.stop();
+    }
 }
 
 export type BroadcastSyncMessage = {

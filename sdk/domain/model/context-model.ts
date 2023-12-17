@@ -2,23 +2,21 @@ import {MessageModel} from "./message-model";
 import {IContextActions} from "@cotext/sdk";
 import {Context, Message}from "@cotext/sdk";
 import type {ModelLike} from "@cmmn/domain/worker";
-import {MessageStore} from "@infr/yjs/messageStore";
+import {ContextStore} from "../../sync/contextStore";
 import {Fn, getOrAdd, remove} from "@cmmn/core";
 import {DomainLocator} from "@domain/model/domain-locator.service";
 
 export class ContextModel implements ModelLike<Context, IContextActions>, IContextActions {
 
     Actions = this;
-
-    constructor(public URI: string,
-                public contextStore: MessageStore,
-                private locator: DomainLocator) {
+    public contextStore: ContextStore = new ContextStore(this.URI);
+    constructor(public URI: string, private locator: DomainLocator) {
     }
 
     private _cache = new Map<string, MessageModel>();
 
     private GetOrCreateMessage(id: string): MessageModel {
-        return getOrAdd(this._cache, id, id => new MessageModel(this.locator, this.contextStore, id));
+        return getOrAdd(this._cache, id, id => new MessageModel(this.locator, this.contextStore.GetMessageStore(id), id));
     }
 
     public get Messages(): Map<string, MessageModel> {
@@ -51,6 +49,8 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
             this.locator.Root.Contexts.get(message.ContextURI).RemoveMessage(message.id);
         }
         message.ContextURI = this.URI;
+        const messageModel = this.GetOrCreateMessage(message.id);
+        messageModel.State = message;
         const messages = this.State.Messages;
         remove(messages, message.id);
         messages.splice(index, 0, message.id);
@@ -59,8 +59,6 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
             Messages: messages
         }
 
-        const messageModel = this.GetOrCreateMessage(message.id);
-        messageModel.State = message;
     };
 
     ReorderMessage(message: MessageModel, toIndex) {

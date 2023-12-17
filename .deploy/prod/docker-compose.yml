@@ -16,7 +16,7 @@ services:
   front:
     image: "ghcr.io/co-text/web:${GITHUB_SHA}"
     build:
-      context: ../../web/tree
+      context: ../../web/lifecycle
       dockerfile: web.dockerfile
     networks:
       main:
