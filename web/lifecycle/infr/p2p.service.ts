@@ -93,10 +93,13 @@ export class P2PService {
             console.log('close');
             // updatePeerList()
         });
-        this.node.addEventListener('self:peer:update', () => {
-            const multiaddrs = this.node.getMultiaddrs()
-            console.log(multiaddrs.map(x => x.toString()));
-        })
+        await new Promise<void>(resolve => {
+            this.node.addEventListener('self:peer:update', () => {
+                const multiaddrs = this.node.getMultiaddrs();
+                if (multiaddrs.length > 0)
+                    resolve();
+            })
+        });
         this.node.addEventListener('peer:discovery', e => {
             this.connect(e.detail.id)
         });
@@ -105,6 +108,7 @@ export class P2PService {
         }
     }
     private async connect(peer){
+        return;
         const id = peer.toString();
         if (id == this.serverPeerId) return;
         if (id < this.node.peerId.toString()) return;
@@ -127,6 +131,9 @@ export class P2PService {
         this.rooms.getOrAdd(uri, uri => new P2PRoom(uri, this.pubsub, this.node.peerId.toString()));
     }
 
+    async dispose() {
+        await this.node.stop();
+    }
 }
 
 export class P2PRoom{

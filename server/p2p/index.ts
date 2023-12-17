@@ -1,11 +1,8 @@
 import { createLibp2p } from "libp2p";
 import { noise } from '@chainsafe/libp2p-noise'
 import { yamux } from '@chainsafe/libp2p-yamux'
-import {webRTC} from "@libp2p/webrtc";
 import { webSockets } from '@libp2p/websockets'
-import { WebRTC } from '@multiformats/mafmt'
 import * as filter from '@libp2p/websockets/filters'
-import { multiaddr } from '@multiformats/multiaddr'
 import {circuitRelayServer, circuitRelayTransport} from 'libp2p/circuit-relay'
 import {identifyService} from "libp2p/identify";
 import {gossipsub} from "@chainsafe/libp2p-gossipsub";
@@ -22,8 +19,7 @@ export const node = await createLibp2p({
     addresses: {
         listen: [
             '/ip4/127.0.0.1/tcp/4005/ws',
-            // '/webrtc',
-            // '/ip4/0.0.0.0/udp/4005/p2p-circuit'
+            '/ip4/127.0.0.1/udp/4005/p2p-circuit'
         ]
     },
     connectionEncryption: [
@@ -41,10 +37,14 @@ export const node = await createLibp2p({
             allowPublishToZeroPeers: true
         }),
         identify: identifyService(),
-        relay: circuitRelayServer()
+        relay: circuitRelayServer({
+            reservations: {
+                reservationClearInterval: 1000,
+                maxReservations: 10,
+            },
+        })
     }
 })
 await node.start()
 node.addEventListener('peer:discovery', e => console.warn('+', e.detail.id));
 node.addEventListener('peer:disconnect', e => console.warn('-', e.detail.toString()));
-console.log('multiaddrs:', node.getMultiaddrs());

@@ -13,9 +13,12 @@ export class Api {
     //     [`ws://${this.origin}/api`]
     // );
 
+    async getPeerId(){
+        return  await fetch(`http://${this.origin}/api/peer`).then(x => x.text());
+    }
     async initP2P(){
         if (this.p2p) return;
-        const peerId = await fetch(`http://${this.origin}/api/peer`).then(x => x.text());
+        const peerId = await this.getPeerId();
         this.p2p = new P2PService(peerId);
     }
 
