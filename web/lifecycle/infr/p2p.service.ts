@@ -89,7 +89,7 @@ export class P2PService {
         // await dialer.start();
         console.log(this.baseUrl)
         await this.node.dial(multiaddr(
-            `${this.baseUrl}/ws/p2p/${this.serverPeerId}`,
+            `${this.baseUrl}/${location.protocol == 'https:' ? 'wss': 'ws'}/p2p/${this.serverPeerId}`,
             // `/ip4/127.0.0.1/tcp/4005/p2p-circuit/webrtc/p2p/${dialer.peerId}`
         ));
         this.node.addEventListener('connection:open', (e) => {
