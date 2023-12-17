@@ -10,6 +10,7 @@ import {circuitRelayServer, circuitRelayTransport} from 'libp2p/circuit-relay'
 import {identifyService} from "libp2p/identify";
 import {gossipsub} from "@chainsafe/libp2p-gossipsub";
 import {pubsubPeerDiscovery} from "@libp2p/pubsub-peer-discovery";
+import * as process from "process";
 
 export const node = await createLibp2p({
     transports: [
@@ -24,6 +25,9 @@ export const node = await createLibp2p({
             '/ip4/127.0.0.1/tcp/4005/ws',
             // '/webrtc',
             // '/ip4/0.0.0.0/udp/4005/p2p-circuit'
+        ],
+        announce: [
+            process.env.PUBLIC_MULTIADDR
         ]
     },
     connectionEncryption: [

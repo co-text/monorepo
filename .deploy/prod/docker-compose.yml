@@ -8,7 +8,8 @@ services:
       context: ../../server
       dockerfile: server.dockerfile
     environment:
-      - "PORT=80"
+      PORT: 80
+      PUBLIC_MULTIADDR: "/dns/co-text.azurewebsites.net/tcp/443/wss"
     networks:
       main:
     restart: always

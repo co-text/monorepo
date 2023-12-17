@@ -9,6 +9,7 @@ services:
     working_dir: /app/server
     environment:
       PORT: 80
+      PUBLIC_MULTIADDR: "/dns/context.local/tcp/443/wss"
     command: npm run run
     networks:
       main:
