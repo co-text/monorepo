@@ -10,7 +10,6 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
 
     constructor(private inbox: InboxStore) {
         super();
-        console.log(inbox)
     }
 
     get State() {
@@ -30,7 +29,6 @@ export class AppInboxComponent extends HtmlComponent<IState, IEvents> {
     @event('keypress')
     onInput(e: KeyboardEvent){
         if (!e.altKey) return;
-        console.log(e.key);
         if (e.key == 'ArrowRight'){
 
         }

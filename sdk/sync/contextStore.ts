@@ -18,6 +18,8 @@ export class ContextStore extends SyncStore{
             UpdatedAt: utc().toISOString(),
         });
         this.addSync(new BroadcastSync(this.URI));
+        // activate sync
+        this.$state.active();
     }
 
     @cell
@@ -28,57 +30,52 @@ export class ContextStore extends SyncStore{
 
 
     DeleteMessage(item: Pick<Message, "id">) {
-        this.messages.delete(item.id)
+        this.messages.delete(item.id);
     }
 
-    async AddMessage(item: Message) {
-        if (this.messages.has(item.id))
+    AddMessage(id: string) {
+        if (this.messages.has(id))
             return;
-        this.messages.add(item.id);
-        await this.IsLoaded;
-        this.GetMessageStore(item.id).State = item;
+        this.messages.add(id);
     }
 
-
-    public $state = new Cell(() => {
+    private getState(){
         if (!this.context.Value)
             return Context.FromJSON({URI: this.URI} as any);
         const permutation = this.context.Value.Permutation ? Permutation.Parse(this.context.Value.Permutation) : null;
         const context = Context.FromJSON(this.context.Value);
         const ordered = orderBy(this.messages, x => x);
-        context.Messages = permutation?.Invoke(ordered) ?? ordered;
+        context.Messages = permutation?.Invoke(ordered) ?? ordered.slice();
         return context;
-    }, {
-        compare,
-        onExternal: value => {
-            const permutation = Permutation.Diff(
-                orderBy(value.Messages, x => x),
-                value.Messages
-            );
-            this.context.Diff({
-                ...Context.ToJSON(value),
-                Permutation: permutation.toString()
-            });
-            const existed = new Set(this.messages);
-            for (let id of value.Messages) {
-                if (existed.has(id)) {
-                    existed.delete(id);
-                    continue;
-                }
-                this.AddMessage({
-                    id: id,
-                    UpdatedAt: utc(),
-                    CreatedAt: utc(),
-                    Content: '',
-                    ContextURI: this.URI
-                });
+    }
+
+    private onStateChange(value: Context){
+        const permutation = Permutation.Diff(
+            orderBy(value.Messages, x => x),
+            value.Messages
+        );
+        this.context.Diff({
+            ...Context.ToJSON(value),
+            Permutation: permutation.toString()
+        });
+        const existed = new Set(this.messages);
+        for (let id of value.Messages) {
+            if (existed.has(id)) {
+                existed.delete(id);
+                continue;
             }
-            for (let id of existed){
-                this.DeleteMessage({
-                    id: id
-                })
-            }
+            this.AddMessage(id);
         }
+        for (let id of existed){
+            this.DeleteMessage({
+                id: id
+            })
+        }
+    }
+
+    public $state = new Cell(() => this.getState(), {
+        compare,
+        onExternal: value => this.onStateChange(value)
     })
 
     private messageCells = new Map<string, MessageStore>();

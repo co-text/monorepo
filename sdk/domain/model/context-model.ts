@@ -49,15 +49,15 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
             this.locator.Root.Contexts.get(message.ContextURI).RemoveMessage(message.id);
         }
         message.ContextURI = this.URI;
-        const messageModel = this.GetOrCreateMessage(message.id);
-        messageModel.State = message;
-        const messages = this.State.Messages;
+        const messages = this.State.Messages.slice();
         remove(messages, message.id);
         messages.splice(index, 0, message.id);
         this.State = {
             ...this.State,
             Messages: messages
         }
+        const messageModel = this.GetOrCreateMessage(message.id);
+        messageModel.State = message;
 
     };
 

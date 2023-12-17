@@ -7,8 +7,8 @@ export class Context {
     public readonly id: string;
     public URI: string;
 
-    public Messages: Array<string> = [];
-    public Parents: Array<string> = [];
+    public Messages: ReadonlyArray<string> = [];
+    public Parents: ReadonlyArray<string> = [];
     // public Access?: Array<AccessRule> = [];
     // public Sorting?: Sorting;
     public Storage: Omit<Storage, keyof { Root, Contexts, Messages }>;

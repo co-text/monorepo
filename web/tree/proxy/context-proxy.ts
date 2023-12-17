@@ -17,10 +17,10 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
         return orderBy(this.ParentsMap.values(),x => x.State.id);
     }
 
-    @proxy.map<Context>(Message, c => c.Messages)
+    @proxy.map<Context>(Message, c => c.Messages.slice())
     MessageMap: Map<ModelKey, MessageProxy>;
 
-    @proxy.map<Context>(Message, c => c.Parents)
+    @proxy.map<Context>(Message, c => c.Parents.slice())
     ParentsMap: Map<ModelKey, MessageProxy>;
 
     public CreateMessage(message: Message, index = this.Messages.length): IMessageProxy {

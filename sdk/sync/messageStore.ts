@@ -5,6 +5,8 @@ import {ContextStore} from "./contextStore";
 
 export class MessageStore {
     constructor(private contextStore: ContextStore, private id: string) {
+        // activate sync
+        this.json.on('change', () => {});
     }
 
     @cell

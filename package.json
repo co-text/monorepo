@@ -16,13 +16,13 @@
     "bundle:watch": "cmmn bundle --watch",
     "serve": "cmmn serve",
     "server:watch": "node ./server/dist/esm/server.js",
-    "ci": "cmmn compile && cmmn bundle --prod --minify"
+    "ci": "cmmn compile && cmmn bundle && cmmn bundle --prod --minify"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/tools": "2.0.3",
+    "@cmmn/tools": "2.1.1",
     "typescript": "5.2.2"
   }
 }
