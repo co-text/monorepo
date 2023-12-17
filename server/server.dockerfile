@@ -1,6 +1,6 @@
-FROM node:20-alpine
+FROM node:20-slim
 WORKDIR /app
 COPY package.json /app
-RUN npm i
+RUN yarn
 COPY dist/esm /app
 CMD [ "node", "server.js" ]
