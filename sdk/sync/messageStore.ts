@@ -19,7 +19,6 @@ export class MessageStore {
     }
 
     public dispose(){
-        this.contextStore.objects.
         this.json.dispose();
     }
 }
