@@ -1,7 +1,7 @@
 import {Message}from "@cotext/sdk";
 import {TreeItem, TreePresenter} from "../../presentors/tree.presentor";
 import type {Reducer} from "../reducers";
-import {Fn, Injectable, utc} from "@cmmn/core";
+import {Fn, Injectable} from "@cmmn/core";
 import {TreeState} from "./types";
 import {IContextProxy} from "@proxy";
 
@@ -79,8 +79,8 @@ export class TreeReducers {
                     //         .find(x => x.URI == parsed.SubContext.URI);
                     // }
                     parsed.id = Fn.ulid();
-                    parsed.CreatedAt = utc();
-                    parsed.UpdatedAt = utc();
+                    parsed.CreatedAt = new Date();
+                    parsed.UpdatedAt = new Date();
                     state.Selected.Message.Context.CreateMessage(parsed);
                 }
             } catch (e) {
@@ -90,8 +90,8 @@ export class TreeReducers {
                         id: Fn.ulid(),
                         Content: paragraph,
                         ContextURI: undefined,
-                        CreatedAt: utc(),
-                        UpdatedAt: utc(),
+                        CreatedAt: new Date(),
+                        UpdatedAt: new Date(),
                     }, state.Selected.Message.SubContext?.Messages.length ?? 0);
                 }
             }
@@ -117,8 +117,8 @@ export class TreeReducers {
             const newMessage: Message = {
                 id: Fn.ulid(),
                 ContextURI: undefined,
-                CreatedAt: utc(),
-                UpdatedAt: utc(),
+                CreatedAt: new Date(),
+                UpdatedAt: new Date(),
                 Content: text,
             };
             const messageProxy = (() => {

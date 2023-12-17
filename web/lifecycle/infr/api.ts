@@ -1,11 +1,11 @@
 import {UserStore} from "@stores/user.store";
-import {Injectable} from "@cmmn/core";
+import {Fn, Injectable} from "@cmmn/core";
 import {P2PService} from "./p2p.service";
 
 @Injectable()
 export class Api {
-    private p2p: P2PService;
-    constructor(private userStore: UserStore) {
+    constructor(private userStore: UserStore,
+                private p2p: P2PService) {
     }
 
     private origin = 'localhost:4004';
@@ -13,13 +13,10 @@ export class Api {
     //     [`ws://${this.origin}/api`]
     // );
 
-    async getPeerId(){
-        return  await fetch(`http://${this.origin}/api/peer`).then(x => x.text());
-    }
+    @Fn.cache()
     async initP2P(){
-        if (this.p2p) return;
-        const peerId = await this.getPeerId();
-        this.p2p = new P2PService(peerId);
+        const peerId = await fetch(`http://${this.origin}/api/peer`).then(x => x.text());
+        await this.p2p.init(peerId);
     }
 
     public async joinRoom(uri: string){

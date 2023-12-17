@@ -1,4 +1,4 @@
-import {Injectable} from "@cmmn/core";
+import {getOrAdd, Injectable} from "@cmmn/core";
 import {Api} from "@infr/api";
 import {TokenCryptor} from "@infr/yjs/token-cryptor";
 import {TokenVerifier} from "@infr/token-verifier.service";
@@ -24,7 +24,7 @@ export class ResourceTokenApi extends Api {
     }
 
     public async GetToken(uri: string, parentURI?: string) {
-        const token = await this.tokens.getOrAdd(uri, () => this.FetchToken(uri, parentURI));
+        const token = await getOrAdd(this.tokens, uri, () => this.FetchToken(uri, parentURI));
         return token;
     }
     //

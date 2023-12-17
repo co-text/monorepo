@@ -3,6 +3,7 @@ import {Context, Message}from "@cotext/sdk";
 import {IContextActions} from "@cotext/sdk";
 import {IMessageProxy, MessageProxy} from "./message-proxy";
 import {DomainProxy} from "./domain-proxy";
+import {orderBy} from "@cmmn/core";
 
 @proxy.of(Context, (uri, self) => ['Contexts', uri])
 export class ContextProxy extends ModelProxy<Context, IContextActions>
@@ -13,7 +14,7 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
     }
 
     get Parents(): ReadonlyArray<IMessageProxy> {
-        return [...this.ParentsMap.values()].orderBy(x => x.State.id);
+        return orderBy(this.ParentsMap.values(),x => x.State.id);
     }
 
     @proxy.map<Context>(Message, c => c.Messages)

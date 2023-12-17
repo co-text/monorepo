@@ -1,3 +1,4 @@
+import {getOrAdd, remove} from "@cmmn/core";
 import {Diff} from "./diff-apply";
 import {ElementBind} from "./element-bind";
 import {EditorItem} from "./types";
@@ -65,8 +66,8 @@ export class ElementCache {
             for (let added of model.added.slice()) {
                 const deleted = model.deleted.find(x => x.item.Index == added.item.Index);
                 if (deleted) {
-                    model.added.remove(added);
-                    model.deleted.remove(deleted);
+                    remove(model.added, added);
+                    remove(model.deleted, deleted);
                     model.updated.push({child: deleted.child, item: added.item});
                 }
             }
@@ -74,8 +75,8 @@ export class ElementCache {
             for (let added of model.added.slice()) {
                 const deleted = model.deleted.find(x => x.item.Message.State.Content == added.item.Message.State.Content);
                 if (deleted) {
-                    model.added.remove(added);
-                    model.deleted.remove(deleted);
+                    remove(model.added, added);
+                    remove(model.deleted, deleted);
                     model.updated.push({child: deleted.child, item: added.item});
                 }
             }
@@ -121,7 +122,7 @@ export class ElementCache {
         this.cache.set(id, info);
         this.nodeCache.set(element, info);
         const uri = item.Message.State.SubContextURI;
-        this.uriCache.getOrAdd(uri, () => new Set()).add(info);
+        getOrAdd(this.uriCache, uri, () => new Set()).add(info);
     }
 
     remove(child: Element) {

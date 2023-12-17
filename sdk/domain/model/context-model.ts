@@ -3,7 +3,7 @@ import {IContextActions} from "@cotext/sdk";
 import {Context, Message}from "@cotext/sdk";
 import type {ModelLike} from "@cmmn/domain/worker";
 import {MessageStore} from "@infr/yjs/messageStore";
-import {Fn, utc} from "@cmmn/core";
+import {Fn, getOrAdd, remove} from "@cmmn/core";
 import {DomainLocator} from "@domain/model/domain-locator.service";
 
 export class ContextModel implements ModelLike<Context, IContextActions>, IContextActions {
@@ -18,7 +18,7 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
     private _cache = new Map<string, MessageModel>();
 
     private GetOrCreateMessage(id: string): MessageModel {
-        return this._cache.getOrAdd(id, id => new MessageModel(this.locator, this.contextStore, id));
+        return getOrAdd(this._cache, id, id => new MessageModel(this.locator, this.contextStore, id));
     }
 
     public get Messages(): Map<string, MessageModel> {
@@ -52,7 +52,7 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
         }
         message.ContextURI = this.URI;
         const messages = this.State.Messages;
-        messages.remove(message.id);
+        remove(messages, message.id);
         messages.splice(index, 0, message.id);
         this.State = {
             ...this.State,

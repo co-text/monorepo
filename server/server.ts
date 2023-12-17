@@ -21,7 +21,10 @@ async function run() {
 }
 
 function getFastify(opts){
-    const instance = fastify(opts);
+    const instance = fastify({
+        ...opts,
+        logger: false
+    });
     instance.register(cors,{
         origin: true,
         allowedHeaders: 'resource-token, Authorization',

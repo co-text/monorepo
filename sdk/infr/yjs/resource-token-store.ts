@@ -1,4 +1,4 @@
-import { Injectable } from "@cmmn/core";
+import {getOrAdd, Injectable} from "@cmmn/core";
 import { Api, Request } from "@cmmn/infr";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class ResourceTokenStore {
     }
 
     public GetToken(uri: string, parentURI: string): Promise<string> {
-        const res = this.tokens.getOrAdd(uri, () => this.FetchToken(uri, parentURI));
+        const res = getOrAdd(this.tokens, uri, () => this.FetchToken(uri, parentURI));
         res['hi'] = 'hi';
         return res;
     }

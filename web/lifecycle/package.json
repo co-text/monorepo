@@ -7,10 +7,10 @@
     "serve": "cmmn serve"
   },
   "dependencies": {
-    "@cmmn/app": "1.9.12",
-    "@cmmn/cell": "1.9.12",
-    "@cmmn/core": "1.9.12",
-    "@cmmn/ui": "1.9.12",
+    "@cmmn/app": "2.0.0",
+    "@cmmn/cell": "2.0.0",
+    "@cmmn/core": "2.0.0",
+    "@cmmn/ui": "2.0.1",
     "@cotext/sdk": "1.0.0",
     "@libp2p/webrtc": "3.2.11",
     "@libp2p/pubsub": "8.0.10",
@@ -27,9 +27,7 @@
       "platform": "browser",
       "external": [
         "@cotext*",
-        "@cmmn*",
-        "luxon",
-        "msgpackr/pack"
+        "@cmmn*"
       ],
       "alias": {
         "luxon": "luxon/build/es6/luxon.js"

@@ -1,7 +1,8 @@
 {
   "extends": "@cmmn/tools/compile/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "noEmitHelpers": true
   },
   "files": [],
   "include": [],

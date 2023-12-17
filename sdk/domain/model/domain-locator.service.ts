@@ -22,7 +22,7 @@ export class DomainLocator extends RootLocator {
         return this.root;
     }
 
-    public GetOrCreateContext(uri: string, parentURI: string): ContextModel {
+    public GetOrCreateContext(uri: string, parentURI: string | undefined = undefined): ContextModel {
         return this.Root.Contexts.has(uri) ?
             this.Root.Contexts.get(uri) :
             this.Root.Contexts.create(uri, parentURI);

@@ -1,7 +1,7 @@
 import {StorageJSON} from "@cotext/sdk";
 import {MessageStore} from "./messageStore";
 import {ResourceTokenStore} from "@infr/yjs/resource-token-store";
-import {bind, Injectable} from "@cmmn/core";
+import {bind, getOrAdd, Injectable} from "@cmmn/core";
 import {ResourceTokenApi} from "@infr/resource-token-api.service";
 // @ts-ignore
 import {WebRtcProvider} from "@cmmn/sync/webrtc/client";
@@ -30,7 +30,7 @@ export class YjsRepository {
     }
 
     GetOrAdd(uri: string, parentURI): MessageStore {
-        return this.map.getOrAdd(uri, uri => {
+        return getOrAdd(this.map, uri, uri => {
             const store = new MessageStore(uri);
             console.log(uri, parentURI);
             store.Init()

@@ -2,7 +2,6 @@ import {IMessageActions} from "@domain/contracts/actions";
 import {Context, Message}from "@cotext/sdk";
 import {ModelLike} from "@cmmn/domain/worker";
 import {MessageStore} from "@infr/yjs/messageStore";
-import {utc} from "@cmmn/core";
 import {ContextModel} from "./context-model";
 import {DomainLocator} from "@domain/model/domain-locator.service";
 
@@ -38,7 +37,7 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
     async UpdateText(text: string): Promise<void> {
         this.State = {
             ...this.State,
-            UpdatedAt: utc(),
+            UpdatedAt: new Date(),
             Content: text
         };
     }
@@ -47,7 +46,7 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
     async Attach(uri: string): Promise<void> {
         this.State = {
             ...this.State,
-            UpdatedAt: utc(),
+            UpdatedAt: new Date(),
             SubContextURI: uri
         };
     }
@@ -57,7 +56,7 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
             return await this.Reorder(toIndex);
         const state = {
             ...this.State,
-            UpdatedAt: utc(),
+            UpdatedAt: new Date(),
             Context: {
                 URI: toURI
             } as Context

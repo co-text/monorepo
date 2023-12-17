@@ -1,7 +1,7 @@
 import {Storage} from "./storage";
-import {DateTime, utc} from "@cmmn/core";
 import {ContextJSON} from "@cotext/sdk";
 import {Permutation} from "@domain/helpers/permutation";
+import {utc} from "@cmmn/core";
 
 export class Context {
     public readonly id: string;
@@ -15,8 +15,8 @@ export class Context {
     public Storage: Omit<Storage, keyof { Root, Contexts, Messages }>;
     // public Parents: Array<string> = [];
     public IsRoot: boolean;
-    public UpdatedAt: DateTime;
-    public CreatedAt: DateTime;
+    public UpdatedAt: Date;
+    public CreatedAt: Date;
 
     public equals?(m: Context): boolean;
 
@@ -60,7 +60,7 @@ export class Context {
             return false;
         if (x.id && x.id !== y.id)
             return false;
-        return y.UpdatedAt.equals(x.UpdatedAt);
+        return +y.UpdatedAt == +x.UpdatedAt;
     }
 
 }

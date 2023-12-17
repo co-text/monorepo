@@ -1,4 +1,5 @@
 import {AccessInheritanceRule, IRuleStore, URI} from "@inhauth/core";
+import {getOrAdd} from "@cmmn/core";
 
 export class RuleStore implements IRuleStore {
 
@@ -9,6 +10,6 @@ export class RuleStore implements IRuleStore {
     }
 
     public async AddRule(uri: URI, rule: AccessInheritanceRule) {
-        this.rules.getOrAdd(uri, () => []).push(rule);
+        getOrAdd(this.rules, uri, () => []).push(rule);
     }
 }
