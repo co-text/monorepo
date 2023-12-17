@@ -29,9 +29,6 @@
         "@cotext*",
         "@cmmn*"
       ],
-      "alias": {
-        "luxon": "luxon/build/es6/luxon.js"
-      },
       "mount": {
         "/assets": "./assets"
       },

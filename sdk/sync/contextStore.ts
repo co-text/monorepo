@@ -31,10 +31,11 @@ export class ContextStore extends SyncStore{
         this.messages.delete(item.id)
     }
 
-    AddMessage(item: Message) {
+    async AddMessage(item: Message) {
         if (this.messages.has(item.id))
             return;
         this.messages.add(item.id);
+        await this.IsLoaded;
         this.GetMessageStore(item.id).State = item;
     }
 
