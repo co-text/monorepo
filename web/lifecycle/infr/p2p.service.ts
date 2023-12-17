@@ -20,6 +20,7 @@ export class P2PService {
     private node: Libp2p;
     private serverPeerId: string;
     private Init = new ResolvablePromise();
+    private baseUrl = `/dns/${location.hostname}/tcp/${location.port ?? (location.protocol == 'https:' ? 443: 80)}`;
     constructor() {
     }
 
@@ -86,8 +87,9 @@ export class P2PService {
         //     ]
         // });
         // await dialer.start();
+        console.log(this.baseUrl)
         await this.node.dial(multiaddr(
-            `/dns/${location.hostname}/tcp/${location.port}/ws/p2p/${this.serverPeerId}`,
+            `${this.baseUrl}/ws/p2p/${this.serverPeerId}`,
             // `/ip4/127.0.0.1/tcp/4005/p2p-circuit/webrtc/p2p/${dialer.peerId}`
         ));
         this.node.addEventListener('connection:open', (e) => {
@@ -131,7 +133,7 @@ export class P2PService {
         if (id < this.node.peerId.toString()) return;
         console.log(`call to ${id}`);
         const stream = await this.node.dialProtocol(multiaddr(
-            `/dns/${location.hostname}/tcp/${location.port}/ws/p2p/${this.serverPeerId}/p2p-circuit/webrtc/p2p/${id}`
+            `${this.baseUrl}/p2p/${this.serverPeerId}/p2p-circuit/webrtc/p2p/${id}`
         ), [
             '/cotext/data/1.0.0'
         ]);
