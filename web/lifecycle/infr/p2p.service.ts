@@ -87,7 +87,7 @@ export class P2PService {
         // });
         // await dialer.start();
         await this.node.dial(multiaddr(
-            `/ip4/127.0.0.1/tcp/4005/ws/p2p/${this.serverPeerId}`,
+            `/ip4/${location.host}/tcp/${80}/ws/p2p/${this.serverPeerId}`,
             // `/ip4/127.0.0.1/tcp/4005/p2p-circuit/webrtc/p2p/${dialer.peerId}`
         ));
         this.node.addEventListener('connection:open', (e) => {
@@ -131,7 +131,7 @@ export class P2PService {
         if (id < this.node.peerId.toString()) return;
         console.log(`call to ${id}`);
         const stream = await this.node.dialProtocol(multiaddr(
-            `/ip4/127.0.0.1/tcp/4005/ws/p2p/${this.serverPeerId}/p2p-circuit/webrtc/p2p/${id}`
+            `/ip4/${location.host}/tcp/${80}/ws/p2p/${this.serverPeerId}/p2p-circuit/webrtc/p2p/${id}`
         ), [
             '/cotext/data/1.0.0'
         ]);
