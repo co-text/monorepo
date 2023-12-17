@@ -42,9 +42,9 @@ export const node = await createLibp2p({
         }),
         identify: identifyService(),
         relay: circuitRelayServer({
-            reservations: {
-                maxReservations: 2
-            }
+            // reservations: {
+            //     maxReservations: 2
+            // }
         })
     }
 })
