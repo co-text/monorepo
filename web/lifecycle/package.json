@@ -11,6 +11,7 @@
     "@cmmn/app": "2.1.1",
     "@cmmn/cell": "2.1.1",
     "@cmmn/core": "2.1.1",
+    "@cmmn/domain": "2.1.1",
     "@cmmn/ui": "2.1.1",
     "@cotext/sdk": "1.0.0",
     "@libp2p/webrtc": "3.2.11",
@@ -39,6 +40,13 @@
         "/api": "http://localhost:4004/api",
         "/p2p": "http://localhost:4005/p2p"
       }
+    },
+    "worker": {
+      "input": "dist/esm/entry/worker.js",
+      "platform": "browser",
+      "module": "es",
+      "external": [
+      ]
     }
   },
   "author": "",

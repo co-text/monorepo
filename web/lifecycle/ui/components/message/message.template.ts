@@ -1,5 +1,5 @@
 import {ITemplate} from "@cmmn/ui";
-import {Message} from "@cotext/sdk";
+import type {Message} from "@cotext/sdk";
 
 export const template: ITemplate<IState, IEvents> = (html, state, events) => html`
     <div>

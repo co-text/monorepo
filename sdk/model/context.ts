@@ -1,5 +1,5 @@
 import {Storage} from "./storage";
-import {ContextJSON} from "@cotext/sdk";
+import type {ContextJSON} from "@cotext/sdk";
 import {Permutation} from "@domain/helpers/permutation";
 import {utc} from "@cmmn/core";
 

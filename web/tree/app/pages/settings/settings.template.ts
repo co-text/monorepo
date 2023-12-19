@@ -1,6 +1,6 @@
 import {Icons} from "../../../icons/Icons";
 import {ITemplate} from "@cmmn/ui";
-import {IAccountInfo} from "@cotext/sdk";
+import type {IAccountInfo} from "@cotext/sdk";
 
 export const Template: ITemplate<IState, IEvents> = (html, state, events) => html`
     ${state.providers.map(provider => html(`provider.${provider}`)`

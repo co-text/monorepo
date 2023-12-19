@@ -1,18 +1,18 @@
-import {DomainLocator, Message} from "@cotext/sdk";
+import type {DomainLocator, Message} from "@cotext/sdk";
 import {Injectable} from "@cmmn/core";
 import {CurrentStore} from "@stores/current.store";
 import {ContextStore} from "@stores/context.store";
 import {Api} from "../infr/api";
+import {DomainProxy} from "@proxy";
 
 @Injectable()
 export class InboxStore extends ContextStore{
     public static URI = 'inbox';
-    constructor(locator: DomainLocator, api: Api) {
-        super(InboxStore.URI, api, locator);
+    constructor(proxy: DomainProxy, api: Api) {
+        super(InboxStore.URI, api, proxy);
     }
 
     MoveToCurrent(id: string) {
-        const message = this.locator.GetMessage(this.URI, id);
-        message.Actions.Move(this.URI, CurrentStore.URI, 0);
+        this.context.MessageMap.get(id).MoveTo(this.proxy.getContext(CurrentStore.URI), 0)
     }
 }

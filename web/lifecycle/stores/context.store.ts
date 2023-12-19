@@ -1,22 +1,23 @@
 import {ModelLike} from "@cmmn/domain/worker";
-import {Context, DomainLocator, IContextActions, IMessageActions, Message} from "@cotext/sdk";
+import type {Context, DomainLocator, IContextActions, IMessageActions, Message} from "@cotext/sdk";
 import {Fn, utc} from "@cmmn/core";
 import {Api} from "../infr/api";
+import {DomainProxy, IContextProxy, IMessageProxy} from "@proxy";
 export class ContextStore{
 
     constructor(public readonly URI: string,
                 protected readonly api: Api,
-                protected readonly locator: DomainLocator) {
+                protected readonly proxy: DomainProxy) {
         this.api.joinRoom(URI).then(x => x)
     }
 
 
-    protected context = this.locator.GetOrCreateContext(this.URI, undefined) as ModelLike<Context, IContextActions>;
-    public get Messages(): Array<ModelLike<Message, IMessageActions>>{
-        return this.context.State.Messages.map(x => this.locator.GetMessage(this.URI, x))
+    protected context = this.proxy.getContext(this.URI) as IContextProxy;
+    public get Messages() {
+        return this.context.Messages
     }
     CreateMessage() {
-        this.context.Actions.CreateMessage({
+        this.context.CreateMessage({
             id: Fn.ulid(),
             Content: '',
             CreatedAt: utc(),

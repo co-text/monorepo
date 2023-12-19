@@ -2,7 +2,7 @@
 // import {DomainModel} from "./domain-model";
 // import {ContextModel} from "./context-model";
 // import {IFactory} from "./i-factory";
-// import {IRepository, IStorageActions} from "@cotext/sdk";
+// import type {IRepository, IStorageActions} from "@cotext/sdk";
 // import {StorageJSON} from "@domain/contracts/json";
 // import {MessageModel} from "@domain/model/message-model";
 // import {ulid} from "ulid";

@@ -19,7 +19,7 @@ function getReplicaId(uri){
 export class ContextStore extends SyncStore{
 
     private doc  = new CRuntime({
-        debugReplicaID: getReplicaId(this.URI)
+        // debugReplicaID: getReplicaId(this.URI)
     });
     protected objects = this.doc.registerCollab("objects",
         init => new CLazyMap(init, init => new CValueMap(init))
@@ -40,8 +40,8 @@ export class ContextStore extends SyncStore{
             IsRoot: true,
             UpdatedAt: utc().toISOString(),
         });
-        this.addSync(new BroadcastSync(this.URI, console.log) as any);
-        this.addSync(new BroadcastSync(this.URI+".out", console.log) as any);
+        this.addSync(new BroadcastSync(this.URI) as any);
+        this.addSync(new BroadcastSync(this.URI+".out") as any);
         // activate sync
         this.$state.active();
         window.addEventListener('beforeunload', () => {

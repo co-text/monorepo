@@ -1,5 +1,5 @@
 import {ITemplate} from "@cmmn/ui";
-import {IAccountInfo} from "@cotext/sdk";
+import type {IAccountInfo} from "@cotext/sdk";
 
 export const AppInitTemplate: ITemplate<IAccountInfo[], IEvents> = (html, state, events) => html`
     <h1>Welcome back, my bloody son!</h1>

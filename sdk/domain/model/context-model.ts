@@ -1,5 +1,5 @@
 import {MessageModel} from "./message-model";
-import {IContextActions} from "@cotext/sdk";
+import type {IContextActions} from "@cotext/sdk";
 import {Context, Message}from "@cotext/sdk";
 import type {ModelLike} from "@cmmn/domain/worker";
 import {ContextStore} from "../../sync/contextStore";

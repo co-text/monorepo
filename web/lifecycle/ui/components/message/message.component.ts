@@ -3,7 +3,7 @@ import {template, IState, IEvents} from "./message.template";
 import style from "./message.style.less";
 import {Injectable} from "@cmmn/core";
 import {ModelLike} from "@cmmn/domain/worker";
-import {IMessageActions, Message} from "@cotext/sdk";
+import type {IMessageActions, Message} from "@cotext/sdk";
 import {Cell} from "@cmmn/cell";
 
 @Injectable(true)

@@ -2,7 +2,7 @@ import {Injectable} from "@cmmn/core";
 import {AppInitTemplate, IEvents} from "./app-init.template";
 import {RouterService} from "../services/router.service";
 import {component, effect, HtmlComponent} from "@cmmn/ui";
-import {AccountManager, IAccountInfo} from "@cotext/sdk";
+import type {AccountManager, IAccountInfo} from "@cotext/sdk";
 import './app-init.style.less';
 import {GoogleLoginService} from "../services/google-login.service";
 import {FakeLoginService} from "../services/fake-login.service";

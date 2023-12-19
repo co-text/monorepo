@@ -6,7 +6,8 @@
     "paths": {
       "@ui": ["./ui/container.ts"],
       "@stores/*": ["./stores/*"],
-      "@infr/*": ["./infr/*"]
+      "@infr/*": ["./infr/*"],
+      "@proxy": ["./proxy"]
     }
   },
 

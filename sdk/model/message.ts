@@ -1,6 +1,6 @@
 import {utc} from "@cmmn/core";
 import {User} from "./user";
-import {MessageJSON} from "@cotext/sdk";
+import type {MessageJSON} from "@cotext/sdk";
 
 export class Message {
     public Content: string;

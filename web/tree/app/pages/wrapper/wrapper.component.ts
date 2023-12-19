@@ -3,7 +3,7 @@ import {template, IState, IEvents} from "./wrapper.template";
 import "./wrapper.style.less";
 import {Injectable} from "@cmmn/core";
 import {DomainProxy} from "@proxy";
-import {AccountManager, IAccountInfo} from "@cotext/sdk";
+import type {AccountManager, IAccountInfo} from "@cotext/sdk";
 
 @Injectable(true)
 @component({name: 'page-wrapper', template, style: ''})

@@ -1,4 +1,4 @@
-import {IAccountInfo, IAccountProvider} from "@cotext/sdk";
+import type {IAccountInfo, IAccountProvider} from "@cotext/sdk";
 
 export class GoogleLoginService implements IAccountProvider{
     type: string = 'google';

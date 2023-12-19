@@ -1,6 +1,6 @@
 import {ITemplate} from "@cmmn/ui";
 import {DomainState}from "@cotext/sdk";
-import {IAccountInfo} from "@cotext/sdk";
+import type {IAccountInfo} from "@cotext/sdk";
 
 export const template: ITemplate<IState, IEvents> = (html, state, events) => html`
     ${state.Children}

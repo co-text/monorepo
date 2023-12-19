@@ -1,5 +1,5 @@
 import { Fn } from "@cmmn/core";
-import {IAccountInfo, IAccountProvider} from "@cotext/sdk";
+import type {IAccountInfo, IAccountProvider} from "@cotext/sdk";
 
 export class FakeLoginService implements IAccountProvider{
     type: string = 'fake';
