@@ -16,7 +16,7 @@ export class UnderComponent extends HtmlComponent<IState, IEvents> {
         return {
             streams: Array.from(this.p2p.streams.values()).map(x => ({
                 id: x.id,
-                type: x.multiplexer
+                type: x.protocol
             }))
         };
     }

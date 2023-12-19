@@ -15,6 +15,7 @@ export class DomainState {
     public Contexts: string[];
     public Selection: SelectionState;
     public Servers: Record<string, any>;
+    public UniqId: string;
     // public Networks: ReadonlyMap<string, ReadonlyMap<string, {
     //     username: string;
     //     connected: boolean;

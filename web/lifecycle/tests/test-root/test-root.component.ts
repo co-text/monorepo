@@ -30,7 +30,7 @@ export class TestRootComponent extends HtmlComponent<IState, IEvents> {
         while (true){
             const p2p = new P2PService();
             await p2p.init(peerId);
-            await p2p.dispose();
+            await p2p.stop();
             this.nodesCount++;
         }
     }

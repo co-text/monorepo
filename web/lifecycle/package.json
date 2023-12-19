@@ -6,6 +6,7 @@
   "scripts": {
     "serve": "cmmn serve"
   },
+  "type": "module",
   "dependencies": {
     "@cmmn/app": "2.1.1",
     "@cmmn/cell": "2.1.1",

@@ -4,6 +4,7 @@ import style from "./message.style.less";
 import {Injectable} from "@cmmn/core";
 import {ModelLike} from "@cmmn/domain/worker";
 import {IMessageActions, Message} from "@cotext/sdk";
+import {Cell} from "@cmmn/cell";
 
 @Injectable(true)
 @component({name: 'app-message', template, style})

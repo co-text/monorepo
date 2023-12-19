@@ -5,7 +5,7 @@ export const template: ITemplate<IState, IEvents> = (html, state, events) =>
         <app-layout>
             <app-header/>
             <app-inbox/>
-            <app-main/>
+<!--            <app-main/>-->
             <app-under/>
             <app-result/>
         </app-layout>

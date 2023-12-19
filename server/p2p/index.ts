@@ -37,7 +37,9 @@ export const node = await createLibp2p({
         yamux()
     ],
     peerDiscovery: [
-        pubsubPeerDiscovery()
+        pubsubPeerDiscovery({
+
+        })
     ],
     services: {
         pubsub: gossipsub({

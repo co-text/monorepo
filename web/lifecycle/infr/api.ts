@@ -1,36 +1,31 @@
 import {UserStore} from "@stores/user.store";
 import {Fn, Injectable} from "@cmmn/core";
 import {P2PService} from "./p2p.service";
+import {ClientStore} from "@infr/client.store";
 
 @Injectable()
 export class Api {
+    private clientStore = new ClientStore();
     constructor(private userStore: UserStore,
                 private p2p: P2PService) {
+        globalThis['api'] = this;
+        this.clientStore.on('change', async e => {
+            if (e.isMain){
+                await this.p2p.init(await this.getPeerId());
+            } else {
+                await this.p2p.stop();
+            }
+        })
     }
-
-    // private provider = new WebRtcProvider(
-    //     [`ws://${this.origin}/api`]
-    // );
-
     getPeerId(){
         return fetch(`/api/peer`).then(x => x.text());
     }
-    @Fn.cache()
-    async initP2P(){
-        const peerId = await this.getPeerId();
-        await this.p2p.init(peerId);
-    }
 
     public async joinRoom(uri: string){
-        await this.initP2P();
+        if (!this.p2p.isActive && this.clientStore.isMain){
+            await this.p2p.init(await this.getPeerId());
+        }
         await this.p2p.joinRoom(uri);
-        // const request = await fetch(`http://${this.origin}/api/context?uri=${uri}`, {
-        //     headers: {
-        //         'authorization': JSON.stringify({user: this.userStore.user.get()}),
-        //     }
-        // });
-        // const token = request.headers.get('resource-token');
-        // this.provider.joinRoom(uri, {token, user: this.userStore.user.get()})
     }
 
 

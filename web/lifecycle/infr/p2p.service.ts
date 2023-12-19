@@ -11,7 +11,7 @@ import {yamux} from '@chainsafe/libp2p-yamux'
 import {gossipsub, GossipSub} from '@chainsafe/libp2p-gossipsub'
 import {pubsubPeerDiscovery} from '@libp2p/pubsub-peer-discovery'
 import {P2PRoom} from "./p2p.room";
-import type {Connection} from "@libp2p/interface/connection";
+import type {Connection, Stream} from "@libp2p/interface/connection";
 import {cell, ObservableMap} from "@cmmn/cell";
 import { PeerId } from "@libp2p/interface/peer-id";
 
@@ -21,10 +21,13 @@ export class P2PService {
     private serverPeerId: string;
     private Init = new ResolvablePromise();
     private baseUrl = `/dns/${location.hostname}/tcp/${location.port || (location.protocol == 'https:' ? 443: 80)}`;
+    public isActive: boolean;
     constructor() {
     }
 
     async init(serverPeerId: string){
+        if (this.isActive) return;
+        this.isActive = true;
         if (this.serverPeerId) {
             throw new Error(`Init P2P only once`)
         }
@@ -105,13 +108,13 @@ export class P2PService {
         ));
         this.node.addEventListener('connection:open', (e) => {
             console.log('open', e.detail.id, e.detail.multiplexer);
-            this.addConnection(e.detail)
+            // this.addConnection(e.detail)
             // updatePeerList()
         })
-        // this.node.handle('/cotext/data/1.0.0', (e) => {
-        //     this.addConnection(e.connection)
-        //     // updatePeerList()
-        // });
+        this.node.handle('/cotext/data/1.0.0', (e) => {
+            this.addConnection(e.connection, e.stream)
+            // updatePeerList()
+        });
         this.node.addEventListener('connection:close', (e) => {
             this.removeConnection(e.detail);
             // updatePeerList()
@@ -121,6 +124,7 @@ export class P2PService {
             console.log(multiaddrs.map(x => x.toString()));
         })
         this.node.addEventListener('peer:discovery', e => {
+            console.log('discovered peer', e.detail.id)
             this.connect(e.detail.id)
         });
         for (let peer of this.node.getPeers()) {
@@ -130,12 +134,19 @@ export class P2PService {
     }
 
     @cell
-    public streams = new ObservableMap<string, Connection>();
-    private addConnection(connection: Connection){
+    public streams = new ObservableMap<string, Stream>();
+    private addConnection(connection: Connection, stream: Stream){
         console.log(connection.id, connection.multiplexer);
-        this.streams.set(connection.id, connection);
+        this.streams.set(connection.id, stream);
+        for (let room of this.rooms.values()) {
+            room.add(stream)
+        }
     }
     private removeConnection(connection: Connection){
+        const stream = this.streams.get(connection.id);
+        for (let room of this.rooms.values()) {
+            room.remove(stream)
+        }
         this.streams.delete(connection.id);
     }
     private async connect(peer: PeerId){
@@ -148,7 +159,10 @@ export class P2PService {
         ), [
             '/cotext/data/1.0.0'
         ]);
-
+        for (let room of this.rooms.values()) {
+            room.add(stream)
+        }
+        this.streams.set(stream.id, stream);
     }
 
     get pubsub(){
@@ -159,10 +173,20 @@ export class P2PService {
 
     public async joinRoom(uri: string){
         await this.Init;
-        getOrAdd(this.rooms, uri, uri => new P2PRoom(uri, this.pubsub, this.node.peerId.toString()));
+        getOrAdd(this.rooms, uri, uri => {
+            const room = new P2PRoom(uri, this.node.peerId.toString());
+            for (let stream of this.streams.values()) {
+                room.add(stream);
+            }
+            return room;
+        });
     }
 
-    public dispose(){
+    public stop(){
+        this.isActive = false;
+        for (let room of this.rooms.values()) {
+            room.stop();
+        }
         return this.node.stop();
     }
 }

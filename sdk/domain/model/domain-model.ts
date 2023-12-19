@@ -1,10 +1,9 @@
 import {ModelLike, Locator} from "@cmmn/domain/worker";
-import {IDomainActions} from "@cotext/sdk";
-import {DomainState}from "@cotext/sdk";
 import {cell} from "@cmmn/cell";
-import {Injectable} from "@cmmn/core";
+import {Fn, Injectable} from "@cmmn/core";
 import {ContextMap} from "@domain/model/context-map";
-import {SelectionState} from "../../model/storage";
+import {DomainState, SelectionState} from "../../model/storage";
+import {IDomainActions} from "@domain";
 
 @Injectable()
 export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDomainActions {
@@ -14,6 +13,7 @@ export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDom
     @cell
     public Selection: SelectionState = {};
 
+    public UniqId = Fn.ulid();
     constructor(private locator: Locator) {
         globalThis['domain'] = this;
         // this.useLastUpdate = true;
@@ -32,6 +32,7 @@ export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDom
             Contexts: Array.from(this.Contexts.keys()),
             Selection: this.Selection,
             Servers: {},//this.repository.Provider.ServerState,
+            UniqId: this.UniqId
             // Networks: new Map(Array.from(this.repository.Networks.toMap().entries())
             //     .map(([key, network]) => [key, network.map])),
             // Messages: (this.factory as Factory).MessageMap.map(x => x.State),
