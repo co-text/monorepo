@@ -11,7 +11,7 @@
     "@cmmn/app": "2.1.1",
     "@cmmn/cell": "2.1.1",
     "@cmmn/core": "2.1.1",
-    "@cmmn/domain": "2.1.1",
+    "@cmmn/domain": "2.1.2",
     "@cmmn/ui": "2.1.1",
     "@cotext/sdk": "1.0.0",
     "@libp2p/webrtc": "3.2.11",
@@ -42,7 +42,7 @@
       }
     },
     "worker": {
-      "input": "dist/esm/entry/worker.js",
+      "input": "dist/esm/worker/worker.js",
       "platform": "browser",
       "module": "es",
       "external": [

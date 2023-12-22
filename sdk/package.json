@@ -20,9 +20,9 @@
   "dependencies": {
     "@cmmn/cell": "2.1.1",
     "@cmmn/core": "2.1.1",
-    "@cmmn/domain": "2.1.1",
-    "@cmmn/infr": "2.1.1",
-    "@cmmn/sync": "2.1.1",
+    "@cmmn/domain": "2.1.2",
+    "@cmmn/infr": "2.1.2",
+    "@cmmn/sync": "2.1.2",
     "lib0": "0.2.47",
     "jose": "^5.1.0"
   },

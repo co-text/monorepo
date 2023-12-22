@@ -8,7 +8,11 @@
       "@stores/*": ["./stores/*"],
       "@infr/*": ["./infr/*"],
       "@proxy": ["./proxy"]
-    }
+    },
+    "lib": [
+      "DOM",
+      "ES2020"
+    ]
   },
 
   "include": [

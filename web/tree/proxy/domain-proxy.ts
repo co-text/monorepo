@@ -1,11 +1,10 @@
 import {Injectable} from "@cmmn/core";
 import {Context, DomainState}from "@cotext/sdk";
-import {EntityLocator, ModelKey, ModelMap, ModelProxy, proxy, Stream} from "@cmmn/domain/proxy";
+import {EntityLocator, ModelKey, ModelMap, ModelProxy, Stream} from "@cmmn/domain/proxy";
 import type {IDomainActions} from "@cotext/sdk";
 import {IContextProxy} from "./context-proxy";
 
 @Injectable()
-@proxy.of(DomainState, () => [])
 export class DomainProxy extends ModelProxy<DomainState, IDomainActions> {
     constructor(stream: Stream, locator: EntityLocator) {
         super(stream, locator);
@@ -17,7 +16,6 @@ export class DomainProxy extends ModelProxy<DomainState, IDomainActions> {
         return [...this.ContextsMap.values()];
     }
 
-    @proxy.map<DomainState>(Context, d => d.Contexts)
     ContextsMap: Map<ModelKey, IContextProxy>;
 }
 

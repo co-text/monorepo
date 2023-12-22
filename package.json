@@ -14,6 +14,7 @@
     "compile:watch": "cmmn compile --watch",
     "bundle": "cmmn bundle",
     "bundle:watch": "cmmn bundle --watch",
+    "bundle:prod": "cmmn bundle --prod --minify",
     "serve": "cmmn serve",
     "server:watch": "node ./server/dist/esm/server.js",
     "ci": "cmmn compile && cmmn bundle && cmmn bundle --prod --minify"

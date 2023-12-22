@@ -1,11 +1,10 @@
-import {ModelProxy, proxy} from "@cmmn/domain/proxy";
+import {ModelProxy} from "@cmmn/domain/proxy";
 import {Context, DomainState, Message}from "@cotext/sdk";
 import type {IMessageActions} from "@cotext/sdk";
 import {Fn, utc} from "@cmmn/core";
 import type {IContextProxy} from "./context-proxy";
 import {DomainProxy} from "./domain-proxy";
 
-@proxy.of(Message, (id, self) => ['Messages', id])
 export class MessageProxy extends ModelProxy<Message, IMessageActions>
     implements IMessageProxy{
 
@@ -13,13 +12,10 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
         super(stream, locator);
     }
 
-    @proxy.link(DomainState)
     Root: DomainProxy;
 
-    @proxy.link<Message>(Context, m => m.ContextURI)
     Context: IContextProxy;
 
-    @proxy.link<Message>(Context, m => m.SubContextURI)
     SubContext?: IContextProxy;
 
     public get Messages(){

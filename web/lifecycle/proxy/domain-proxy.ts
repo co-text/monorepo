@@ -1,6 +1,6 @@
 import {Injectable} from "@cmmn/core";
 import {DomainState}from "@cotext/sdk";
-import {EntityLocator, ModelProxy, proxy, Stream} from "@cmmn/domain/proxy";
+import {EntityLocator, ModelProxy, Stream} from "@cmmn/domain/proxy";
 import type {IDomainActions} from "@cotext/sdk";
 import {ContextProxy, IContextProxy} from "./context-proxy";
 import { ModelMap } from "./model-map";

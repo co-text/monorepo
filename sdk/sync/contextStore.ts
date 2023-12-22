@@ -1,12 +1,10 @@
-import { SyncStore} from "@cmmn/sync";
+import {BroadcastSync, SyncStore} from "@cmmn/sync";
 import {cell, Cell} from "@cmmn/cell";
 import {compare, Fn, getOrAdd, orderBy, utc} from "@cmmn/core";
 import {ContextJSON} from "@domain";
 import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
 import {MessageStore} from "./messageStore";
-import {BroadcastSync} from "./broadcast-sync";
-import {CLazyMap, CRuntime, CValueList, CValueMap, CValueSet} from "@collabs/collabs";
 
 function getReplicaId(uri){
     const key = `${uri}.replicaID`;
@@ -17,20 +15,6 @@ function getReplicaId(uri){
 }
 // @ts-ignore
 export class ContextStore extends SyncStore{
-
-    private doc  = new CRuntime({
-        // debugReplicaID: getReplicaId(this.URI)
-    });
-    protected objects = this.doc.registerCollab("objects",
-        init => new CLazyMap(init, init => new CValueMap(init))
-    );
-    protected arrays = this.doc.registerCollab("lists",
-        init => new CLazyMap(init, init => new CValueList(init))
-    );
-    protected sets = this.doc.registerCollab("sets",
-        init => new CLazyMap(init, init => new CValueSet(init))
-    );
-
     constructor(protected URI: string) {
         super(URI);
         this.context.Set({
@@ -40,7 +24,7 @@ export class ContextStore extends SyncStore{
             IsRoot: true,
             UpdatedAt: utc().toISOString(),
         });
-        this.addSync(new BroadcastSync(this.URI) as any);
+        // this.addSync(new BroadcastSync(this.URI) as any);
         this.addSync(new BroadcastSync(this.URI+".out") as any);
         // activate sync
         this.$state.active();

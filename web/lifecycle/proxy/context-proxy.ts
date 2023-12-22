@@ -1,8 +1,7 @@
-import {ModelKey, ModelProxy, proxy} from "@cmmn/domain/proxy";
+import {ModelKey, ModelProxy} from "@cmmn/domain/proxy";
 import {Context, Message}from "@cotext/sdk";
 import type {IContextActions} from "@cotext/sdk";
 import {IMessageProxy, MessageProxy} from "./message-proxy";
-import {DomainProxy} from "./domain-proxy";
 import {orderBy} from "@cmmn/core";
 import {ModelMap} from "./model-map";
 
@@ -21,7 +20,6 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
         this.stream, this.locator, () => this.State.Messages, MessageProxy, x => ["Messages", x]
     )
 
-    @proxy.map<Context>(Message, c => c.Parents.slice())
     ParentsMap: Map<ModelKey, MessageProxy>;
 
     public CreateMessage(message: Message, index = this.Messages.length): IMessageProxy {

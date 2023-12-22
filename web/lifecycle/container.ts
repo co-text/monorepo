@@ -6,8 +6,6 @@ import {Api} from "./infr/api";
 export const container = Container.withProviders(
     ...uiContainer.getProviders(),
     ...storeContainer.getProviders(),
-    ...useWorkerDomain(new Worker("/worker.js", {
-        type: "module",
-    })).getProviders(),
+    ...useWorkerDomain(new SharedWorker(PRODUCTION ? "/worker.min.js" : "/worker.js")).getProviders(),
     Api
 )

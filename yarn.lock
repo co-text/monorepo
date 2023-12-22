@@ -133,19 +133,19 @@
   dependencies:
     bind-decorator "^1.0.11"
 
-"@cmmn/domain@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.1.1.tgz#bd94482a24632ffe6934a94cdfcadc5a4d8de502"
-  integrity sha512-YbuI9QapcwMDK4Waq0DX8MSLXhB5x0Cx82t5w+S+WLKqqSRCVdbFD1FCuAuHXqlFYW8RMXuog5gydooaBMIeRw==
+"@cmmn/domain@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.1.2.tgz#f7d4e7d70f76a3c7540fddea28e62e6332ab50d6"
+  integrity sha512-uIAPECcT6Gw47i+jqbnAJGu91TJx9Y1RwaUOiCvIcMuIp1+AYJ7HCd4W1j44yeAGwNi/VK/rqOKTfpjw/IRK7Q==
   dependencies:
     "@cmmn/cell" "2.1.1"
     "@cmmn/core" "2.1.1"
     msgpackr "1.10.0"
 
-"@cmmn/infr@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.1.1.tgz#e499a2341b6fc29bb0592341ff2e31af4cfea8a2"
-  integrity sha512-rt/noKYuFyrtb2fnnW2FmFNYK4WWLYJdGoEQbuo2ENf7v4y7bhTbGYg0PP7Q2Zlv7ioB3m9oOpOaiBxyJYx+Nw==
+"@cmmn/infr@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.1.2.tgz#4fe37e5186618c63be94a2ed903dd5a5ae7a5c35"
+  integrity sha512-VsdmAJHPnalkQEDjDuzy6YcHnrESx4tqSgzeNRaF2ajoRV8kcxLNH87uy0yqNWZ9LFETcK6PCcs9w8KGXtTdyg==
   dependencies:
     "@cmmn/cell" "2.1.1"
     "@cmmn/core" "2.1.1"
@@ -156,10 +156,10 @@
   resolved "https://registry.yarnpkg.com/@cmmn/server/-/server-2.1.1.tgz#d83082d2eb89fd2d59f66a9650041dffa51bc4db"
   integrity sha512-PKETA8QBV+xXG6HScgwCd2Fgz+Xa927G8LATr9F80gjas/mFbHUFA5Q1/xUWVBo+O+qKlcLV3mZzRSOinP3DqA==
 
-"@cmmn/sync@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/sync/-/sync-2.1.1.tgz#0842e87cf75cf40bf6b205ca1e6ae1fa00a43c49"
-  integrity sha512-l4W/oPF6DnA2pmTL0LypApk2A4fetoNjWYd1i2Cx2YNUANBOxkW7xtMuTUvG9b0NsdPooKimJEa91n0C/jUXbQ==
+"@cmmn/sync@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@cmmn/sync/-/sync-2.1.2.tgz#c0b14d860f55a887237ce475e4bafcb0a2704fba"
+  integrity sha512-u+WjuXddPaHhYiZjBr4UhAmmRTIyKNbOII2YVK5uh/LSnUU8ZonU8STmvsX0K15dwO9fEsA+zMFV8a7DTwpQXg==
   dependencies:
     "@cmmn/cell" "2.1.1"
     "@cmmn/core" "2.1.1"

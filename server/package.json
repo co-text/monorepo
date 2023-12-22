@@ -14,7 +14,7 @@
     "@chainsafe/libp2p-gossipsub": "10.1.0",
     "@cmmn/core": "2.1.1",
     "@cmmn/server": "2.1.1",
-    "@cmmn/sync": "2.1.1",
+    "@cmmn/sync": "2.1.2",
     "@fastify/cookie": "^9.1.0",
     "@fastify/cors": "^8.4.1",
     "@fastify/websocket": "^8.2.0",
