@@ -108,69 +108,69 @@
   dependencies:
     "@chainsafe/is-ip" "^2.0.1"
 
-"@cmmn/app@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/app/-/app-2.1.1.tgz#f35c68294fa40be2119de3e9f1ab31afda165797"
-  integrity sha512-nf8M33XbVv3fvRNvDec+Jovqf5HbHn0goqygBoxQandRBrSHfWSajhweBGv1u2apF4dE/4afeo2z1IxhlmgVuw==
+"@cmmn/app@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/app/-/app-2.2.0.tgz#e1268c2c0dd0f268cb54c45a35aef3369ed53c27"
+  integrity sha512-CtgJyZ9VW8tzTAh6Uc3fiIldwe3VLgaXlz+jpXylV3IJnwmBGDcab067PS07joF3LPosxyAoOWHBJwLfMYyrEg==
   dependencies:
-    "@cmmn/cell" "2.1.1"
-    "@cmmn/core" "2.1.1"
-    "@cmmn/ui" "2.1.1"
+    "@cmmn/cell" "2.2.0"
+    "@cmmn/core" "2.2.0"
+    "@cmmn/ui" "2.2.0"
     router5 "^8.0.1"
     router5-plugin-browser "^8.0.1"
 
-"@cmmn/cell@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/cell/-/cell-2.1.1.tgz#8cf40bcfefebf2039e8fbf08f24e1d82ee9bddbf"
-  integrity sha512-8U2YG4qR606qkrOYdjFncR5lkLUcckPrYKrRqvxkQpHlmT1ID988A47ALyDYzUEW/5dbOHaCtSpFbYblak0QOw==
+"@cmmn/cell@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/cell/-/cell-2.2.0.tgz#d1a7c3016dcc5866726c8fff3d9af2836c75fff8"
+  integrity sha512-Yg181qBI9hl1VaeJzsEGo7IzbB+cov90pMzYiwcxw1F4QE24xTjgCK3Or1k5QZF5RJeOWfclC9yQpGZE2MRgHg==
   dependencies:
-    "@cmmn/core" "2.1.1"
+    "@cmmn/core" "2.2.0"
 
-"@cmmn/core@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/core/-/core-2.1.1.tgz#88b172c9e859b52ef99f4b15e699838a7c72c15f"
-  integrity sha512-NjUCQX5QlHY+nNHUgDpyC0UMSbG6l/lM56w0e2Ye//SnMhgAf6duhvO1qMSbROVMcXUQhBzHNryJS1Rl7EDYVg==
+"@cmmn/core@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/core/-/core-2.2.0.tgz#f273b223bba673a3dfa9c2d08a5cc74ee606c575"
+  integrity sha512-WGoSpoVf6RkSoeH8lCspviG51GaPPRylNZfTQ1npxwW6vncJShhjtDDLh111ANrZhTWFMncoDVw+Zz8/sIEtHg==
   dependencies:
     bind-decorator "^1.0.11"
 
-"@cmmn/domain@2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.1.2.tgz#f7d4e7d70f76a3c7540fddea28e62e6332ab50d6"
-  integrity sha512-uIAPECcT6Gw47i+jqbnAJGu91TJx9Y1RwaUOiCvIcMuIp1+AYJ7HCd4W1j44yeAGwNi/VK/rqOKTfpjw/IRK7Q==
+"@cmmn/domain@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.2.1.tgz#2974c2497f94d5d21652e2e26d6e9add93c20084"
+  integrity sha512-yiZzCOshEp1CBOC6m14+GJMeRldCAH8O3+W1y8UzYqVnyfKeV7wGbPN53ts5+Qy4wsVihvQlFC1S2p+PvWWsXg==
   dependencies:
-    "@cmmn/cell" "2.1.1"
-    "@cmmn/core" "2.1.1"
+    "@cmmn/cell" "2.2.0"
+    "@cmmn/core" "2.2.0"
     msgpackr "1.10.0"
 
-"@cmmn/infr@2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.1.2.tgz#4fe37e5186618c63be94a2ed903dd5a5ae7a5c35"
-  integrity sha512-VsdmAJHPnalkQEDjDuzy6YcHnrESx4tqSgzeNRaF2ajoRV8kcxLNH87uy0yqNWZ9LFETcK6PCcs9w8KGXtTdyg==
+"@cmmn/infr@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.2.0.tgz#48bc652cb8512d34ba50afe6c1d3d03d9b64fc27"
+  integrity sha512-1pOVAxXxO8E1Y+35Y55MayBCrKo+ZofhlBDGIGGCOQvgP0rBNaWBWFpfbfyeoLK4BSWnbGbfkZcAKCRM5B0PUg==
   dependencies:
-    "@cmmn/cell" "2.1.1"
-    "@cmmn/core" "2.1.1"
-    "@cmmn/tools" "2.1.1"
+    "@cmmn/cell" "2.2.0"
+    "@cmmn/core" "2.2.0"
+    "@cmmn/tools" "2.2.0"
 
-"@cmmn/server@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/server/-/server-2.1.1.tgz#d83082d2eb89fd2d59f66a9650041dffa51bc4db"
-  integrity sha512-PKETA8QBV+xXG6HScgwCd2Fgz+Xa927G8LATr9F80gjas/mFbHUFA5Q1/xUWVBo+O+qKlcLV3mZzRSOinP3DqA==
+"@cmmn/server@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/server/-/server-2.2.0.tgz#bc769927c0cb5a9bc34a991f8a34b2724f6904dd"
+  integrity sha512-dhjfD/EwPyKgG27LPYQuSm/vO1R8wAtSPEfTM9Xib3ZXHC2dGPu/fwPDBCw2KtSEniJ3TMX0srqwDmbkJ185sg==
 
-"@cmmn/sync@2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@cmmn/sync/-/sync-2.1.2.tgz#c0b14d860f55a887237ce475e4bafcb0a2704fba"
-  integrity sha512-u+WjuXddPaHhYiZjBr4UhAmmRTIyKNbOII2YVK5uh/LSnUU8ZonU8STmvsX0K15dwO9fEsA+zMFV8a7DTwpQXg==
+"@cmmn/sync@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/sync/-/sync-2.2.0.tgz#660913ae57eb4be60652c8750d069b1b04b47f92"
+  integrity sha512-V9mBYDMgsZX4OWMLfBTuLAyLUqdQHKLya8DUhpONht0FrfX1PU6gA3B3H+nVc1RTJqtjvd/p5roK18nzg1gz5Q==
   dependencies:
-    "@cmmn/cell" "2.1.1"
-    "@cmmn/core" "2.1.1"
+    "@cmmn/cell" "2.2.0"
+    "@cmmn/core" "2.2.0"
     "@collabs/collabs" "0.13.4"
     "@collabs/indexeddb" "0.13.4"
     "@collabs/tab-sync" "0.13.4"
 
-"@cmmn/tools@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/tools/-/tools-2.1.1.tgz#ae8ffcf541c3ebcaf53a1c4a484b3d0f519f9f98"
-  integrity sha512-2wIl7EqX3Aybd0CHm6fTKn+0nZ51OGE+k1JROcobOGhrvskknYmdWzjd6kgMe5QfokJH70smbKwwDgJay5CK5A==
+"@cmmn/tools@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/tools/-/tools-2.2.0.tgz#f372d73fe8866aa3850c3ce137516d66bf0d8550"
+  integrity sha512-CRjmUUis95vIWrYNoJ0HZTqQeSyTEL0Ex7kN+we3krrOxxDTBJvSfH6cpDlm5w1vwDw1gZKuBOnam2ywoTYABA==
   dependencies:
     "@testdeck/jest" "0.2.0"
     "@types/node" "20.x.x"
@@ -188,10 +188,10 @@
     live-server "1.2.2"
     sinon "17.0.1"
 
-"@cmmn/uhtml@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/uhtml/-/uhtml-2.1.1.tgz#733dc840150ea6989b34ebda82ae5a56d80b0171"
-  integrity sha512-ws+fn2090YaXIHb3kpmEvHsR3+erQ6KsGsolPR0WcFJdI4ICkhsc8ZWNGO/V6cykJLWiJyvbpFY3XmKyW8TrmA==
+"@cmmn/uhtml@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/uhtml/-/uhtml-2.2.0.tgz#3bb79ab55d8d54ae4fd2e32499b20a26091ca373"
+  integrity sha512-h7qgz5Veh+kX/ggLQagRGZATAy+SVMl4Rf9l1CppsWUeCWGN1XqZGlAEdItwIrZjg36xEMF48N3l7fZEsfcfBQ==
   dependencies:
     "@ungap/create-content" "^0.3.1"
     async-tag "^0.2.0"
@@ -202,14 +202,14 @@
     uparser "^0.2.1"
     uwire "^1.1.0"
 
-"@cmmn/ui@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/ui/-/ui-2.1.1.tgz#aacf7412053ec6f08549401b24c53412bd96c382"
-  integrity sha512-L20cfO9DUAV8D8unPLgzEke3W0zd/5XXBwvNfYYYxwALHHro/aObacfu5AR54z8vmryKIXhOM9H5hnnj1g6R3w==
+"@cmmn/ui@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@cmmn/ui/-/ui-2.2.0.tgz#59ac0031fb694ae8603ee4efc3199b76b6c30c04"
+  integrity sha512-qbQBCNNIlxUD7YGAoy5baT7FJFmrv0FuJlNq6QYo0TTSc28xYHJhuSdF0GNHGWcC8GN7Xw/agwNmW7nnqgtYiw==
   dependencies:
-    "@cmmn/cell" "2.1.1"
-    "@cmmn/core" "2.1.1"
-    "@cmmn/uhtml" "2.1.1"
+    "@cmmn/cell" "2.2.0"
+    "@cmmn/core" "2.2.0"
+    "@cmmn/uhtml" "2.2.0"
 
 "@collabs/collabs@0.13.4", "@collabs/collabs@^0.13.2":
   version "0.13.4"

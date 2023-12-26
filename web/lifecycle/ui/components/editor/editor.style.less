@@ -5,8 +5,14 @@ ctx-editor {
   position: relative;
   margin: 0 1em;
 
-  * {
+  span {
     box-sizing: border-box;
+    text-indent: 1em;
+    &:after{
+      content: attr(id);
+      font-size: .6em;
+      float: right;
+    }
   }
 
   div[controls] {

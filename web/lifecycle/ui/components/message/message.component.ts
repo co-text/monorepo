@@ -38,7 +38,10 @@ export class MessageComponent extends HtmlComponent<IState, IEvents> {
     @event('input', {passive: true, selector: 'input'})
     onChange(e: InputEvent){
         const target = e.currentTarget as HTMLInputElement;
-        this.message.Actions.UpdateText(target.value);
+        this.message.State = {
+            ...this.message.State,
+            Content: target.value
+        };
     }
 
     @property()

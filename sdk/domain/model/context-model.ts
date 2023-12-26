@@ -13,15 +13,7 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
     constructor(public URI: string, private locator: DomainLocator) {
     }
 
-    private _cache = new Map<string, MessageModel>();
-
-    private GetOrCreateMessage(id: string): MessageModel {
-        return getOrAdd(this._cache, id, id => new MessageModel(this.locator, this.contextStore.GetMessageStore(id), id));
-    }
-
-    public get Messages(): Map<string, MessageModel> {
-        return new Map(this.State.Messages.map(x => [x, this.GetOrCreateMessage(x)]));
-    }
+    public Messages = new MessagesMap( id => new MessageModel(this.locator, this.contextStore.GetMessageStore(id), id))
 
     public get State(): Readonly<Context> {
         return this.contextStore.$state.get();
@@ -56,7 +48,7 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
             ...this.State,
             Messages: messages
         }
-        const messageModel = this.GetOrCreateMessage(message.id);
+        const messageModel = this.Messages.get(message.id);
         messageModel.State = message;
 
     };
@@ -77,4 +69,18 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
         }
     };
 
+}
+
+export class MessagesMap extends Map<string, MessageModel> {
+    constructor(private factory: (id: string) => MessageModel) {
+        super();
+    }
+
+    get(key: string){
+        const existed = super.get(key);
+        if (existed) return existed;
+        const newMessage = this.factory(key);
+        this.set(key, newMessage);
+        return newMessage;
+    }
 }

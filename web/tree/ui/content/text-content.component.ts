@@ -30,7 +30,10 @@ export class TextContentComponent extends HtmlComponent<string, IEvents> {
 
     async input(text) {
         this.lastTextEdited = text;
-        this.message.Actions.UpdateText(text);
+        this.message.State = {
+            ...this.message.State,
+            Content: text
+        }
         // this.dispatchEvent(new CustomEvent('change', {
         //     bubbles: true,
         //     cancelable: true,

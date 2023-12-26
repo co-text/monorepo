@@ -1,9 +1,8 @@
-import {ModelKey, ModelProxy} from "@cmmn/domain/proxy";
-import {Context, Message}from "@cotext/sdk";
+import {ModelKey, ModelMap, ModelProxy} from "@cmmn/domain/proxy";
+import {Context, IMessageActions, Message} from "@cotext/sdk";
 import type {IContextActions} from "@cotext/sdk";
 import {IMessageProxy, MessageProxy} from "./message-proxy";
 import {orderBy} from "@cmmn/core";
-import {ModelMap} from "./model-map";
 
 export class ContextProxy extends ModelProxy<Context, IContextActions>
     implements IContextProxy{
@@ -16,14 +15,15 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
         return orderBy(this.ParentsMap.values(),x => x.State.id);
     }
 
-    MessageMap = new ModelMap(
-        this.stream, this.locator, () => this.State.Messages, MessageProxy, x => ["Messages", x]
-    )
+    MessageMap = this.GetSubProxyMap(
+        () => this.State.Messages, x => ["Messages", x], MessageProxy as {
+            new (...args: any[]): MessageProxy
+        }
+    );
 
     ParentsMap: Map<ModelKey, MessageProxy>;
 
     public CreateMessage(message: Message, index = this.Messages.length): IMessageProxy {
-        this.Actions.CreateMessage(message, index);
         this.State = {
             ...this.State,
             Messages: [
@@ -33,18 +33,25 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
             ]
         };
         const result = this.MessageMap.get(message.id);
-        result.State = message;
+        result.State = {
+            ...message,
+            ContextURI: this.State.URI
+        };
         return result;
     }
     public RemoveMessage(message: IMessageProxy): void{
-        this.Actions.RemoveMessage(message.State.id);
+        this.State = {
+            ...this.State,
+            Messages:  this.State.Messages.filter(x => x !== message.id)
+        }
+        // this.Actions.RemoveMessage(message.State.id);
     }
 
 
 }
 export interface IContextProxy {
     State: Readonly<Context>;
-    MessageMap: ModelMap<MessageProxy>;
+    MessageMap: ModelMap<MessageProxy, Message, IMessageActions>;
     get Messages(): ReadonlyArray<IMessageProxy>;
 
     get Parents(): ReadonlyArray<IMessageProxy>;

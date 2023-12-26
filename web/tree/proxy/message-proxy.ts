@@ -27,7 +27,6 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
             return this.SubContext;
         const id = Fn.ulid();
         const uri = this.Context.State.URI.replace(this.Context.State.id, id);
-        this.Actions.CreateSubContext(uri, this.Context.State.URI);
         this.State = {
             ...this.State,
             SubContextURI: uri,
@@ -47,7 +46,6 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
     }
 
     public AddMessage(message: Message, index = this.SubContext?.Messages.length): IMessageProxy {
-        console.log('add', message.Content, index);
         this.GetOrCreateSubContext();
         const messages = [...this.SubContext.State.Messages];
         messages.push(message.id);
@@ -89,13 +87,18 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
             result.State = newState;
             return result;
         }else {
-            this.Actions.Reorder(index);
+            const messages = this.Context.State.Messages
+                .filter(x => x !== this.State.id);
+            messages.splice(index, 0, this.State.id);
+            this.Context.State = {
+                ...this.Context.State,
+                Messages: messages
+            }
             return  this;
         }
     }
 
     public UpdateContent(content: string){
-        this.Actions.UpdateText(content);
         this.State = {
             ...this.State,
             Content: content

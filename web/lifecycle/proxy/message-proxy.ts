@@ -4,20 +4,25 @@ import type {IMessageActions} from "@cotext/sdk";
 import {Fn, utc} from "@cmmn/core";
 import type {IContextProxy} from "./context-proxy";
 import {DomainProxy} from "./domain-proxy";
+import {ContextProxy} from "./context-proxy";
 
 export class MessageProxy extends ModelProxy<Message, IMessageActions>
     implements IMessageProxy{
 
-    constructor(stream, locator) {
-        super(stream, locator);
-    }
-
     Root: DomainProxy;
 
-    Context: IContextProxy;
+    get Context(): IContextProxy {
+        return this.locator.get(['Contexts', this.State.ContextURI], ContextProxy) as ContextProxy
+    }
 
-    SubContext?: IContextProxy;
+    get SubContext(): IContextProxy {
+        return this.GetSubProxy(['SubContext'], ContextProxy) as ContextProxy;
+    }
 
+    public get id(){
+        // @ts-ignore
+        return this.stream.path.at(-1);
+    }
     public get Messages(){
         return this.SubContext?.Messages ?? [];
     }
@@ -27,7 +32,6 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
             return this.SubContext;
         const id = Fn.ulid();
         const uri = this.Context.State.URI.replace(this.Context.State.id, id);
-        this.Actions.CreateSubContext(uri, this.Context.State.URI);
         this.State = {
             ...this.State,
             SubContextURI: uri,
@@ -69,13 +73,11 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
                 ...this.Context.State,
                 Messages: this.Context.State.Messages.filter(x => x != this.State.id)
             };
-            this.Context.RemoveMessage(this);
             const newState = {
                 ...this.State,
                 id: Fn.ulid(),
                 ContextURI: context.State.URI
             };
-            context.CreateMessage(newState, index);
 
             context.State = {
                 ...context.State,
@@ -88,14 +90,21 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
             const result = context.MessageMap.get(newState.id);
             result.State = newState;
             return result;
-        }else {
-            this.Actions.Reorder(index);
-            return  this;
+        } else {
+            // this.Actions.Reorder(index);
+            const messages = this.Context.State.Messages
+                .filter(x => x !== this.State.id);
+            messages.splice(index, 0, this.State.id);
+            this.Context.State = {
+                ...this.Context.State,
+                Messages: messages
+            }
+            return this;
         }
     }
 
     public UpdateContent(content: string){
-        this.Actions.UpdateText(content);
+        // this.Actions.UpdateText(content);
         this.State = {
             ...this.State,
             Content: content
@@ -104,6 +113,7 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
 }
 
 export interface IMessageProxy {
+    get id(): string;
     State: Message;
     Context: IContextProxy;
     SubContext?: IContextProxy;

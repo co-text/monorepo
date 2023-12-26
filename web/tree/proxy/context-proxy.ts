@@ -21,7 +21,7 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
     ParentsMap: Map<ModelKey, MessageProxy>;
 
     public CreateMessage(message: Message, index = this.Messages.length): IMessageProxy {
-        this.Actions.CreateMessage(message, index);
+        // this.Actions.CreateMessage(message, index);
         this.State = {
             ...this.State,
             Messages: [
@@ -35,7 +35,10 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
         return result;
     }
     public RemoveMessage(message: IMessageProxy): void{
-        this.Actions.RemoveMessage(message.State.id);
+        this.State = {
+            ...this.State,
+            Messages: this.State.Messages.filter(x => x !== message.State.id)
+        }
     }
 
 

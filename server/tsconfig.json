@@ -2,6 +2,7 @@
   "extends": "@cmmn/tools/compile/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "noEmitHelpers": false,
     "resolveJsonModule": true,
     "paths": {
     }
@@ -14,7 +15,6 @@
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
     "dist"
   ]
 }

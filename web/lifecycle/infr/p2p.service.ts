@@ -72,7 +72,7 @@ export class P2PService {
             // a connection encrypter is necessary to dial the relay
             connectionEncryption: [noise()],
             // a stream muxer is necessary to dial the relay
-            streamMuxers: [yamux()],
+                streamMuxers: [yamux()],
             connectionGater: {
                 denyDialMultiaddr: async () => {
                     // by default we refuse to dial local addresses from the browser since they

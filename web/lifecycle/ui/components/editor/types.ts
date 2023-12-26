@@ -1,19 +1,19 @@
-import {EditorSelection} from "./editor-selection";
-import {EditorCollection} from "./editor-collection";
+import {DomainCollection} from "./domain-collection";
 import {IMessageProxy} from "@proxy";
 import { Message }from "@cotext/sdk";
 
 export type ContentEditableState = {
-    Items: EditorCollection;
-    Selection: EditorSelection;
+    Items: DomainCollection;
 }
 
 export type EditorItem = {
-    Index?: number;
-    State?: Message;
-    Parent?: EditorItem;
-    Path: string[];
-    Message: IMessageProxy;
-    IsOpened: boolean;
-    Length: number;
+    Content: string;
+    id: string;
 }
+
+export type EditorItemCollection = Iterable<EditorItem> & {
+    addBefore(before: EditorItem, item: EditorItem): void;
+    moveBefore(before: EditorItem, item: EditorItem): void;
+    remove(item: EditorItem): void;
+    findItem(item: EditorItem): EditorItem
+};
