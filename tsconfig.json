@@ -8,7 +8,6 @@
   "include": [],
   "references": [
     { "path": "./sdk" },
-    { "path": "./web/tree" },
     { "path": "./web/lifecycle" },
     { "path": "./server" }
   ]

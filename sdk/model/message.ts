@@ -8,7 +8,8 @@ export class Message {
     public Author?: User;
     public CreatedAt: Date;
     public UpdatedAt: Date;
-    public ContextURI: string;
+    // public ContextURI: string;
+    public URI: string;
     public SubContextURI?: string;
     public Action?: string;
     public id: string;
@@ -32,7 +33,7 @@ export class Message {
             CreatedAt: utc(m.CreatedAt),
             UpdatedAt: utc(m.UpdatedAt),
             id: m.id,
-            ContextURI: m.ContextURI,
+            URI: m.URI,
             SubContextURI: m.SubContextURI,
         });
     }
@@ -41,10 +42,11 @@ export class Message {
         return {
             Content: m.Content,
             id: m.id,
+            URI: m.URI,
             Description: m.Description,
             CreatedAt: m.CreatedAt.toJSON(),
             UpdatedAt: m.UpdatedAt.toJSON(),
-            ContextURI: m.ContextURI,
+            // ContextURI: m.ContextURI,
             SubContextURI: m.SubContextURI,
             AuthorURI: m.Author?.URI,
         };

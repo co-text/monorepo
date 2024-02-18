@@ -9,12 +9,14 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
 
     Actions = this;
 
-    public get Context(): ContextModel {
-        return this.locator.GetContext(this.store.State.ContextURI);
-    }
+    // public get Context(): ContextModel {
+    //     return this.locator.GetContext(this.store.State.ContextURI);
+    // }
 
     public get SubContext() {
-        return this.store.State?.SubContextURI && this.locator.GetOrCreateContext(this.store.State.SubContextURI, this.Context.URI);
+        return this.store.State?.SubContextURI
+            ? this.locator.GetOrCreateContext(this.store.State.SubContextURI, this.State.URI) // TODO: this.id
+            : null;
     }
 
 
@@ -29,6 +31,9 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
     }
 
     public set State(value: Readonly<Message>) {
+        if (!value.id || !value.URI){
+            debugger;
+        }
         this.store.State = value;
     }
 
@@ -52,7 +57,7 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
 
     async Move(fromURI, toURI, toIndex: number) {
         if (fromURI == toURI)
-            return await this.Reorder(toIndex);
+            return await this.Reorder(toIndex, fromURI);
         const state = {
             ...this.State,
             UpdatedAt: new Date(),
@@ -69,14 +74,16 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
     }
 
 
-    async Reorder(newOrder: number): Promise<void> {
-        if (!this.Context)
+    async Reorder(newOrder: number, contextURI: string): Promise<void> {
+        const context = this.locator.GetContext(contextURI);
+        if (!context)
             return;
-        this.Context.Actions.ReorderMessage(this, newOrder);
+        context.Actions.ReorderMessage(this, newOrder);
     }
 
-    async Remove(): Promise<void> {
-        await this.Context.RemoveMessage(this.id);
+    async Remove(contextURI: string): Promise<void> {
+        const context = this.locator.GetContext(contextURI);
+        await context.RemoveMessage(this.id);
     }
 
     async CreateSubContext(uri: string, parentURI: string): Promise<void>{

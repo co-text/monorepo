@@ -13,6 +13,7 @@ ctx-editor {
       font-size: .6em;
       float: right;
     }
+    //margin-left: calc(1em * var(--level));
   }
 
   div[controls] {
@@ -25,7 +26,7 @@ ctx-editor {
     flex-direction: column;
   }
 
-  div[contenteditable] {
+  [contenteditable] {
     flex: 1;
     overflow: hidden auto;
     user-select: none;

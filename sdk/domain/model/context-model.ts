@@ -35,12 +35,12 @@ export class ContextModel implements ModelLike<Context, IContextActions>, IConte
 
 
     async CreateMessage(message: Message, index: number = this.State.Messages.length) {
-        if (!message.id)
-            message.id = Fn.ulid();
-        if (message.ContextURI && message.ContextURI !== this.URI) {
-            this.locator.Root.Contexts.get(message.ContextURI).RemoveMessage(message.id);
-        }
-        message.ContextURI = this.URI;
+        message.id ??= Fn.ulid();
+        message.URI ??= this.URI.replace(this.State.id, message.id);
+        // if (message.ContextURI && message.ContextURI !== this.URI) {
+        //     this.locator.Root.Contexts.get(message.ContextURI).RemoveMessage(message.id);
+        // }
+        // message.ContextURI = this.URI;
         const messages = this.State.Messages.slice();
         remove(messages, message.id);
         messages.splice(index, 0, message.id);

@@ -33,10 +33,7 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
             ]
         };
         const result = this.MessageMap.get(message.id);
-        result.State = {
-            ...message,
-            ContextURI: this.State.URI
-        };
+        result.State = message;
         return result;
     }
     public RemoveMessage(message: IMessageProxy): void{

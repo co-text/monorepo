@@ -1,12 +1,18 @@
-import {EventEmitter, Fn} from "@cmmn/core";
 import {EditorItem, EditorItemCollection} from "./types";
+import {Cell} from "@cmmn/cell";
+import {MessageItem} from "./message-item";
 import {IContextProxy, IMessageProxy} from "@proxy";
+import {MessageModel} from "@cotext/sdk";
+import {getOrAdd} from "@cmmn/core";
 
-export class DomainCollection extends EventEmitter<any> implements EditorItemCollection {
+export class DomainCollection  implements EditorItemCollection {
     static MaxDepth = 5;
 
     constructor(private root: IContextProxy) {
-        super();
+    }
+
+    subscribe(cb: () => void) {
+        return Cell.OnChange(() => Array.from(this), cb) as () => void;
     }
 
     public [Symbol.iterator](): IterableIterator<EditorItem> {
@@ -15,85 +21,64 @@ export class DomainCollection extends EventEmitter<any> implements EditorItemCol
 
     private* iterate(context: IContextProxy, path = [],
                      counter = {index: 0},
-                     parent: EditorItem = null): IterableIterator<EditorItem> {
+                     parent: MessageItem = null): IterableIterator<MessageItem> {
         for (let msg of context.Messages) {
-            const item = this.getItem(msg);
+            const item = this.getItem(msg, [...path, msg.id], parent, context);
             yield item;
             if (item.IsOpened && item.Message.SubContext) {
-                for (let treeItem of this.iterate(item.Message.SubContext, item.Path, counter, item)) {
+                for (let treeItem of this.iterate(item.Message.SubContext, item.path, counter, item)) {
                     yield treeItem;
                 }
             }
         }
     }
 
-    private getItem(msg: IMessageProxy, path = []): MessageItem {
+    private itemCache = new Map<string, MessageItem>();
+    private getItem(msg: IMessageProxy, path = [], parent: MessageItem = null, context: IContextProxy): MessageItem {
         if (!msg)
             return undefined;
-        const level = path.length;
-        const newPath = [...path, msg.id];
-        return {
-            Message: msg,
-            id: newPath.join(':'),
-            get Content() {
-                return this.Message.State?.Content;
-            },
-            set Content(value: string) {
-                this.Message.UpdateContent(value);
-            },
-            Path: newPath,
-            IsOpened: level < DomainCollection.MaxDepth,
-            Length: 1,
-        };
+        const level = path.length - 1;
+        return getOrAdd(this.itemCache, path.join(':'),
+            () => new MessageItem(msg, path, level, parent, context)
+        );
     }
-    private getMessageById(path: string[], root = this.root): IMessageProxy {
-        const exist = root.MessageMap.has(path[0]);
-        if (!exist) return  undefined;
-        const message = root.MessageMap.get(path[0]);
-        if (path.length == 1)
-            return message;
-        return this.getMessageById(path.slice(1), message.SubContext);
+    private getMessageItemById(path: string[], root = this.root): MessageItem {
+        return this.itemCache.get(path.join(':'));
     }
 
-    public addBefore(before: EditorItem, item: EditorItem) {
-        const context = before ? this.getMessageById(before.id.split(':')).Context : this.root;
-        context.CreateMessage({
-            Content: item.Content,
-            id: item.id.split(':').pop(),
-            ContextURI: context.State.URI,
+    add(item: EditorItem, after: EditorItem, before: EditorItem) {
+        const afterItem = this.getMessageItemById(after.path);
+        const context = afterItem?.Message.SubContext ?? afterItem?.context ?? this.root;
+        const index = afterItem?.Message.SubContext ? 0 : (afterItem?.index ?? -1) + 1;
+        const id = item.path.at(-1);
+        const newMessage = context.CreateMessage({
+            Content: item.Content.replace(/^\s+/, ''),
+            id,
+            URI: context.State.URI.replace(context.State.id, id),
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
-        });
+        }, index);
+        this.getItem(newMessage, item.path, afterItem?.Message.SubContext ? afterItem : afterItem?.parent, context);
     }
 
-    public remove(item: EditorItem) {
-        const message = this.getMessageById(item.id.split(':'));
-        message.Context.RemoveMessage(message);
+    public remove(item: MessageItem) {
+        item.Delete();
     }
 
     moveBefore(before: EditorItem, item: EditorItem): void {
-        const message = this.findItem(item).Message;
+        const message = this.findItem(item);
         if (before) {
-            const messageBefore = this.findItem(before).Message;
-            message.MoveTo(messageBefore.Context, messageBefore.Context.Messages.indexOf(messageBefore));
+            const itemBefore = this.findItem(before);
+            message.Message.Move(message.context, itemBefore.context, itemBefore.context.State.Messages.indexOf(itemBefore.Message.id));
         }else{
-            message.MoveTo(this.root, this.root.Messages.length);
+            message.Message.Move(message.context, this.root, this.root.Messages.length);
         }
     }
 
     findItem(item: EditorItem): MessageItem {
         if (!item) return undefined;
-        const message = this.getMessageById(item.id.split(':'));
-        return this.getItem(message);
+        return this.itemCache.get(item.path.join(':'));
     }
 
 }
 
-type MessageItem = EditorItem & {
-    Index?: number;
-    Parent?: EditorItem;
-    Path: string[];
-    Message: IMessageProxy;
-    IsOpened: boolean;
-    Length: number;
-}

@@ -12,12 +12,12 @@ container.provide([Api]);
 const useWorker = true;
 if (useWorker){
     container.provide(
-        useWorkerDomain(new SharedWorker(PRODUCTION ? "/worker.min.js" : "/worker.js"))
+        useWorkerDomain(new Worker(PRODUCTION ? "/worker.min.js" : "/worker.js"))
     );
 } else {
-    container.provide(useStreamDomain());
-    container.provide([
-        {provide: Locator, useFactory: c => c.get(DomainLocator)},
-    ])
-    container.provide(DomainContainer());
+    // container.provide(useStreamDomain());
+    // container.provide([
+    //     {provide: Locator, useFactory: c => c.get(DomainLocator)},
+    // ])
+    // container.provide(DomainContainer());
 }

@@ -1,47 +1,68 @@
-import {event, action, select, component, effect, HtmlComponent, KeyboardListener, property} from "@cmmn/ui";
+import {action, select, component, event, HtmlComponent, property} from "@cmmn/ui";
 import "./editor.style.less";
-import {compare, Fn, Injectable} from "@cmmn/core";
-import {Cell, cell} from "@cmmn/cell";
+import {compare, Injectable} from "@cmmn/core";
+import {cell} from "@cmmn/cell";
 import {DomainCollection} from "./domain-collection";
 import {IEvents, IState, template} from "./editor.template";
+import {MergeController} from "./merge-controller";
+import {UiController} from "./ui-controller";
 import {DomainProxy, IContextProxy} from "@proxy";
-import {CeController} from "./ce-controller";
-import {DomItemCollection} from "./dom-item-collection";
 
 @Injectable(true)
 @component({name: 'ctx-editor', template, style: ''})
 export class EditorComponent extends HtmlComponent<IState, IEvents> {
     @property()
     private uri!: string;
+    @select('[contenteditable]')
+    private ce!: HTMLDivElement;
 
-    constructor(protected readonly root: DomainProxy) {
+    constructor(protected readonly domain: DomainProxy) {
         super();
     }
-
     @cell({compareKey: a => a?.State, compare})
     get ContextProxy(): IContextProxy {
-        return this.uri && this.root.getContext(this.uri);
+        return this.uri && this.domain.getContext(this.uri);
     }
 
     @cell
-    get ItemsCollection() {
+    get model() {
         return new DomainCollection(this.ContextProxy);
     }
 
     @cell
-    get CeController(){
-        return new CeController(this.ItemsCollection);
+    private get ui(): UiController | null {
+        return this.ce ? new UiController(this.ce) : null;
+    }
+    @cell
+    get MergeItemsController(){
+        return this.ui && this.model ? new MergeController(this.model, this.ui) : null;
     }
 
-    @event('input')
-    onInputEvent(e: Event) {
-        this.CeController.update();
+
+    @action(function (this: EditorComponent) {return this.MergeItemsController;})
+    listenEffect(){
+        return this.MergeItemsController?.listen();
     }
 
     get State() {
         return {
-            Element: this.CeController.ce,
-            Items: [...this.ItemsCollection]
+            Items: [...this.model]
         };
+    }
+
+    @event('keydown')
+    listenTab(e: KeyboardEvent) {
+        if (e.key == 'Tab'){
+            e.preventDefault();
+
+        }
+    }
+
+    fromModel(){
+        this.MergeItemsController.fromModel();
+    }
+
+    fromUI(){
+        this.MergeItemsController.fromUI();
     }
 }
