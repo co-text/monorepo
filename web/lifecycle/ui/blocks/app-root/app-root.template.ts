@@ -4,7 +4,7 @@ export const template: ITemplate<IState, IEvents> = (html, state, events) =>
     state.user ? html`
         <app-layout>
 <!--            <app-header/>-->
-            <app-inbox/>
+            <ctx-div-editor uri="inbox"/>
 <!--            <app-main/>-->
 <!--            <app-under/>-->
 <!--            <app-result/>-->
