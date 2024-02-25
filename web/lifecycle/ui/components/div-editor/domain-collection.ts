@@ -53,5 +53,16 @@ export class DomainCollection {
         }, index);
     }
 
+    addLast(text: string){
+        const id = Fn.ulid();
+        this.root.CreateMessage({
+            Content: text,
+            id,
+            URI: this.root.State.URI.replace(this.root.State.id, id),
+            CreatedAt: new Date(),
+            UpdatedAt: new Date(),
+        });
+    }
+
 }
 

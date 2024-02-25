@@ -50,7 +50,6 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
     }
 
     get State() {
-        console.log(...this.selection.Blocks.map(x => x.id))
         return {
             Items: [...this.model],
             Cursor: this.cursor.Position,
@@ -65,7 +64,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
     public selection = new SelectionController(this.cursor, this.anchor);
     public pointer = new PointerController(this.element as HTMLElement, this.selection);
 
-    @event('keydown')
+    @event('keydown', {selector: '.content'})
     onKeyDown(event: KeyboardEvent) {
         const modifiers = ['Alt', 'Ctrl', 'Shift'].filter(x => event[x.toLowerCase() + 'Key']);
         const modKey = modifiers.join('') + event.code;
@@ -83,7 +82,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
         }
     }
 
-    @event('input')
+    @event('input', {selector: '.content'})
     onInput(e: KeyboardEvent) {
         const target = e.target as HTMLItem;
         if (!this.cursor.cursor) return;
@@ -92,7 +91,10 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
         target.component.item.Message.UpdateContent(newText);
         console.log(this.cursor.Position);
     }
-
+    addItem(input: HTMLInputElement){
+        this.model.addLast(input.value);
+        input.value = '';
+    }
 }
 
 type HTMLItem = ExtendedElement<ItemComponent> & HTMLDivElement;

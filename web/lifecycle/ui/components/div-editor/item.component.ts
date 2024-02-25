@@ -15,7 +15,14 @@ export const template: ITemplate<IState, any> = (html, {item}) => html`
 export class ItemComponent extends HtmlComponent<any>{
 
     public get BoundingRect(){
-        return this.element.getBoundingClientRect();
+        const scrollTop = this.element.parentElement.parentElement.scrollTop;
+        const rect = this.element.getBoundingClientRect();
+        return {
+            top: rect.top + scrollTop,
+            bottom: rect.bottom + scrollTop,
+            y: rect.y + scrollTop,
+            x: rect.x,
+        }
     }
 
     constructor() {

@@ -22,7 +22,15 @@ ctx-div-editor {
     gap: .1em;
     width: 100%;
     cursor: text;
+    flex: 1;
   }
+
+  .container {
+    min-height: 0;
+    overflow: auto;
+    position: relative;
+  }
+
   .selection-block {
     pointer-events: none;
     position: absolute;
@@ -76,5 +84,12 @@ ctx-div-editor {
     &::selection{
       background: transparent;
     }
+  }
+
+  input {
+    background: transparent;
+    outline: none;
+    border: none;
+    border-bottom: #1669F2 2px solid;
   }
 }
