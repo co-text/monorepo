@@ -84,12 +84,13 @@ export class PointerController {
         }
         const children = content.children;
         function binarySearch(left: number, right: number): ItemComponent{
+            const pointerMissThreshold = 5;
             if (left == right) return null;
             const middle = Math.floor((left + right) / 2);
             const item = children.item(middle) as ExtendedElement<ItemComponent>;
             const rect = item.component.BoundingRect;
-            if (point.y >= rect.top){
-                if (point.y <= rect.bottom)
+            if (point.y >= rect.top - pointerMissThreshold){
+                if (point.y <= rect.bottom + pointerMissThreshold)
                     return item.component;
                 return binarySearch(middle + 1, right);
             }
