@@ -51,6 +51,9 @@ export class DomainCollection {
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
         }, index);
+        return item.Message.SubContext
+            ? item.path.concat(id).join(':')
+            : item.path.slice(0, -1).concat(id).join(':');
     }
 
     addLast(text: string){

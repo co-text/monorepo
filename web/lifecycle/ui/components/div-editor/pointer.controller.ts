@@ -2,6 +2,8 @@ import {SelectionController} from "./selection.controller";
 import {ItemComponent} from "./item.component";
 import {ExtendedElement} from "@cmmn/ui";
 import {bind, EventListener, Fn} from "@cmmn/core";
+import {cell} from "@cmmn/cell";
+import {Point} from "./types";
 
 export class PointerController {
     constructor(private element: HTMLElement, private selection: SelectionController) {
@@ -19,7 +21,6 @@ export class PointerController {
 
     private isPointerDown = false;
     private history: Array<PointerEvent> = [];
-    focus: ItemComponent | undefined;
     @bind
     onPointerDown(event: PointerEvent) {
         if (event.button !== 0) return;
@@ -27,22 +28,21 @@ export class PointerController {
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
         this.history.unshift(event);
-        this.selection.anchor.moveToPoint(target, point);
-        this.selection.cursor.to(this.selection.anchor);
-        this.isPointerDown = true;
+        this.selection.cursor.moveToPoint(target, point);
+        if (!event.shiftKey) {
+            this.selection.anchor.to(this.selection.cursor);
+        }
         target.element.focus();
-        this.focus = target;
+        this.isPointerDown = true;
     }
 
     @bind
     onPointerMove(event: PointerEvent) {
-        if (event.button !== 0) return;
         if (!this.isPointerDown) return;
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
         this.selection.cursor.moveToPoint(target, point);
         target.element.focus();
-        this.focus = target;
     }
 
     @bind
@@ -59,8 +59,7 @@ export class PointerController {
             case 2: this.selection.selectCurrentWord(target, point); break;
             case 3: this.selection.selectTarget(target); break;
         }
-        target.element.focus();
-        this.focus = target;
+        target.focus();
     }
 
     private dblClickThreshold = 200;
@@ -79,14 +78,18 @@ export class PointerController {
 
     private getRelativePoint(event: PointerEvent): [ItemComponent, {x: number, y: number}] | []{
         const content = this.element.querySelector('.content');
+        const point = {
+            x: event.pageX,
+            y: event.pageY + content.parentElement.scrollTop
+        }
         const children = content.children;
         function binarySearch(left: number, right: number): ItemComponent{
             if (left == right) return null;
             const middle = Math.floor((left + right) / 2);
             const item = children.item(middle) as ExtendedElement<ItemComponent>;
             const rect = item.component.BoundingRect;
-            if (event.pageY >= rect.top){
-                if (event.pageY <= rect.bottom)
+            if (point.y >= rect.top){
+                if (point.y <= rect.bottom)
                     return item.component;
                 return binarySearch(middle + 1, right);
             }
@@ -95,8 +98,8 @@ export class PointerController {
         const element = binarySearch(0, children.length);
         if (!element) return [];
         return [element, {
-            x: event.pageX - element.BoundingRect.x,
-            y: event.pageY - element.BoundingRect.y,
+            x: point.x - element.BoundingRect.x,
+            y: point.y - element.BoundingRect.y,
         }]
     }
 }

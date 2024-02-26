@@ -1,18 +1,25 @@
 import {component, ExtendedElement, HtmlComponent, ITemplate, property} from "@cmmn/ui";
 import {MessageItem} from "./message-item";
-import {cell} from "@cmmn/cell";
+import {cell, ObservableMap} from "@cmmn/cell";
 import {DivEditorComponent} from "./editor.component";
 import {Injectable, Lazy} from "@cmmn/core";
 
 type IState = {
-    item: MessageItem;
+    Content: string;
 }
-export const template: ITemplate<IState, any> = (html, {item}) => html`
-    ${item.Content}
+export const template: ITemplate<IState, any> = (html, {Content}) => html`
+    ${Content}
 `
 @Injectable(true)
 @component({name: 'ctx-editor-item', template, style: ''})
-export class ItemComponent extends HtmlComponent<any>{
+export class ItemComponent extends HtmlComponent<IState>{
+
+    @cell({startValue: new ObservableMap()})
+    static ItemBindingMap: ObservableMap<string, ItemComponent>;
+
+    focus() {
+        this.element.focus();
+    }
 
     public get BoundingRect(){
         const scrollTop = this.element.parentElement.parentElement.scrollTop;
@@ -28,12 +35,10 @@ export class ItemComponent extends HtmlComponent<any>{
     constructor() {
         super();
     }
-
     @property()
-    index: number;
+    isFocused: boolean;
     @property()
     item: MessageItem;
-
     @cell
     width: number;
     @cell
@@ -41,7 +46,7 @@ export class ItemComponent extends HtmlComponent<any>{
 
     get State(){
         return {
-            item: this.item
+            Content: this.item.Content
         }
     }
 
@@ -52,11 +57,16 @@ export class ItemComponent extends HtmlComponent<any>{
         this.lineHeight = +style.lineHeight.replace('px','');
         this.element.toggleAttribute('contenteditable');
         this.element.setAttribute('spellcheck', 'false');
+        if (this.isFocused){
+            this.element.focus();
+        }
+        ItemComponent.ItemBindingMap.set(this.item.id, this);
     }
 
     disconnectedCallback() {
         this.element.toggleAttribute('contenteditable');
         super.disconnectedCallback();
+        ItemComponent.ItemBindingMap.delete(this.item.id);
     }
 
     onResize() {

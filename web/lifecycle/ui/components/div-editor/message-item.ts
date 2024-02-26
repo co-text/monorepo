@@ -11,7 +11,9 @@ export class MessageItem {
                 public domain: DomainCollection) {
     }
 
-    id = this.path.join(':');
+    get id() {
+        return this.path.join(':');
+    }
 
     get Content() {
         return this.Message.State?.Content ?? '';
@@ -58,6 +60,9 @@ export class MessageItem {
     IsOpened = this.level < DomainCollection.MaxDepth;
     moveLeft(){
         this.Message = this.Message.Move(this.context, this.parent.context, this.parent.index + 1);
+        const newPath = this.path.slice();
+        newPath.splice(-2, 1);
+        return newPath.join(':');
     }
     moveRight(){
         const prev = this.context.Messages[this.index - 1];
@@ -65,6 +70,9 @@ export class MessageItem {
             return;
         const subContext = prev.GetOrCreateSubContext();
         this.Message = this.Message.Move(this.context, subContext, subContext.Messages.length);
+        const newPath = this.path.slice();
+        newPath.splice(-1, 0, prev.id);
+        return newPath.join(':');
     }
 
     moveUp(){

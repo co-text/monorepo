@@ -13,7 +13,9 @@ export const template: ITemplate<IState, IEvents> = (html,state, events) => {
                 `)}
             <div class="content">
                 ${state.Items.map(((item, index) => html(item.id)`
-                    <ctx-editor-item id=${item.id} index=${index} item=${item} style=${{ '--level': item.level }}/>
+                    <ctx-editor-item id=${item.id} ?focus=${item == state.Focus}
+                                     is-focused=${item == state.Focus} 
+                                     item=${item} style=${{ '--level': item.level }}/>
                 `))}
             </div>
         </div>
@@ -23,9 +25,10 @@ export const template: ITemplate<IState, IEvents> = (html,state, events) => {
 
 export type IState = {
     Items: MessageItem[];
+    Focus: MessageItem;
     Cursor: {y: string; x: number;};
     Anchor: {y: string; x: number;};
-    Selection: Array<SelectionBlock>
+    Selection: Array<SelectionBlock>;
 }
 export type IEvents = {
     pasteText(text);

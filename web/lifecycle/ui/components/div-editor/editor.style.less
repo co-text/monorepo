@@ -5,7 +5,6 @@ ctx-div-editor {
   display: flex;
   flex-direction: column;
   position: relative;
-  touch-action: none;
 
   div[controls] {
     position: absolute;
@@ -29,6 +28,8 @@ ctx-div-editor {
     min-height: 0;
     overflow: auto;
     position: relative;
+    flex: 1;
+    touch-action: none;
   }
 
   .selection-block {
@@ -38,11 +39,9 @@ ctx-div-editor {
     opacity: .2;
     width: calc(var(--width)*1px);
     background: #1669F2;
-    transform: translate(
-            calc(var(--x)*1px - 2px),
-            calc(var(--y) + 1px)
-    );
-    transition: width @transition, transform @transition;
+    transform: translateX(calc(var(--x)*1px - 2px));
+    top: calc(var(--y) + 1px);
+    //transition: width @transition, transform @transition;
   }
   .cursor {
     pointer-events: none;
@@ -50,12 +49,10 @@ ctx-div-editor {
     width: .1em;
     height: 1em;
     background: #1669F2;
-    transform: translate(
-        calc(var(--x)*1px - 2px),
-        calc(var(--y) + 1px)
-    );
+    transform: translateX(calc(var(--x)*1px - 2px));
+    top: calc(var(--y) + 1px);
     //animation: opacity 1s infinite ease alternate-reverse;
-    transition: transform @transition;
+    //transition: transform @transition;
     @keyframes opacity {
       70% {
         opacity: 1;
@@ -83,6 +80,9 @@ ctx-div-editor {
     pointer-events: none;
     &::selection{
       background: transparent;
+    }
+    &[focus]{
+      color: #CCC;
     }
   }
 

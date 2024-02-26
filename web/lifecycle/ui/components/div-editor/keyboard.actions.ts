@@ -3,14 +3,45 @@ import {MessageItem} from "./message-item";
 import {CursorMove} from "./types";
 import {TextMeasure} from "./text.measure";
 import {SelectionController} from "./selection.controller";
+import {Fn} from "@cmmn/core";
 
 export const KeyboardActions: Record<string, (context: Context) => void> = {
-    Tab: ({item}) => item.moveRight(),
-    ShiftTab: ({item}) => item.moveLeft(),
+    Tab: ({item, selection}) => {
+        selection.anchor.itemId = selection.cursor.itemId = item.moveRight();
+    },
+    ShiftTab: ({item, selection}) => {
+        selection.anchor.itemId = selection.cursor.itemId = item.moveLeft();
+    },
     Enter: ({model, item, selection}) => {
-        // const text = item.Content.substring(selection.cursor.cursor.index);
-        // item.Content = item.Content.substring(0, cursor.cursor.index);
-        // model.addAfter(item, text)
+        const text = item.Content.substring(selection.cursor.index);
+        item.Content = item.Content.substring(0, selection.cursor.index);
+        selection.cursor.itemId = selection.anchor.itemId = model.addAfter(item, text);
+        selection.cursor.index = selection.anchor.index = 0;
+    },
+    CtrlKeyV: async ({selection}) => {
+        for (const item of await navigator.clipboard.read()){
+            const text = await item.getType('text/plain');
+            selection.cursor.element.item.Message.UpdateContent(
+                selection.cursor.element.item.Content.slice(0, selection.cursor.index) +
+                await text.text() +
+                selection.cursor.element.item.Content.slice(selection.cursor.index)
+            )
+        }
+    },
+    CtrlKeyC: async ({ selection}) => {
+        const isEmpty = selection.isEmpty;
+        const oldPosition = selection.cursor.index;
+        if (isEmpty){
+            selection.selectTarget(selection.cursor.element);
+        }
+        const minLevel = Math.min(...selection.Blocks.map(x => x.level));
+        const text = selection.Blocks.map(x => Array(x.level - minLevel).fill('\t').join('') + x.text).join('\n');
+        await navigator.clipboard.writeText(text);
+        await Fn.asyncDelay(100);
+        if (isEmpty){
+            selection.cursor.index = oldPosition;
+            selection.anchor.index = oldPosition;
+        }
     },
     CtrlArrowUp: ({item}) => item.moveUp(),
     CtrlArrowDown: ({item}) => item.moveDown(),
@@ -26,6 +57,10 @@ export const KeyboardActions: Record<string, (context: Context) => void> = {
     ArrowDown: ({selection}) => selection.move(CursorMove.Down),
     ShiftArrowUp: ({selection}) => selection.expand(CursorMove.Up),
     ShiftArrowDown: ({selection}) => selection.expand(CursorMove.Down),
+    End: ({selection}) => selection.move(CursorMove.End),
+    Home: ({selection}) => selection.move(CursorMove.Home),
+    ShiftEnd: ({selection}) => selection.expand(CursorMove.End),
+    ShiftHome: ({selection}) => selection.expand(CursorMove.Home),
     Backspace: ({item, selection, measure}) => {
         // if (cursor.cursor.index == 0){
         //     const prev = item.previous;

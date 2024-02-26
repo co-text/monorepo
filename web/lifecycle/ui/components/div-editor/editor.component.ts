@@ -54,7 +54,8 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
             Items: [...this.model],
             Cursor: this.cursor.Position,
             Anchor: this.anchor.Position,
-            Selection: this.selection.Blocks
+            Selection: this.selection.Blocks,
+            Focus: this.cursor.element?.item,
         };
     }
 
@@ -71,7 +72,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
         if (modKey in KeyboardActions){
             KeyboardActions[modKey]({
                 model: this.model,
-                item: this.pointer.focus.item,
+                item: this.cursor.element.item,
                 selection: this.selection,
                 measure: this.textMeasure,
                 event

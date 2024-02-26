@@ -13,7 +13,9 @@ export enum CursorMove {
     Right,
     WordRight,
     Up,
-    Down
+    Down,
+    End,
+    Home
 }
 
 export type SelectionBlock = {
@@ -21,5 +23,7 @@ export type SelectionBlock = {
     y: string;
     x: number;
     width: number;
+    text: string;
+    level: number;
 }
 export type Point = {x: number, y: number;}

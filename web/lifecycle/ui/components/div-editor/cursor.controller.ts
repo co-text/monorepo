@@ -8,13 +8,19 @@ import {ExtendedElement} from "@cmmn/ui";
 
 export class CursorController {
 
-
     constructor(public measure: TextMeasure) {
 
     }
 
     @cell
-    element: ItemComponent;
+    itemId: string;
+
+    get element(): ItemComponent{
+        const element = ItemComponent.ItemBindingMap.get(this.itemId);
+        if (!element?.element?.parentElement)
+            return  null;
+        return element;
+    }
     @cell
     index: number;
     get lineIndex() { return this.index - sum(this.element.Lines.slice(0, this.lineNumber).map(x => x.length)); }
@@ -70,7 +76,7 @@ export class CursorController {
         }
         const prev = this.element.element.previousElementSibling as ExtendedElement<ItemComponent>;
         if (!prev?.component) return ;
-        this.element = prev.component;
+        this.itemId = prev.component.item.id;
         this.index = this.element.item.Content.length;
     }
 
@@ -83,7 +89,7 @@ export class CursorController {
         const position = this.position;
         const next = this.element.element.nextElementSibling as ExtendedElement<ItemComponent>;
         if (!next?.component) return ;
-        this.element = next.component;
+        this.itemId = next.component.item.id;
         this.index = this.measure.getPosition(this.element.Lines[0], position);
     }
     moveUp() {
@@ -95,7 +101,7 @@ export class CursorController {
         const position = this.position;
         const prev = this.element.element.previousElementSibling as ExtendedElement<ItemComponent>;
         if (!prev?.component) return ;
-        this.element = prev.component;
+        this.itemId = prev.component.item.id;
         this.index = this.measure.getPosition(this.element.Lines.at(-1), position)
             + sum(this.element.Lines.slice(0, -1).map(x => x.length));
     }
@@ -107,17 +113,17 @@ export class CursorController {
         }
         const next = this.element.element.nextElementSibling as ExtendedElement<ItemComponent>;
         if (!next?.component) return ;
-        this.element = next.component;
+        this.itemId = next.component.item.id;
         this.index = 0;
     }
 
-    moveToPoint(item: ItemComponent, point: {x: number, y: number}) {
-        this.element = item;
-        const line = Math.floor(point.y / item.lineHeight);
-        if (line < 0 || line >= item.Lines.length) return;
-        const text = item.Lines[line];
+    moveToPoint(element: ItemComponent, point: {x: number, y: number}) {
+        this.itemId = element.item.id;
+        const line = Math.floor(point.y / element.lineHeight);
+        if (line < 0 || line >= element.Lines.length) return;
+        const text = element.Lines[line];
         this.index = this.measure.getPosition(text, point.x)
-            + sum(item.Lines.slice(0, line).map(x => x.length));
+            + sum(element.Lines.slice(0, line).map(x => x.length));
     }
 
     moveWordRight() {
@@ -137,8 +143,16 @@ export class CursorController {
     }
 
     to(cursor: CursorController) {
-        this.element = cursor.element;
+        this.itemId = cursor.itemId;
         this.index = cursor.index;
+    }
+
+    moveEnd() {
+        this.lineIndex = this.Line.length;
+    }
+
+    moveHome() {
+        this.lineIndex = 0;
     }
 }
 
