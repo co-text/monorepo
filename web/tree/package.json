@@ -13,7 +13,7 @@
     "@cmmn/app": "2.2.0",
     "@cmmn/cell": "2.2.0",
     "@cmmn/core": "2.2.0",
-    "@cmmn/ui": "2.2.0",
+    "@cmmn/ui": "2.2.1",
     "@cotext/sdk": "1.0.0",
     "is-mobile": "^4.0.0"
   },

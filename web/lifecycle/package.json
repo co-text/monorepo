@@ -12,7 +12,7 @@
     "@cmmn/cell": "2.2.0",
     "@cmmn/core": "2.2.0",
     "@cmmn/domain": "2.2.1",
-    "@cmmn/ui": "2.2.0",
+    "@cmmn/ui": "2.2.1",
     "@cotext/sdk": "1.0.0",
     "@libp2p/webrtc": "3.2.11",
     "@libp2p/pubsub": "8.0.10",

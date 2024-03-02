@@ -126,6 +126,13 @@
   dependencies:
     "@cmmn/core" "2.2.0"
 
+"@cmmn/cell@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@cmmn/cell/-/cell-2.2.2.tgz#c1519a4ee5c12a2e44416d651cbd1b8f8e2ee306"
+  integrity sha512-378e4EdFCQ/Eay19v1dhd+GfXhKh1ZEKRISMHqUiMKVFUMl8j3X6GGsxeEExgbkHR/Q0bzqPwxuZ+LvzOK1scA==
+  dependencies:
+    "@cmmn/core" "2.2.0"
+
 "@cmmn/core@2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@cmmn/core/-/core-2.2.0.tgz#f273b223bba673a3dfa9c2d08a5cc74ee606c575"
@@ -208,6 +215,15 @@
   integrity sha512-qbQBCNNIlxUD7YGAoy5baT7FJFmrv0FuJlNq6QYo0TTSc28xYHJhuSdF0GNHGWcC8GN7Xw/agwNmW7nnqgtYiw==
   dependencies:
     "@cmmn/cell" "2.2.0"
+    "@cmmn/core" "2.2.0"
+    "@cmmn/uhtml" "2.2.0"
+
+"@cmmn/ui@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@cmmn/ui/-/ui-2.2.1.tgz#f428ce4c1ebbe31f9e90dc8ef510d5211252c588"
+  integrity sha512-G2oOrIrKxMQY9M6yWxEo7VFSb0Tu6OkjpXc8J8ANM+USjVFh7S5bNimsiZ02ZB+nDHuvZpkXWRV3xy/j8Cp6Uw==
+  dependencies:
+    "@cmmn/cell" "2.2.2"
     "@cmmn/core" "2.2.0"
     "@cmmn/uhtml" "2.2.0"
 
