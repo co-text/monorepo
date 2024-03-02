@@ -90,7 +90,8 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
         const oldText = target.component.item.Content;
         const newText = target.innerText;
         target.component.item.Message.UpdateContent(newText);
-        console.log(this.cursor.Position);
+        this.selection.removeContent();
+        this.selection.setFromWindow();
     }
     addItem(input: HTMLInputElement){
         this.model.addLast(input.value);

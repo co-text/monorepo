@@ -1,18 +1,17 @@
-import {component, ExtendedElement, HtmlComponent, ITemplate, property} from "@cmmn/ui";
+import {action, component, effect, ExtendedElement, HtmlComponent, ITemplate, property} from "@cmmn/ui";
 import {MessageItem} from "./message-item";
 import {cell, ObservableMap} from "@cmmn/cell";
 import {DivEditorComponent} from "./editor.component";
 import {Injectable, Lazy} from "@cmmn/core";
 
 type IState = {
-    Content: string;
 }
-export const template: ITemplate<IState, any> = (html, {Content}) => html`
-    ${Content}
+export const template: ITemplate<IState, any> = (html) => html`
 `
 @Injectable(true)
 @component({name: 'ctx-editor-item', template, style: ''})
 export class ItemComponent extends HtmlComponent<IState>{
+    element: HTMLDivElement;
 
     @cell({startValue: new ObservableMap()})
     static ItemBindingMap: ObservableMap<string, ItemComponent>;
@@ -45,8 +44,12 @@ export class ItemComponent extends HtmlComponent<IState>{
     lineHeight: number;
 
     get State(){
-        return {
-            Content: this.item.Content
+        return undefined;
+    }
+    @action(function (this: ItemComponent) { return this.item.Content; })
+    onChange(){
+        if (this.item.Content != this.element.innerText){
+            this.element.innerText = this.item.Content;
         }
     }
 

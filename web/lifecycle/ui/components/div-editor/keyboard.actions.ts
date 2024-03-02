@@ -61,7 +61,8 @@ export const KeyboardActions: Record<string, (context: Context) => void> = {
     Home: ({selection}) => selection.move(CursorMove.Home),
     ShiftEnd: ({selection}) => selection.expand(CursorMove.End),
     ShiftHome: ({selection}) => selection.expand(CursorMove.Home),
-    Backspace: ({item, selection, measure}) => {
+    Backspace: ({item, selection, measure}) => selection.removeContent(),
+    Delete: ({item, selection, measure}) => selection.removeContent(),
         // if (cursor.cursor.index == 0){
         //     const prev = item.previous;
         //     cursor.moveLeft();
@@ -72,7 +73,6 @@ export const KeyboardActions: Record<string, (context: Context) => void> = {
         //         item.Content.substring(cursor.cursor.index);
         //     cursor.moveLeft()
         // }
-    }
 }
 
 type Context = {
