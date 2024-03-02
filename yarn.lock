@@ -140,23 +140,22 @@
   dependencies:
     bind-decorator "^1.0.11"
 
-"@cmmn/domain@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.2.1.tgz#2974c2497f94d5d21652e2e26d6e9add93c20084"
-  integrity sha512-yiZzCOshEp1CBOC6m14+GJMeRldCAH8O3+W1y8UzYqVnyfKeV7wGbPN53ts5+Qy4wsVihvQlFC1S2p+PvWWsXg==
+"@cmmn/domain@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.2.2.tgz#e967c8d131079241c7b75c4870410557769ca48f"
+  integrity sha512-TzmtB9T2NWXx5y5GrQw32vIJB+ri9Er7kj4ZAfS/3NHlFcIkGP90QwUG5U91hCk/XpMgaDFoyUCIPE/nXDAV4A==
   dependencies:
-    "@cmmn/cell" "2.2.0"
+    "@cmmn/cell" "2.2.2"
     "@cmmn/core" "2.2.0"
     msgpackr "1.10.0"
 
-"@cmmn/infr@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.2.0.tgz#48bc652cb8512d34ba50afe6c1d3d03d9b64fc27"
-  integrity sha512-1pOVAxXxO8E1Y+35Y55MayBCrKo+ZofhlBDGIGGCOQvgP0rBNaWBWFpfbfyeoLK4BSWnbGbfkZcAKCRM5B0PUg==
+"@cmmn/infr@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.2.1.tgz#2e97ab607bc7651fd787038366e11adef04eb606"
+  integrity sha512-rOEjYijzDPgYTZzBjX3tYiezIFjxEfGxx86e9Yfh9LpePj2CNCRY5rArpMzWN+Z57BCCWfiVsFV7wA9KHLRJSg==
   dependencies:
-    "@cmmn/cell" "2.2.0"
+    "@cmmn/cell" "2.2.2"
     "@cmmn/core" "2.2.0"
-    "@cmmn/tools" "2.2.0"
 
 "@cmmn/server@2.2.0":
   version "2.2.0"
