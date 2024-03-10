@@ -1,11 +1,7 @@
-import {DomainCollection} from "./domain-collection";
-import {MessageItem} from "./message-item";
-import {CursorMove} from "./types";
-import {TextMeasure} from "./text.measure";
-import {SelectionController} from "./selection.controller";
+import {EditorContext, CursorMove} from "./types";
 import {Fn} from "@cmmn/core";
 
-export const KeyboardActions: Record<string, (context: Context) => void> = {
+export const KeyboardActions: Record<string, (context: EditorContext) => void> = {
     Tab: ({item, selection}) => {
         selection.anchor.itemId = selection.cursor.itemId = item.moveRight();
     },
@@ -61,8 +57,18 @@ export const KeyboardActions: Record<string, (context: Context) => void> = {
     Home: ({selection}) => selection.move(CursorMove.Home),
     ShiftEnd: ({selection}) => selection.expand(CursorMove.End),
     ShiftHome: ({selection}) => selection.expand(CursorMove.Home),
-    Backspace: ({item, selection, measure}) => selection.removeContent(),
-    Delete: ({item, selection, measure}) => selection.removeContent(),
+    Backspace: ({item, selection}) => {
+        if (selection.isEmpty){
+            selection.cursor.moveLeft();
+        }
+        selection.removeContent();
+    },
+    Delete: ({item, selection}) => {
+        if (selection.isEmpty){
+            selection.cursor.moveRight();
+        }
+        selection.removeContent();
+    },
         // if (cursor.cursor.index == 0){
         //     const prev = item.previous;
         //     cursor.moveLeft();
@@ -75,10 +81,3 @@ export const KeyboardActions: Record<string, (context: Context) => void> = {
         // }
 }
 
-type Context = {
-    model: DomainCollection,
-    item: MessageItem,
-    selection: SelectionController,
-    event: KeyboardEvent,
-    measure: TextMeasure
-}

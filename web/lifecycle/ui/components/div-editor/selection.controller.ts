@@ -3,6 +3,7 @@ import {CursorMove, Point, SelectionBlock} from "./types";
 import {Cell} from "@cmmn/cell";
 import {ExtendedElement} from "@cmmn/ui";
 import {ItemComponent} from "./item.component";
+import {node} from "@cotext/server/p2p";
 
 export class SelectionController {
 
@@ -12,8 +13,10 @@ export class SelectionController {
             try {
                 if (this.anchor.element && this.cursor.element) {
                     selection.setBaseAndExtent(
-                        this.anchor.element.element.firstChild ?? this.anchor.element.element, this.anchor.index,
-                        this.cursor.element.element.firstChild ?? this.cursor.element.element, this.cursor.index,
+                        this.anchor.node,
+                        this.anchor.lineIndex,
+                        this.cursor.node,
+                        this.cursor.lineIndex,
                     );
                     // console.log(
                     //     'Selection Model',
@@ -38,10 +41,18 @@ export class SelectionController {
 
     setFromWindow(){
         const selection = getSelection();
-        this.anchor.itemId = selection.anchorNode.parentElement.id;
-        this.anchor.index = selection.anchorOffset;
-        this.cursor.itemId = selection.focusNode.parentElement.id;
-        this.cursor.index = selection.focusOffset;
+        function getItemComponent(node: Node){
+            if (node.parentElement instanceof HTMLSpanElement)
+                return node.parentElement.parentElement;
+            return node.parentElement;
+        }
+        const anchor = getItemComponent(selection.anchorNode);
+        this.anchor.itemId = anchor.id;
+        this.anchor.lineIndex = selection.anchorOffset;
+
+        const cursor = getItemComponent(selection.focusNode);
+        this.cursor.itemId = cursor.id;
+        this.cursor.lineIndex = selection.focusOffset;
     }
 
     get isEmpty(): boolean {
@@ -221,10 +232,7 @@ export class SelectionController {
         }
 
         from.element.item.Content = newContent;
-        from.element.item.Message.State = {
-            ...from.element.item.Message.State,
-            SubContextURI: to.element.item.Message.State.SubContextURI
-        };
+        from.element.item.Message.Merge(to.element.item.Message);
         to.to(from);
     }
 }

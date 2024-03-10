@@ -111,6 +111,15 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
     // Remove(): void{
     //     this.Context.RemoveMessage(this);
     // }
+    public Merge(message: IMessageProxy): void{
+        if (!message.SubContext) return;
+        const context = this.GetOrCreateSubContext();
+        const toMove = message.SubContext.Messages.slice();
+        for (let i = 0; i < toMove.length; i++){
+            let m = toMove[i];
+            m.Move(message.SubContext, context, i);
+        }
+    }
 
 }
 
@@ -128,4 +137,5 @@ export interface IMessageProxy {
 
     UpdateContent(content: string): void;
 
+    Merge(message: IMessageProxy): void;
 }

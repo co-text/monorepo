@@ -3,14 +3,16 @@ import {useWorkerDomain, useStreamDomain} from "@cmmn/domain/proxy";
 import {uiContainer} from "@ui";
 import {storeContainer} from "@stores/container";
 import {Api} from "./infr/api";
-import {DomainContainer, DomainLocator} from "@cotext/sdk";
-import {Locator} from "@cmmn/domain/proxy";
+// import {DomainContainer, DomainLocator} from "@cotext/sdk";
+// import {Locator} from "@cmmn/domain/proxy";
+
 export const container = new Container();
 container.provide(uiContainer);
 container.provide(storeContainer);
 container.provide([Api]);
 const useWorker = true;
 if (useWorker){
+    globalThis.SharedWorker = class {} as any;
     container.provide(
         useWorkerDomain(new Worker(PRODUCTION ? "/worker.min.js" : "/worker.js"))
     );

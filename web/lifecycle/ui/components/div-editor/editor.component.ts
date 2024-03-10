@@ -1,7 +1,7 @@
-import {select, component, event, HtmlComponent, property, ExtendedElement} from "@cmmn/ui";
+import {select, component, event, HtmlComponent, property, ExtendedElement, effect} from "@cmmn/ui";
 import "./editor.style.less";
 import {compare, Injectable} from "@cmmn/core";
-import {cell} from "@cmmn/cell";
+import {BaseCell, cell} from "@cmmn/cell";
 import {DomainCollection} from "./domain-collection";
 import {IEvents, IState, template} from "./editor.template";
 import {DomainProxy, IContextProxy} from "@proxy";
@@ -12,6 +12,8 @@ import {CursorController} from "./cursor.controller";
 import {ItemComponent} from "./item.component";
 import {SelectionController} from "./selection.controller";
 import {PointerController} from "./pointer.controller";
+import {EditorContext} from "./types";
+import {KeyboardController} from "./keyboard.controller";
 
 @Injectable(true)
 @component({name: 'ctx-div-editor', template, style: ''})
@@ -22,16 +24,20 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
         this.element.querySelectorAll('ctx-editor-item').forEach(
             (element: ExtendedElement<ItemComponent>) => element.component?.onResize()
         );
+        globalThis.visualViewport?.addEventListener('resize', (e) => {
+            this.element.style.height = globalThis.visualViewport.height + 'px';
+        })
     });
 
     constructor(protected readonly domain: DomainProxy) {
         super();
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    @effect()
+    async onFirstRender() {
         this.resizeObserver.observe(this.element);
         this.onDispose = this.pointer.subscribe();
+        this.onDispose = this.keyboard.subscribe();
     }
 
     disconnectedCallback() {
@@ -63,40 +69,22 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> {
     public cursor = new CursorController(this.textMeasure);
     public anchor = new CursorController(this.textMeasure);
     public selection = new SelectionController(this.cursor, this.anchor);
-    public pointer = new PointerController(this.element as HTMLElement, this.selection);
 
-    @event('keydown', {selector: '.content'})
-    onKeyDown(event: KeyboardEvent) {
-        const modifiers = ['Alt', 'Ctrl', 'Shift'].filter(x => event[x.toLowerCase() + 'Key']);
-        const modKey = modifiers.join('') + event.code;
-        if (modKey in KeyboardActions){
-            KeyboardActions[modKey]({
-                model: this.model,
-                item: this.cursor.element.item,
-                selection: this.selection,
-                measure: this.textMeasure,
-                event
-            });
-            event.preventDefault();
-        } else {
-            console.log(modKey);
+    public EditorContext = new BaseCell<EditorContext>(() =>{
+        return {
+            element: this.element,
+            model: this.model,
+            item: this.cursor.element?.item,
+            selection: this.selection,
+            measure: this.textMeasure,
         }
-    }
+    });
+    public pointer = new PointerController(this.EditorContext);
+    public keyboard = new KeyboardController(this.EditorContext);
 
-    @event('input', {selector: '.content'})
-    onInput(e: KeyboardEvent) {
-        const target = e.target as HTMLItem;
-        if (!this.cursor.cursor) return;
-        const oldText = target.component.item.Content;
-        const newText = target.innerText;
-        target.component.item.Message.UpdateContent(newText);
-        this.selection.removeContent();
-        this.selection.setFromWindow();
-    }
     addItem(input: HTMLInputElement){
         this.model.addLast(input.value);
         input.value = '';
     }
 }
 
-type HTMLItem = ExtendedElement<ItemComponent> & HTMLDivElement;

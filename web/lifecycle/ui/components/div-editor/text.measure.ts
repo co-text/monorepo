@@ -38,7 +38,7 @@ export class TextMeasure {
         this.setFont();
         let position = 0;
         let index = 0;
-        for (const measure of this.getMeasures(text.substring(index))){
+        for (const measure of this.getMeasures(text)){
             if (Math.abs(position - x) < measure.width / 2) {
                 break;
             }
@@ -52,27 +52,28 @@ export class TextMeasure {
     }
 
     public *getLines(text: string, lineWidth: number) {
-        let index = 0;
-        let position = 0;
-        let line = '';
-        while (true) {
-            let spaceIndex = text.indexOf(' ', index);
-            if (spaceIndex == -1){
-                spaceIndex = text.length;
+        for (let part of text.split('\n')) {
+            if (part == ''){
+                yield '';
+                continue;
             }
-            const width = this.getWidth(text.substring(index, spaceIndex));
-            if (position + width >= lineWidth) {
+            let position = 0;
+            let line = '';
+            let index = 0;
+            for (let word of part.split(/[^\w]/g)){
+                const width = this.getWidth(word);
+                if (position + width >= lineWidth) {
+                    yield line;
+                    line = '';
+                    position = 0;
+                }
+                const symbol = part[index + word.length] ?? '';
+                line += word + symbol;
+                position += width + this.getWidth(symbol);
+                index += word.length + 1;
+            }
+            if (line.length)
                 yield line;
-                line = '';
-                position = 0;
-            }
-            line += text.substring(index, spaceIndex + 1);
-            if (spaceIndex == text.length) {
-                yield line;
-                break;
-            }
-            position += width + this.getWidth(' ');
-            index = spaceIndex + 1;
         }
     }
 }

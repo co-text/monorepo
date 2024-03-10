@@ -17,7 +17,9 @@ export class ItemComponent extends HtmlComponent<IState>{
     static ItemBindingMap: ObservableMap<string, ItemComponent>;
 
     focus() {
-        this.element.focus();
+        (this.element.children.item(this.editor.cursor.lineIndex) as HTMLElement)?.focus();
+            // console.log('focus')
+        // }
     }
 
     public get BoundingRect(){
@@ -28,6 +30,8 @@ export class ItemComponent extends HtmlComponent<IState>{
             bottom: rect.bottom + scrollTop,
             y: rect.y + scrollTop,
             x: rect.x,
+            width: rect.width,
+            height: rect.height
         }
     }
 
@@ -46,11 +50,33 @@ export class ItemComponent extends HtmlComponent<IState>{
     get State(){
         return undefined;
     }
-    @action(function (this: ItemComponent) { return this.item.Content; })
+    @action(function (this: ItemComponent) { return this.Lines; })
     onChange(){
-        if (this.item.Content != this.element.innerText){
-            this.element.innerText = this.item.Content;
+        for (let i = 0; i < this.Lines.length; i++) {
+            const childNode = this.element.childNodes.item(i);
+            if (!childNode){
+                const span = document.createElement('span');
+                span.textContent = this.Lines[i];
+                this.element.appendChild(span);
+                continue;
+            }
+            if (!(childNode instanceof HTMLSpanElement)){
+                const span = document.createElement('span');
+                span.textContent = this.Lines[i];
+                this.element.insertBefore(span, childNode);
+                childNode.remove();
+                continue;
+            }
+            if (childNode.textContent !== this.Lines[i]){
+                childNode.textContent = this.Lines[i];
+            }
         }
+        while(this.element.childNodes.length > this.Lines.length){
+            this.element.childNodes.item(this.Lines.length).remove();
+        }
+        // if (this.item.Content != this.element.innerText){
+        //     this.element.innerText = this.item.Content;
+        // }
     }
 
     connectedCallback() {
@@ -61,7 +87,7 @@ export class ItemComponent extends HtmlComponent<IState>{
         this.element.toggleAttribute('contenteditable');
         this.element.setAttribute('spellcheck', 'false');
         if (this.isFocused){
-            this.element.focus();
+            this.focus();
         }
         ItemComponent.ItemBindingMap.set(this.item.id, this);
     }
@@ -90,7 +116,7 @@ export class ItemComponent extends HtmlComponent<IState>{
 
     @cell
     get Lines(): string[] {
-        return Array.from(this.editor.textMeasure.getLines(this.item.Content, this.width));
+        return Array.from(this.editor.textMeasure.getLines(this.item.Content, this.width ?? this.BoundingRect.width));
     }
 
 }

@@ -21,10 +21,15 @@ export class CursorController {
             return  null;
         return element;
     }
+    get node(){
+        return this.element.element.childNodes.item(this.lineNumber)?.firstChild ?? this.element.element.childNodes.item(this.lineNumber);
+    }
     @cell
     index: number;
     get lineIndex() { return this.index - sum(this.element.Lines.slice(0, this.lineNumber).map(x => x.length)); }
-    private set lineIndex(index: number) { this.index  = index + sum(this.element.Lines.slice(0, this.lineNumber).map(x => x.length)); }
+    set lineIndex(index: number) {
+        this.index  = index + sum(this.element.Lines.slice(0, this.lineNumber).map(x => x.length)); 
+    }
     @cell
     public get cursor(): Readonly<Cursor> | undefined{
         return this.element ? {
@@ -120,9 +125,12 @@ export class CursorController {
     moveToPoint(element: ItemComponent, point: {x: number, y: number}) {
         this.itemId = element.item.id;
         const line = Math.floor(point.y / element.lineHeight);
-        if (line < 0 || line >= element.Lines.length) return;
+        if (line < 0)
+            return this.index = 0;
+        if (line >= element.Lines.length)
+            return this.index = this.element.item.Content.length;
         const text = element.Lines[line];
-        this.index = this.measure.getPosition(text, point.x)
+        return this.index = this.measure.getPosition(text, point.x)
             + sum(element.Lines.slice(0, line).map(x => x.length));
     }
 

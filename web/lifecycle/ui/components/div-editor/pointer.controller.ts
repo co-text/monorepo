@@ -1,21 +1,19 @@
-import {SelectionController} from "./selection.controller";
 import {ItemComponent} from "./item.component";
 import {ExtendedElement} from "@cmmn/ui";
 import {bind, EventListener, Fn} from "@cmmn/core";
-import {cell} from "@cmmn/cell";
-import {Point} from "./types";
+import {BaseController} from "./base.controller";
 
-export class PointerController {
-    constructor(private element: HTMLElement, private selection: SelectionController) {
+export class PointerController extends BaseController{
+    get listenTarget(){
+        return this.element.querySelector('.container');
     }
 
-    private listener = new EventListener(this.element);
-
     public subscribe(){
+        const listener = new EventListener(this.listenTarget);
         return Fn.pipe(
-            this.listener.on("pointerdown", this.onPointerDown),
-            this.listener.on("pointerup", this.onPointerUp),
-            this.listener.on("pointermove", this.onPointerMove),
+            listener.on("pointerdown", this.onPointerDown),
+            listener.on("pointerup", this.onPointerUp),
+            listener.on("pointermove", this.onPointerMove),
         )
     }
 
@@ -24,7 +22,8 @@ export class PointerController {
     @bind
     onPointerDown(event: PointerEvent) {
         if (event.button !== 0) return;
-        this.element.setPointerCapture(event.pointerId);
+        event.preventDefault();
+        this.listenTarget.setPointerCapture(event.pointerId);
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
         this.history.unshift(event);
@@ -32,7 +31,7 @@ export class PointerController {
         if (!event.shiftKey) {
             this.selection.anchor.to(this.selection.cursor);
         }
-        target.element.focus();
+        target.focus();
         this.isPointerDown = true;
     }
 
@@ -42,13 +41,14 @@ export class PointerController {
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
         this.selection.cursor.moveToPoint(target, point);
-        target.element.focus();
+        target.focus();
     }
 
     @bind
     onPointerUp(event: PointerEvent) {
         if (event.button !== 0) return;
-        this.element.releasePointerCapture(event.pointerId);
+        event.preventDefault();
+        this.listenTarget.releasePointerCapture(event.pointerId);
         this.isPointerDown = false;
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
@@ -82,9 +82,9 @@ export class PointerController {
             x: event.pageX,
             y: event.pageY + content.parentElement.scrollTop
         }
-        const children = content.children;
+        const children = content.children as HTMLCollectionOf<ExtendedElement<ItemComponent>>;
+        const pointerMissThreshold = 5;
         function binarySearch(left: number, right: number): ItemComponent{
-            const pointerMissThreshold = 5;
             if (left == right) return null;
             const middle = Math.floor((left + right) / 2);
             const item = children.item(middle) as ExtendedElement<ItemComponent>;
@@ -95,6 +95,17 @@ export class PointerController {
                 return binarySearch(middle + 1, right);
             }
             return binarySearch(left, middle);
+        }
+        if (children.length == 0)
+            return [];
+        const lastElement = children.item(children.length - 1).component;
+        if (point.y > lastElement.BoundingRect.top - pointerMissThreshold){
+            return [
+                lastElement, {
+                    x: point.x - lastElement.BoundingRect.x,
+                    y: point.y - lastElement.BoundingRect.y,
+                }
+            ]
         }
         const element = binarySearch(0, children.length);
         if (!element) return [];

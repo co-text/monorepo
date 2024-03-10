@@ -5,6 +5,7 @@ ctx-div-editor {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
 
   div[controls] {
     position: absolute;
@@ -18,7 +19,7 @@ ctx-div-editor {
   .content {
     display: flex;
     flex-direction: column;
-    gap: .1em;
+    gap: .5em;
     width: 100%;
     cursor: text;
     flex: 1;
@@ -38,7 +39,7 @@ ctx-div-editor {
     height: 1em;
     opacity: .2;
     width: calc(var(--width)*1px);
-    background: #1669F2;
+    background: #cc4717;
     transform: translateX(calc(var(--x)*1px - 2px));
     top: calc(var(--y) + 1px);
     //transition: width @transition, transform @transition;
@@ -48,7 +49,7 @@ ctx-div-editor {
     position: absolute;
     width: .1em;
     height: 1em;
-    background: #1669F2;
+    background: #ffffff;
     transform: translateX(calc(var(--x)*1px - 2px));
     top: calc(var(--y) + 1px);
     //animation: opacity 1s infinite ease alternate-reverse;
@@ -68,18 +69,22 @@ ctx-div-editor {
     outline: none;
     margin-left: calc(var(--level) * 10px + 20px);
     display: flex;
-    align-items: center;
     color: #888;
     flex-flow: row nowrap;
     box-sizing: border-box;
     line-height: 1em;
-    margin-bottom: .4em;
+    min-height: 1em;
     text-decoration: none;
     background: transparent;
-    caret-color: transparent;
     pointer-events: none;
-    &::selection{
-      background: transparent;
+    white-space: pre;
+    flex-direction: column;
+    align-items: flex-start;
+    caret-color: #000;
+    > span {
+      &::selection {
+        background: transparent;
+      }
     }
     &[focus]{
       color: #CCC;
