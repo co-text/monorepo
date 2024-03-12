@@ -1,17 +1,14 @@
-import {ITemplate, html as globalHtml} from "@cmmn/ui";
-import {IMessageProxy, MessageProxy} from "@proxy";
+import {ITemplate} from "@cmmn/ui";
 
 export const template: ITemplate<IState, IEvents> = (html, state, events) => html`
-    <ctx-editor uri="inbox"/>
+    <ctx-editor uri=${state.uri}/>
 `;
 
 export type IState = {
-    messages: ReadonlyArray<IMessageProxy>
+    uri: string
 }
 
 export type IEvents = {
-    add();
-    take(id: string);
 }
 
 

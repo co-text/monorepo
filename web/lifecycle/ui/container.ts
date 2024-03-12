@@ -9,8 +9,8 @@ import {UnderComponent} from "./blocks/under/under.component";
 import {AppInboxComponent} from "./blocks/app-inbox/app-inbox.component";
 import {HeaderComponent} from "./blocks/header/header.component";
 import {MessageComponent} from "./components/message/message.component";
-import {EditorComponent} from "./components/editor/editor.component";
 import {DivEditorComponent} from "./components/div-editor/editor.component";
+
 export const uiContainer = Container.withProviders(
     AppRootComponent,
     AppInboxComponent,

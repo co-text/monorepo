@@ -1,22 +1,24 @@
 import {CursorController} from "./cursor.controller";
-import {CursorMove, Point, SelectionBlock} from "./types";
-import {Cell} from "@cmmn/cell";
+import { CursorMove, EditorContext, Point, SelectionBlock } from './types'
+import { BaseCell, Cell } from '@cmmn/cell'
 import {ExtendedElement} from "@cmmn/ui";
 import {ItemComponent} from "./item.component";
 import {node} from "@cotext/server/p2p";
+import { BaseController } from './base.controller'
 
-export class SelectionController {
+export class SelectionController extends BaseController{
 
-    constructor(public cursor: CursorController, public anchor: CursorController) {
+    constructor(editorContext: EditorContext) {
+        super(editorContext);
         Cell.OnChange(() => this.Blocks, e => {
             const selection = getSelection();
             try {
-                if (this.anchor.element && this.cursor.element) {
+                if (this.anchor.element && this.focus.element) {
                     selection.setBaseAndExtent(
                         this.anchor.node,
                         this.anchor.lineIndex,
-                        this.cursor.node,
-                        this.cursor.lineIndex,
+                        this.focus.node,
+                        this.focus.lineIndex,
                     );
                     // console.log(
                     //     'Selection Model',
@@ -51,43 +53,43 @@ export class SelectionController {
         this.anchor.lineIndex = selection.anchorOffset;
 
         const cursor = getItemComponent(selection.focusNode);
-        this.cursor.itemId = cursor.id;
-        this.cursor.lineIndex = selection.focusOffset;
+        this.focus.itemId = cursor.id;
+        this.focus.lineIndex = selection.focusOffset;
     }
 
     get isEmpty(): boolean {
-        return this.cursor.element === this.anchor.element && this.cursor.index == this.anchor.index;
+        return this.focus.element === this.anchor.element && this.focus.index == this.anchor.index;
     }
 
     get isOneItem() {
-        return this.anchor.element == this.cursor.element;
+        return this.anchor.element == this.focus.element;
     }
 
     get isOneLine() {
-        return this.isOneItem && this.anchor.lineNumber == this.cursor.lineNumber;
+        return this.isOneItem && this.anchor.lineNumber == this.focus.lineNumber;
     }
 
     public get Blocks(): Array<SelectionBlock> {
-        if (!this.cursor.element || !this.anchor.element)
+        if (!this.focus.element || !this.anchor.element)
             return [];
         return Array.from(this.getBlocks())
     }
 
-    private get OrderedCursors(): [CursorController, CursorController] {
+    private get orderedCursors(): [CursorController, CursorController] {
         if (this.isOneItem){
-            return this.anchor.index > this.cursor.index
-                ? [this.cursor, this.anchor]
-                : [this.anchor, this.cursor]
+            return this.anchor.index > this.focus.index
+                ? [this.focus, this.anchor]
+                : [this.anchor, this.focus]
         }
         const anchorPosition = this.anchor.element.BoundingRect;
-        const cursorPosition = this.cursor.element.BoundingRect;
+        const cursorPosition = this.focus.element.BoundingRect;
         return anchorPosition.y < cursorPosition.y
-            ? [this.anchor, this.cursor]
-            : [this.cursor, this.anchor];
+            ? [this.anchor, this.focus]
+            : [this.focus, this.anchor];
     }
 
     private* getSelectionRanges(): Generator<SelectionRange> {
-        const [from, to] = this.OrderedCursors;
+        const [from, to] = this.orderedCursors;
 
         function getElementLines(element: ItemComponent, from: number, to: number) {
             return new Array(to - from).fill(0).map((_, i) => ({
@@ -174,34 +176,34 @@ export class SelectionController {
 
     move(type: CursorMove) {
         this.expand(type);
-        this.anchor.to(this.cursor);
+        this.anchor.to(this.focus);
     }
 
     expand(type: CursorMove) {
         switch (type) {
             case CursorMove.Down:
-                this.cursor.moveDown();
+                this.focus.moveDown();
                 break;
             case CursorMove.Up:
-                this.cursor.moveUp();
+                this.focus.moveUp();
                 break;
             case CursorMove.Left:
-                this.cursor.moveLeft();
+                this.focus.moveLeft();
                 break;
             case CursorMove.Right:
-                this.cursor.moveRight();
+                this.focus.moveRight();
                 break;
             case CursorMove.WordLeft:
-                this.cursor.moveWordLeft();
+                this.focus.moveWordLeft();
                 break;
             case CursorMove.WordRight:
-                this.cursor.moveWordRight();
+                this.focus.moveWordRight();
                 break;
             case CursorMove.Home:
-                this.cursor.moveHome();
+                this.focus.moveHome();
                 break;
             case CursorMove.End:
-                this.cursor.moveEnd();
+                this.focus.moveEnd();
                 break;
         }
     }
@@ -209,20 +211,20 @@ export class SelectionController {
     selectTarget(target: ItemComponent) {
         this.anchor.itemId = target.item.id;
         this.anchor.index = 0;
-        this.cursor.itemId = target.item.id;
-        this.cursor.index = target.item.Content.length;
+        this.focus.itemId = target.item.id;
+        this.focus.index = target.item.Content.length;
     }
 
     selectCurrentWord(target: ItemComponent, point: Point) {
-        this.cursor.moveToPoint(target, point);
-        this.cursor.moveWordRight();
-        this.anchor.to(this.cursor);
+        this.focus.moveToPoint(target, point);
+        this.focus.moveWordRight();
+        this.anchor.to(this.focus);
         this.anchor.moveWordLeft();
     }
 
-    removeContent() {
-        const [from, to] = this.OrderedCursors;
-        const newContent =
+    removeContent(newContent = null) {
+        const [from, to] = this.orderedCursors;
+        newContent ??=
             from.element.item.Content.substring(0, from.index) +
             to.element.item.Content.substring(to.index);
 
@@ -234,6 +236,69 @@ export class SelectionController {
         from.element.item.Content = newContent;
         from.element.item.Message.Merge(to.element.item.Message);
         to.to(from);
+    }
+
+    insert (lines: string[]) {
+        this.removeContent();
+
+        if (lines.length > 1) {
+            let item =this.domain.addBefore(this.focus.element.item,
+              this.focus.element.item.Content.slice(0, this.focus.index) +
+                lines.shift().trim()
+            );
+            let level = 0;
+            function setItem(line: string){
+                const tabCount = line.match(/^\t*/)[0].length;
+                while (level > tabCount) {
+                    item = item.parent;
+                    level--;
+                }
+                if (level < tabCount){
+                    level++;
+                    item.Message.GetOrCreateSubContext();
+                }
+            }
+            for (let line of lines.slice(0, -1)) {
+                setItem(line);
+                item = this.domain.addAfter(item, line.trim());
+            }
+            const lastLine = lines.pop();
+            setItem(lastLine);
+            this.focus.element.item.Message.UpdateContent(
+              lastLine.trim()+
+              this.focus.element.item.Content.slice(this.focus.index)
+            );
+            const index = item.Message.SubContext ? 0 : item.index + 1;
+            this.focus.element.item.Message.Move(
+              this.focus.element.item.context,
+              item.Message.SubContext ?? item.context,
+              index
+            );
+        }else {
+            this.focus.element.item.Message.UpdateContent(
+              this.focus.element.item.Content.slice(0, this.focus.index) +
+              lines[0] +
+              this.focus.element.item.Content.slice(this.focus.index)
+            )
+        }
+    }
+
+    input () {
+        if (this.isOneItem){
+            this.focus.element.item.Content = this.focus.element.element.innerText;
+        } else {
+            const [from, to] = this.orderedCursors;
+            const [fromA, fromB] = from.contentParts;
+            const [toA, toB] = to.contentParts;
+            const fromText = from.element.element.innerText;
+            let inputText = fromText.substring(from.index);
+            if (inputText == fromB){
+                inputText = to.element.element.innerText.substring(0, to.element.element.innerText.length
+                  -(to.element.item.Content.length - to.index));
+            }
+            this.removeContent( fromA + inputText + toB);
+        }
+        this.setFromWindow();
     }
 }
 

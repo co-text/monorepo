@@ -4,7 +4,7 @@ export const template: ITemplate<IState, IEvents> = (html, state, events) =>
     state.user ? html`
         <app-layout>
 <!--            <app-header/>-->
-            <ctx-div-editor uri="inbox"/>
+            <ctx-div-editor uri=${state.uri}/>
 <!--            <app-main/>-->
 <!--            <app-under/>-->
 <!--            <app-result/>-->
@@ -14,7 +14,8 @@ export const template: ITemplate<IState, IEvents> = (html, state, events) =>
     `;
 
 export type IState = {
-    user: string;
+    uri: string;
+    user: string
 }
 
 export type IEvents = {

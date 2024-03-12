@@ -31,8 +31,5 @@ export type IState = {
     Selection: Array<SelectionBlock>;
 }
 export type IEvents = {
-    pasteText(text);
-    fromModel();
-    fromUI();
     addItem(target: HTMLInputElement);
 }

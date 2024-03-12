@@ -21,8 +21,18 @@ export class CursorController {
             return  null;
         return element;
     }
+    get item(): MessageItem {
+        return this.element?.item;
+    }
     get node(){
         return this.element.element.childNodes.item(this.lineNumber)?.firstChild ?? this.element.element.childNodes.item(this.lineNumber);
+    }
+
+    get contentParts(){
+        return [
+            this.item.Content.substring(0, this.index),
+            this.item.Content.substring(this.index),
+        ]
     }
     @cell
     index: number;
@@ -33,7 +43,7 @@ export class CursorController {
     @cell
     public get cursor(): Readonly<Cursor> | undefined{
         return this.element ? {
-            item: this.element.item,
+            item: this.item,
             index: this.index,
             line: this.lineNumber,
             x: this.position

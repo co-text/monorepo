@@ -5,6 +5,8 @@ import {TextMeasure} from "./text.measure";
 import {ExtendedElement} from "@cmmn/ui";
 import {DivEditorComponent} from "./editor.component";
 import {ItemComponent} from "./item.component";
+import { CursorController } from './cursor.controller'
+import { ActionsController } from './actions.controller'
 
 export type Cursor = {
     item: MessageItem;
@@ -35,11 +37,15 @@ export type SelectionBlock = {
 export type Point = {x: number, y: number;}
 
 export type EditorContext = {
+    actions: ActionsController;
+    anchor: CursorController;
+    focus: CursorController;
     element: ExtendedElement<DivEditorComponent>;
     model: DomainCollection,
     item: MessageItem,
     selection: SelectionController,
-    measure: TextMeasure
+    measure: TextMeasure,
+    items: MessageItem[];
 }
 
 export type HTMLItem = ExtendedElement<ItemComponent> & HTMLDivElement;

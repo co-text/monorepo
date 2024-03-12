@@ -17,7 +17,7 @@ export class ItemComponent extends HtmlComponent<IState>{
     static ItemBindingMap: ObservableMap<string, ItemComponent>;
 
     focus() {
-        (this.element.children.item(this.editor.cursor.lineIndex) as HTMLElement)?.focus();
+        (this.element.children.item(this.editor.focus.lineIndex) as HTMLElement)?.focus();
             // console.log('focus')
         // }
     }
@@ -86,10 +86,10 @@ export class ItemComponent extends HtmlComponent<IState>{
         this.lineHeight = +style.lineHeight.replace('px','');
         this.element.toggleAttribute('contenteditable');
         this.element.setAttribute('spellcheck', 'false');
+        ItemComponent.ItemBindingMap.set(this.item.id, this);
         if (this.isFocused){
             this.focus();
         }
-        ItemComponent.ItemBindingMap.set(this.item.id, this);
     }
 
     disconnectedCallback() {
@@ -116,7 +116,7 @@ export class ItemComponent extends HtmlComponent<IState>{
 
     @cell
     get Lines(): string[] {
-        return Array.from(this.editor.textMeasure.getLines(this.item.Content, this.width ?? this.BoundingRect.width));
+        return Array.from(this.editor.measure.getLines(this.item.Content, this.width ?? this.BoundingRect.width));
     }
 
 }

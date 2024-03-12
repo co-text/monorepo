@@ -12,48 +12,42 @@ export class DomainCollection {
         return this.iterate(this.root);
     }
 
-    private* iterate(context: IContextProxy, path = [],
-                     counter = {index: 0},
-                     parent: MessageItem = null): IterableIterator<MessageItem> {
+    protected *iterate(context: IContextProxy, parent: MessageItem = null): IterableIterator<MessageItem> {
         for (let msg of context.Messages) {
-            const item = this.getItem(msg, [...path, msg.id], parent, context);
+            const item = MessageItem.getOrAdd(msg, parent?.path ?? [], context)
             yield item;
-            if (item.IsOpened && item.Message.SubContext) {
-                for (let treeItem of this.iterate(item.Message.SubContext, item.path, counter, item)) {
-                    yield treeItem;
-                }
+            if (!item.IsOpened) continue;
+            if (!msg.SubContext) continue;
+            for (let treeItem of this.iterate(msg.SubContext, item)) {
+                yield treeItem;
             }
         }
     }
-
-    private itemCache = new Map<string, MessageItem>();
-    private getItem(msg: IMessageProxy, path = [], parent: MessageItem = null, context: IContextProxy): MessageItem {
-        if (!msg)
-            return undefined;
-        const level = path.length - 1;
-        return getOrAdd(this.itemCache, path.join(':'),
-            () => new MessageItem(msg, path, level, parent, context, this)
-        );
-    }
-
-    public findItem(path: string[]){
-        return this.itemCache.get(path.join(':'))
-    }
-
-    addAfter(item: MessageItem, text: string) {
-        const context = item.Message.SubContext ?? item.context;
-        const index = item.Message.SubContext ? 0 : item.index + 1;
+    addChild(item: MessageItem, text: string, index: number): MessageItem {
+        const context = item?.Message.GetOrCreateSubContext() ?? this.root;
         const id = Fn.ulid();
-        context.CreateMessage({
+        const message = context.CreateMessage({
             Content: text,
             id,
             URI: context.State.URI.replace(context.State.id, id),
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
         }, index);
-        return item.Message.SubContext
-            ? item.path.concat(id).join(':')
-            : item.path.slice(0, -1).concat(id).join(':');
+        return MessageItem.getOrAdd(
+          message,
+          item?.path ?? [],
+          context,
+        );
+    }
+
+    addBefore(item: MessageItem, text: string) {
+        return this.addChild(item.parent, text, item.index);
+    }
+
+    addAfter(item: MessageItem, text: string) {
+        const index = item.Message.SubContext ? 0 : item.index + 1;
+        const parent = item.Message.SubContext ? item : item.parent;
+        return this.addChild(parent, text, index);
     }
 
     addLast(text: string){

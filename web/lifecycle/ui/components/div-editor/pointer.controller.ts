@@ -27,9 +27,9 @@ export class PointerController extends BaseController{
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
         this.history.unshift(event);
-        this.selection.cursor.moveToPoint(target, point);
+        this.focus.moveToPoint(target, point);
         if (!event.shiftKey) {
-            this.selection.anchor.to(this.selection.cursor);
+            this.anchor.to(this.focus);
         }
         target.focus();
         this.isPointerDown = true;
@@ -40,7 +40,7 @@ export class PointerController extends BaseController{
         if (!this.isPointerDown) return;
         const [target, point] = this.getRelativePoint(event);
         if (!target) return;
-        this.selection.cursor.moveToPoint(target, point);
+        this.focus.moveToPoint(target, point);
         target.focus();
     }
 
@@ -55,7 +55,7 @@ export class PointerController extends BaseController{
         this.history.unshift(event);
         const clickCount = this.getClickCount();
         switch (clickCount) {
-            case 1: this.selection.cursor.moveToPoint(target, point); break;
+            case 1: this.focus.moveToPoint(target, point); break;
             case 2: this.selection.selectCurrentWord(target, point); break;
             case 3: this.selection.selectTarget(target); break;
         }

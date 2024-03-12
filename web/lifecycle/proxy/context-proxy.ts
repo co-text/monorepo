@@ -44,6 +44,16 @@ export class ContextProxy extends ModelProxy<Context, IContextActions>
         // this.Actions.RemoveMessage(message.State.id);
     }
 
+    public InsertMessage(id: string, index: number): void{
+        this.State = {
+            ...this.State,
+            Messages:  [
+                ...this.State.Messages.slice(0, index),
+                id,
+                ...this.State.Messages.slice(index),
+            ]
+        }
+    }
 
 }
 export interface IContextProxy {
@@ -55,4 +65,6 @@ export interface IContextProxy {
 
     RemoveMessage(message: IMessageProxy): void;
     CreateMessage(message: Message, index?: number): IMessageProxy;
+
+    InsertMessage(id: string, index: number): void
 }

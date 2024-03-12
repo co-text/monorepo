@@ -1,4 +1,8 @@
-import {setDefaultContainer} from "@cmmn/ui";
-import {container} from "../container";
+import { builder } from "./builder";
+import { Application } from '@cmmn/app'
 
-setDefaultContainer(container);
+const app = builder.build(Application);
+
+window.addEventListener('beforeunload', () => {
+  app.destroy();
+})
