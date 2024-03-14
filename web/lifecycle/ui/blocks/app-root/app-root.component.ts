@@ -6,6 +6,7 @@ import {UserStore} from "@stores/user.store";
 import { Router } from '@cmmn/app'
 import { DomainProxy, IContextProxy } from '@proxy'
 import { Cell } from '@cmmn/cell'
+import { Api } from '@infr/api'
 
 @Injectable(true)
 @component({name: 'app-root', template, style})
@@ -16,6 +17,7 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
       private router: Router,
       private userStore: UserStore,
       private domainProxy: DomainProxy,
+      private api: Api
     ) {
         super();
         if (!this.router.Route.params.id){
@@ -24,6 +26,11 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
                 params: {id: this.userStore.user.get()}
             }
         }
+        Cell.OnChange(() => this.domainProxy.State.Contexts, async e => {
+            for (let id of e.value) {
+                await this.api.joinRoom(id);
+            }
+        });
     }
 
     get State() {
