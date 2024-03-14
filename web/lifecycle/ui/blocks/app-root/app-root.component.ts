@@ -20,7 +20,7 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
       private api: Api
     ) {
         super();
-        if (!this.router.Route.params.id){
+        if (!this.router.Route?.params.id){
             this.router.Route = {
                 name: 'main',
                 params: {id: this.userStore.user.get()}
