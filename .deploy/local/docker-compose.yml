@@ -10,6 +10,7 @@ services:
     environment:
       PORT: 80
       PUBLIC_MULTIADDR: "/dns/context.local/tcp/443/wss"
+      DEBUG: "libp2p:*"
     command: npm run run
     networks:
       main:

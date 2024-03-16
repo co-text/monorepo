@@ -13,6 +13,7 @@ export class ActionsController extends BaseController {
   }
 
   Enter () {
+    if (!this.item) return;
     this.domain.addBefore(this.item, this.item.Content.substring(0, this.focus.index));
     this.item.Content = this.item.Content.substring(this.focus.index);
     this.focus.index = this.anchor.index = 0

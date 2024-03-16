@@ -11,12 +11,13 @@ export type IMessageActions = {
 }
 
 export type IContextActions = {
-    RemoveMessage(uri: string): Promise<void>;
+    // RemoveMessage(uri: string): Promise<void>;
     //
-    CreateMessage(message: Message, index?: number): void;
+    // CreateMessage(message: Message, index?: number): void;
 }
 
 export type IDomainActions = {
+    SetSession(session: string): void;
     // LoadContext(uri: string): Promise<void>;
     //
 }

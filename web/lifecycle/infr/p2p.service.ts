@@ -14,6 +14,7 @@ import {P2PRoom} from "./p2p.room";
 import type {Connection, Stream} from "@libp2p/interface/connection";
 import {cell, ObservableMap} from "@cmmn/cell";
 import { PeerId } from "@libp2p/interface/peer-id";
+import {P2pStream} from "@infr/p2p.stream";
 
 @Injectable()
 export class P2PService {
@@ -32,9 +33,6 @@ export class P2PService {
             throw new Error(`Init P2P only once`)
         }
         this.serverPeerId = serverPeerId;
-        const pubsub = gossipsub({
-            allowPublishToZeroPeers: true,
-        });
         this.node = globalThis['node'] = await createLibp2p({
             addresses: {
                 listen: [
@@ -66,13 +64,13 @@ export class P2PService {
                 circuitRelayTransport({
                     // make a reservation on any discovered relays - this will let other
                     // peers use the relay to contact us
-                    discoverRelays: 1
+                    discoverRelays: 1,
                 })
             ],
             // a connection encrypter is necessary to dial the relay
             connectionEncryption: [noise()],
             // a stream muxer is necessary to dial the relay
-                streamMuxers: [yamux()],
+            streamMuxers: [yamux()],
             connectionGater: {
                 denyDialMultiaddr: async () => {
                     // by default we refuse to dial local addresses from the browser since they
@@ -82,15 +80,18 @@ export class P2PService {
                     return false
                 }
             },
+            connectionManager: {
+                minConnections: 6,
+                maxConnections: 9,
+            },
             peerDiscovery: [
                 pubsubPeerDiscovery()
             ],
             services: {
                 identify: identifyService(),
-                pubsub
-            },
-            connectionManager: {
-                minConnections: 0
+                pubsub: gossipsub({
+                    allowPublishToZeroPeers: true,
+                })
             }
         });
         // console.log(`my id: `, this.node.peerId.toString());
@@ -101,68 +102,79 @@ export class P2PService {
         //     ]
         // });
         // await dialer.start();
-        console.log(this.baseUrl)
-        await this.node.dial(multiaddr(
-            `${this.baseUrl}/${location.protocol == 'https:' ? 'wss': 'ws'}/p2p/${this.serverPeerId}`,
-            // `/ip4/127.0.0.1/tcp/4005/p2p-circuit/webrtc/p2p/${dialer.peerId}`
-        ));
-        this.node.addEventListener('connection:open', (e) => {
-            console.log('open', e.detail.id, e.detail.multiplexer);
+
+        // this.node.addEventListener('connection:open', (e) => {
+            // console.log('open', e.detail.id, e.detail.multiplexer);
             // this.addConnection(e.detail)
             // updatePeerList()
-        })
-        this.node.handle('/cotext/data/1.0.0', (e) => {
-            this.addConnection(e.connection, e.stream)
-            // updatePeerList()
-        });
-        this.node.addEventListener('connection:close', (e) => {
-            this.removeConnection(e.detail);
-            // updatePeerList()
-        });
-        this.node.addEventListener('self:peer:update', () => {
-            const multiaddrs = this.node.getMultiaddrs()
-            console.log(multiaddrs.map(x => x.toString()));
-        })
+        // })
+        // this.node.handle('/cotext/data/1.0.0', (e) => {
+        //     this.addConnection(e.connection, e.stream)
+        //     // updatePeerList()
+        // });
+        // this.node.addEventListener('connection:close', (e) => {
+        //     this.removeConnection(e.detail);
+        //     // updatePeerList()
+        // });
+        // this.node.addEventListener('self:peer:update', () => {
+        //     const multiaddrs = this.node.getMultiaddrs()
+        //     console.log(multiaddrs.map(x => x.toString()));
+        // })
         this.node.addEventListener('peer:discovery', e => {
-            console.log('discovered peer', e.detail.id)
-            this.connect(e.detail.id)
+            this.connect(e.detail.id);
         });
         for (let peer of this.node.getPeers()) {
             this.connect(peer)
         }
+        await this.connectToServer();
         this.Init.resolve();
     }
 
-    @cell
-    public streams = new ObservableMap<string, Stream>();
-    private addConnection(connection: Connection, stream: Stream){
-        console.log(connection.id, connection.multiplexer);
-        this.streams.set(connection.id, stream);
-        for (let room of this.rooms.values()) {
-            room.add(stream)
-        }
+    private serverConnection: Connection;
+    async connectToServer(){
+        if (this.serverConnection) return;
+        this.serverConnection = await this.node.dial(multiaddr(
+            `${this.baseUrl}/${location.protocol == 'https:' ? 'wss': 'ws'}/p2p/${this.serverPeerId}`,
+        ));
     }
-    private removeConnection(connection: Connection){
-        const stream = this.streams.get(connection.id);
-        for (let room of this.rooms.values()) {
-            room.remove(stream)
-        }
-        this.streams.delete(connection.id);
+    async disconnectToServer(){
+        if (!this.serverConnection) return;
+        await this.serverConnection.close();
     }
+
+    // @cell
+    // public streams = new ObservableMap<string, P2pStream>();
+    // private addConnection(connection: Connection, stream: Stream){
+    //     console.log(connection.id, connection.multiplexer);
+    //     const p2pStream = new P2pStream(stream, connection.id);
+    //     this.streams.set(connection.id, p2pStream);
+    //     for (let room of this.rooms.values()) {
+    //         room.add(p2pStream)
+    //     }
+    // }
+    // private removeConnection(connection: Connection){
+    //     const stream = this.streams.get(connection.id);
+    //     for (let room of this.rooms.values()) {
+    //         room.remove(stream)
+    //     }
+    //     this.streams.delete(connection.id);
+    // }
     private async connect(peer: PeerId){
         const id = peer.toString();
         if (id == this.serverPeerId) return;
-        if (id < this.node.peerId.toString()) return;
-        console.log(`call to ${id}`);
-        const stream = await this.node.dialProtocol(multiaddr(
-            `${this.baseUrl}/p2p/${this.serverPeerId}/p2p-circuit/webrtc/p2p/${id}`
-        ), [
-            '/cotext/data/1.0.0'
-        ]);
-        for (let room of this.rooms.values()) {
-            room.add(stream)
+        if (id < this.node.peerId.toString()) {
+            console.log(`wait for call from ${id}`);
+            return;
         }
-        this.streams.set(stream.id, stream);
+        console.log(`call to ${id}`);
+        const connection = await this.node.dial(multiaddr(
+            `${this.baseUrl}/p2p/${this.serverPeerId}/p2p-circuit/webrtc/p2p/${id}`
+        ));
+        // const p2pStream = new P2pStream(stream, stream.id);
+        // for (let room of this.rooms.values()) {
+        //     await room.add(p2pStream)
+        // }
+        // this.streams.set(stream.id, p2pStream);
     }
 
     get pubsub(){
@@ -174,10 +186,10 @@ export class P2PService {
     public async joinRoom(uri: string){
         await this.Init;
         getOrAdd(this.rooms, uri, uri => {
-            const room = new P2PRoom(uri, this.node.peerId.toString());
-            for (let stream of this.streams.values()) {
-                room.add(stream);
-            }
+            const room = new P2PRoom(uri, this.node.peerId.toString(), this.pubsub);
+            // for (let stream of this.streams.values()) {
+            //     room.add(stream);
+            // }
             return room;
         });
     }

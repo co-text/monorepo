@@ -23,7 +23,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/tools": "2.2.0",
+    "@cmmn/tools": "2.2.3",
     "typescript": "5.2.2"
   }
 }

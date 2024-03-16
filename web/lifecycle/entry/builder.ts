@@ -10,11 +10,10 @@ export const builder = new Builder()
       routes: [{
         path: '/',
         name: 'root',
-        children: [{
+      },{
           path: '/:id',
           name: 'main',
-        }]
-      },],
+      }],
       // @ts-ignore
       options: {
       }

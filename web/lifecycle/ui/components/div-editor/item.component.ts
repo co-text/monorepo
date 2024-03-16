@@ -116,7 +116,9 @@ export class ItemComponent extends HtmlComponent<IState>{
 
     @cell
     get Lines(): string[] {
-        return Array.from(this.editor.measure.getLines(this.item.Content, this.width ?? this.BoundingRect.width));
+        return [
+            ...Array.from(this.editor.measure.getLines(this.item.Content, this.width ?? this.BoundingRect.width)),
+        ];
     }
 
 }

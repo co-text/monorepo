@@ -9,7 +9,7 @@ import {DomainLocator} from "@domain/model/domain-locator.service";
 export class ContextModel implements ModelLike<Context, IContextActions>, IContextActions {
 
     Actions = this;
-    public contextStore: ContextStore = new ContextStore(this.URI);
+    public contextStore: ContextStore = new ContextStore(this.URI, this.locator.Root.Session);
     constructor(public URI: string, private locator: DomainLocator) {
     }
 

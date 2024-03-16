@@ -1,38 +1,19 @@
 import {BroadcastSync, SyncStore} from "@cmmn/sync";
-import {cell, Cell} from "@cmmn/cell";
+import {AsyncCell, cell, Cell} from "@cmmn/cell";
 import {compare, Fn, getOrAdd, orderBy, utc} from "@cmmn/core";
 import {ContextJSON} from "@domain";
 import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
 import {MessageStore} from "./messageStore";
+import {CRuntime} from "@collabs/collabs";
 
-function getReplicaId(uri){
-    const key = `${uri}.replicaID`;
-    let ss = sessionStorage.getItem(key);
-    if (!ss)
-        sessionStorage.setItem(key, ss = Fn.ulid())
-    return ss;
-}
-// @ts-ignore
 export class ContextStore extends SyncStore{
-    constructor(protected URI: string) {
-        super(URI);
-        this.context.Set({
-            CreatedAt: utc().toISOString(),
-            id: this.URI,
-            URI: this.URI,
-            IsRoot: true,
-            UpdatedAt: utc().toISOString(),
-        });
-        // this.addSync(new BroadcastSync(this.URI) as any);
-        this.addSync(new BroadcastSync(this.URI+".out") as any);
+    constructor(protected URI: string, private session: string) {
+        super(URI, `${session}.${URI}`);
+        this.addSync(new BroadcastSync(this.URI+'.out'));
         // activate sync
         this.$state.active();
-        window.addEventListener('beforeunload', () => {
-            this.dispose();
-        })
     }
-
     @cell
     private messages = this.getSet<string>('messages');
 
@@ -51,8 +32,12 @@ export class ContextStore extends SyncStore{
     }
 
     private getState(){
-        if (!this.context.Value)
-            return Context.FromJSON({URI: this.URI} as any);
+        if (!this.context?.Value || !this.context.Value.URI)
+            return Context.FromJSON({
+                URI: this.URI,
+                CreatedAt: new Date().toISOString(),
+                UpdatedAt: new Date().toISOString(),
+            });
         const permutation = this.context.Value.Permutation ? Permutation.Parse(this.context.Value.Permutation) : null;
         const context = Context.FromJSON(this.context.Value);
         const ordered = orderBy(this.messages, x => x);

@@ -30,6 +30,9 @@ export const node = await createLibp2p({
             process.env.PUBLIC_MULTIADDR
         ]
     },
+    connectionManager: {
+        minConnections: 0,
+    },
     connectionEncryption: [
         noise()
     ],
@@ -38,26 +41,39 @@ export const node = await createLibp2p({
     ],
     peerDiscovery: [
         pubsubPeerDiscovery({
-
+            listenOnly: true
         })
     ],
     services: {
         pubsub: gossipsub({
             canRelayMessage: true,
             allowPublishToZeroPeers: true,
+
+            scoreThresholds: {
+                gossipThreshold: Number.NEGATIVE_INFINITY,
+                publishThreshold: Number.NEGATIVE_INFINITY
+            },
+            scoreParams: {
+
+            }
+
         }),
         identify: identifyService(),
         relay: circuitRelayServer({
             // reservations: {
             //     maxReservations: 2
             // }
-        })
+        }),
     }
 })
 await node.start()
-node.addEventListener('peer:discovery', e => console.warn('+', e.detail.id.toString()));
+node.addEventListener('peer:discovery', e => {
+    console.warn('+', e.detail.id.toString());
+    console.log(node.services.relay.reservations.size)
+});
 node.addEventListener('peer:disconnect', e => {
     console.warn('-', e.detail.toString())
     node.services.relay.reservations.delete(e.detail);
+    console.log(node.services.relay.reservations.size)
 });
 console.log('multiaddrs:', node.getMultiaddrs());

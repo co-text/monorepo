@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cmmn/app": "2.2.0",
-    "@cmmn/cell": "2.2.2",
-    "@cmmn/core": "2.2.0",
-    "@cmmn/ui": "2.2.1",
+    "@cmmn/app": "2.2.3",
+    "@cmmn/cell": "2.2.3",
+    "@cmmn/core": "2.2.3",
+    "@cmmn/ui": "2.2.3",
     "@cotext/sdk": "1.0.0",
     "is-mobile": "^4.0.0"
   },

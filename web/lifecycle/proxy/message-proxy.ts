@@ -34,7 +34,7 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
         const id = Fn.ulid();
         if (!this.State.id || !this.State.URI)
             debugger;
-        const uri = this.State.URI.replace(this.State.id, id);
+        const uri = this.State.URI.split('/').slice(0, -1).concat(id).join('/');
         this.State = {
             ...this.State,
             SubContextURI: uri,
@@ -54,7 +54,6 @@ export class MessageProxy extends ModelProxy<Message, IMessageActions>
     }
 
     public AddMessage(message: Message, index = this.SubContext?.Messages.length): IMessageProxy {
-        console.log('add', message.Content, index);
         this.GetOrCreateSubContext();
         const messages = [...this.SubContext.State.Messages];
         messages.push(message.id);

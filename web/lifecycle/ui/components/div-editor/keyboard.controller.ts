@@ -7,7 +7,7 @@ export class KeyboardController extends BaseController {
   onKeyDown = (event: KeyboardEvent) => {
     const modifiers = ['Alt', 'Ctrl', 'Shift'].filter(x => event[x.toLowerCase() + 'Key'])
     const modKey = modifiers.join('') + event.code
-    if (modKey in this.editorContext.actions) {
+    if (this.item && modKey in this.editorContext.actions) {
       this.editorContext.actions[modKey](this.editorContext)
       event.preventDefault()
     } else {

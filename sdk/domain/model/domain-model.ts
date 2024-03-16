@@ -60,6 +60,11 @@ export class DomainModel implements ModelLike<DomainState, IDomainActions>, IDom
     // }
 
     public Actions: IDomainActions = this;
+
+    public Session: string;
+    async SetSession(session: string) {
+        this.Session = session;
+    }
     // async LoadContext(uri: string) {
     //     const context = this.factory.GetOrCreateContext(uri);
     // };

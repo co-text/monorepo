@@ -1,7 +1,7 @@
 import {component, HtmlComponent, property} from "@cmmn/ui";
 import {template, IState, IEvents} from "./app-root.template";
 import style from "./app-root.style.less";
-import {Injectable} from "@cmmn/core";
+import {Fn, Injectable} from "@cmmn/core";
 import {UserStore} from "@stores/user.store";
 import { Router } from '@cmmn/app'
 import { DomainProxy, IContextProxy } from '@proxy'
@@ -12,7 +12,6 @@ import { Api } from '@infr/api'
 @component({name: 'app-root', template, style})
 export class AppRootComponent extends HtmlComponent<IState, IEvents> implements IEvents {
 
-
     constructor(
       private router: Router,
       private userStore: UserStore,
@@ -20,12 +19,16 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
       private api: Api
     ) {
         super();
-        if (!this.router.Route?.params.id){
+        if (!this.router.Route?.params.id && this.userStore.user.get()){
             this.router.Route = {
                 name: 'main',
                 params: {id: this.userStore.user.get()}
             }
         }
+        if (!sessionStorage.getItem('session')) {
+            sessionStorage.setItem('session', Fn.ulid());
+        }
+        domainProxy.Actions.SetSession(sessionStorage.getItem('session'));
         Cell.OnChange(() => this.domainProxy.State.Contexts, async e => {
             for (let id of e.value) {
                 await this.api.joinRoom(id);
@@ -48,10 +51,7 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         this.userStore.user.set(user);
         const uri = this.getURI(user);
         const context = this.domainProxy.getContext(uri);
-        await context.$state.onceAsync('change');
-        if (context.State.Messages.length == 0){
-            this.initContext(context);
-        }
+        await this.initContext(context);
         this.router.Route = {
             name: 'main',
             params: {
@@ -60,7 +60,12 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         }
     }
 
-    private initContext(context: IContextProxy){
+    private async initContext(context: IContextProxy){
+        if (!context.State)
+            await new Cell(() => context.State).onceAsync('change');
+        if (context.State.Messages.length > 0)
+            return;
+        console.log(context.State);
         context.CreateMessage({
             Content: 'Inbox',
             id: 'inbox',
