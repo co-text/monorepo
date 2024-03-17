@@ -93,7 +93,7 @@ export class ActionsController extends BaseController {
 
   Backspace () {
     if (this.selection.isEmpty) {
-      this.focus.moveLeft()
+      this.anchor.moveLeft()
     }
     this.selection.removeContent()
   }
