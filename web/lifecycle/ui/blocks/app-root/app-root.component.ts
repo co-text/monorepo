@@ -38,7 +38,6 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
 
     get State() {
         return {
-            user: this.userStore.user.get(),
             uri: this.getURI(this.router.Route.params.id)
         };
     }

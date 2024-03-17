@@ -28,7 +28,7 @@ export class P2PRoom {
         this.pubsub.addEventListener('message', async e => {
             if (e.detail.topic !== this.dataTopic) return;
             const message = this.packr.decode(e.detail.data) as BroadcastSyncMessage;
-            console.log(`get ${message.type} from ${message.senderID}`);
+            // console.log(`get ${message.type} from ${message.senderID}`);
             if (!message.targetID)
                 this.channel.postMessage(message);
             if (message.targetID == this.myPeerId)
@@ -40,8 +40,6 @@ export class P2PRoom {
         this.channel.addEventListener('message', async (e: MessageEvent<BroadcastSyncMessage>) => {
             if (e.data.targetID === 'p2p'){
                 this.replicaID.resolve(e.data.senderID);
-                console.log('replicaID', e.data.senderID);
-
             } else {
                 await this.sendToOthers(e.data);
             }
@@ -61,7 +59,7 @@ export class P2PRoom {
         });
     }
     sendToOthers(data: BroadcastSyncMessage){
-        console.log(`publish ${data.type} to ${data.targetID ?? 'everybody'}`);
+        // console.log(`publish ${data.type} to ${data.targetID ?? 'everybody'}`);
         return this.pubsub.publish(this.dataTopic, this.packr.encode(data))
     }
 
