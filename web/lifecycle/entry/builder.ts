@@ -1,5 +1,4 @@
 import { Container } from "@cmmn/core";
-import { useWorkerDomain } from "@cmmn/domain/proxy";
 import { uiContainer } from "@ui";
 import { storeContainer } from "@stores/container";
 import { Api } from "@infr/api";
@@ -19,23 +18,18 @@ export const builder = new Builder()
       }
   })
   .with(storeContainer)
-  .with(getDomain())
   .with(Container.withProviders(Api))
   .withUI(uiContainer)
 
-function getDomain() {
-    const useWorker = true;
-    if (useWorker) {
-        globalThis.SharedWorker = class {} as any;
-        return useWorkerDomain(new Worker(PRODUCTION ? "/worker.min.js" : "/worker.js"));
-    } else {
-        const container = new Container();
-        // container.provide(useStreamDomain());
-        // container.provide([
-        //     {provide: Locator, useFactory: c => c.get(DomainLocator)},
-        // ])
-        // container.provide(DomainContainer());
-        return container;
-    }
-
+const useWorker = true;
+if (useWorker) {
+    globalThis.SharedWorker ??= class {} as any;
+    new SharedWorker(PRODUCTION ? "/worker.min.js" : "/worker.js");
+} else {
+    const container = new Container();
+    // container.provide(useStreamDomain());
+    // container.provide([
+    //     {provide: Locator, useFactory: c => c.get(DomainLocator)},
+    // ])
+    // container.provide(DomainContainer());
 }

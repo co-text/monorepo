@@ -1,7 +1,7 @@
 import { CursorMove } from './types'
 import { Fn } from '@cmmn/core'
 import { BaseController } from './base.controller'
-import { Message } from '@cotext/sdk'
+import { Message } from '@cotext/sdk/client'
 
 export class ActionsController extends BaseController {
   Tab () {

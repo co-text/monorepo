@@ -1,4 +1,4 @@
-import {IContextProxy, IMessageProxy} from "@proxy";
+import {IContextProxy, IMessageProxy} from "@cotext/sdk/client";
 import { cell } from '@cmmn/cell'
 
 export class MessageItem {
@@ -54,7 +54,7 @@ export class MessageItem {
     }
 
     Delete() {
-        this.context.RemoveMessage(this.Message);
+        this.context.RemoveMessage(this.Message.id);
     }
 
     moveLeft(){

@@ -1,5 +1,5 @@
 import {Storage} from "./storage";
-import type {ContextJSON} from "@cotext/sdk";
+import type {ContextJSON} from "@domain";
 import {Permutation} from "@domain/helpers/permutation";
 import {utc} from "@cmmn/core";
 
@@ -8,7 +8,7 @@ export class Context {
     public URI: string;
 
     public Messages: ReadonlyArray<string> = [];
-    public Parents: ReadonlyArray<string> = [];
+    // public Parents: ReadonlyArray<string> = [];
     // public Access?: Array<AccessRule> = [];
     // public Sorting?: Sorting;
     public Storage: Omit<Storage, keyof { Root, Contexts, Messages }>;
@@ -25,7 +25,7 @@ export class Context {
             URI: c.URI,
             id: c.id,
             Storage: null,
-            Parents: [],
+            // Parents: [],
             IsRoot: c.IsRoot,
             UpdatedAt: utc(c.UpdatedAt),
             CreatedAt: utc(c.CreatedAt),

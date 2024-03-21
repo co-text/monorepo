@@ -1,5 +1,5 @@
 import {MessageItem} from "./message-item";
-import {IContextProxy, IMessageProxy} from "@proxy";
+import {IContextProxy, IMessageProxy} from "@cotext/sdk/client";
 import {Fn, getOrAdd} from "@cmmn/core";
 
 export class DomainCollection {
@@ -27,9 +27,9 @@ export class DomainCollection {
         const context = item?.Message.GetOrCreateSubContext() ?? this.root;
         const id = Fn.ulid();
         const message = context.CreateMessage({
+            ContextURI: context.State.URI,
             Content: text,
             id,
-            URI: context.State.URI.replace(context.State.id, id),
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
         }, index);
@@ -53,9 +53,9 @@ export class DomainCollection {
     addLast(text: string){
         const id = Fn.ulid();
         this.root.CreateMessage({
+            ContextURI: this.root.State.URI,
             Content: text,
             id,
-            URI: this.root.State.URI.replace(this.root.State.id, id),
             CreatedAt: new Date(),
             UpdatedAt: new Date(),
         });

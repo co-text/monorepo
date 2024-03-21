@@ -1,5 +1,4 @@
-import {DomainContainer} from "@cotext/sdk";
-import {WorkerEntry} from "@cmmn/domain/worker";
+import {run} from "@cotext/sdk";
 // @ts-ignore fix for those who needs window
 globalThis.window ??= globalThis;
-DomainContainer().get(WorkerEntry);
+run();

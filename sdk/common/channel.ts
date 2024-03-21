@@ -1,17 +1,26 @@
-import { EventEmitter } from '@cmmn/core'
+import { EventEmitter, Fn, ResolvablePromise } from '@cmmn/core'
+import { Op } from "./op";
 
-export class Channel<T> extends EventEmitter<Record<string, T>>{
+const ANY = Symbol('any');
+
+export class Channel<T> extends EventEmitter<Record<string, Message<T>> & {
+  [ANY]: {id: string; data: Message<T>}
+}>{
+  public static ANY: typeof ANY = ANY;
   private base = new BroadcastChannel(this.name);
-  constructor(private name: string) {
+  private connected = new ResolvablePromise<void>();
+  constructor(private name: string, private clientId: string = null) {
     super();
   }
 
   private isSubscribed = false;
+
   protected subscribe(eventName: keyof Record<string, T>) {
     super.subscribe(eventName)
     if (this.isSubscribed) return;
     this.isSubscribed = true;
     this.base.addEventListener('message', this.onMessage);
+    this.base.postMessage(this.clientId);
   }
 
   protected unsubscribe (eventName: keyof Record<string, T>) {
@@ -21,13 +30,50 @@ export class Channel<T> extends EventEmitter<Record<string, T>>{
     this.base.removeEventListener('message', this.onMessage);
   }
 
-  private onMessage = (event: MessageEvent) => {
-    const data = event.data as { id: string; data: T};
-    if (!data.id || !data.data) return;
-    this.emit(data.id, data.data);
+  private onMessage = (event: MessageEvent<string | {id: string; data: Message<any>}[]>) => {
+    console.log(event.data ?? 'connected', globalThis);
+    if (typeof event.data === "string" || event.data == null) {
+      if (this.clientId == null) {
+        this.connected.resolve();
+        this.base.postMessage(event.data);
+      }
+      if (event.data == null) {
+        this.connected.resolve();
+        this.base.postMessage(this.clientId);
+      }
+      if (event.data === this.clientId)
+        this.connected.resolve();
+      return;
+    }
+    for (let data of event.data) {
+      if (!data.id || !data.data) return;
+      this.emit(data.id, data.data);
+      this.emit(ANY, data);
+    }
   }
 
-  public send(id: string, data: T){
-    this.base.postMessage({id, data: data});
+  public async send(id: string, data: Message<T>){
+    this.queue.push({id, data: data});
+    // dequeue in microtasks
+    await this.connected;
+    await Fn.asyncDelay(0);
+    this.dequeue();
   }
+
+  private queue = [];
+
+  private dequeue(){
+    if (!this.queue.length) return;
+    this.base.postMessage(this.queue);
+    this.queue.length = 0;
+  }
+}
+
+
+type Message<T> = {
+  clock: number;
+  state?: T;
+  op?: Op;
+  data?: any[];
+  action?: 'active' | 'disactive';
 }

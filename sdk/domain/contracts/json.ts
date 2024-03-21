@@ -1,7 +1,7 @@
 
 export class MessageJSON{
-    // public ContextURI: string;
-    public URI: string;
+    public ContextURI: string;
+    // public URI: string;
     public SubContextURI?: string;
     public Content: string;
     public Description?: string;

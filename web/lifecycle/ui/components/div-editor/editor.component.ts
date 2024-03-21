@@ -4,7 +4,7 @@ import {compare, Injectable} from "@cmmn/core";
 import {cell} from "@cmmn/cell";
 import {DomainCollection} from "./domain-collection";
 import {IEvents, IState, template} from "./editor.template";
-import {DomainProxy, IContextProxy} from "@proxy";
+import { ContextClient, IContextProxy } from "@cotext/sdk/client";
 import {TextMeasure} from "./text.measure";
 import {CursorController} from "./cursor.controller";
 import {ItemComponent} from "./item.component";
@@ -27,7 +27,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> implement
         })
     });
 
-    constructor(protected readonly domain: DomainProxy) {
+    constructor() {
         super();
     }
 
@@ -45,7 +45,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> implement
 
     @cell({compareKey: a => a?.State, compare})
     get ContextProxy(): IContextProxy {
-        return this.uri && this.domain.getContext(this.uri);
+        return this.uri && ContextClient.get(this.uri);
     }
 
     @cell

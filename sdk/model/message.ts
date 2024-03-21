@@ -1,6 +1,6 @@
 import {utc} from "@cmmn/core";
 import {User} from "./user";
-import type {MessageJSON} from "@cotext/sdk";
+import type {MessageJSON} from "@domain";
 
 export class Message {
     public Content: string;
@@ -8,8 +8,8 @@ export class Message {
     public Author?: User;
     public CreatedAt: Date;
     public UpdatedAt: Date;
-    // public ContextURI: string;
-    public URI: string;
+    public ContextURI: string;
+    // public URI: string;
     public SubContextURI?: string;
     public Action?: string;
     public id: string;
@@ -33,7 +33,8 @@ export class Message {
             CreatedAt: utc(m.CreatedAt),
             UpdatedAt: utc(m.UpdatedAt),
             id: m.id,
-            URI: m.URI,
+            // URI: m.URI,
+            ContextURI: m.ContextURI,
             SubContextURI: m.SubContextURI,
         });
     }
@@ -42,11 +43,11 @@ export class Message {
         return {
             Content: m.Content,
             id: m.id,
-            URI: m.URI,
+            // URI: m.URI,
             Description: m.Description,
             CreatedAt: m.CreatedAt.toJSON(),
             UpdatedAt: m.UpdatedAt.toJSON(),
-            // ContextURI: m.ContextURI,
+            ContextURI: m.ContextURI,
             SubContextURI: m.SubContextURI,
             AuthorURI: m.Author?.URI,
         };

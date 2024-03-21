@@ -1,16 +1,15 @@
 import {getOrAdd, Injectable} from "@cmmn/core";
-import { Api, Request } from "@cmmn/infr";
 
 @Injectable()
 export class ResourceTokenStore {
-    constructor(private api: Api) {
+    constructor() {
     }
 
     private tokens = new Map<string, Promise<string>>();
 
     private async FetchToken(uri: string, parentURI: string) {
         const parentToken = parentURI && await this.tokens.get(parentURI);
-        const request = await Request.fetch('/api/context?uri=' + uri, {
+        const request = await fetch('/api/context?uri=' + uri, {
             headers: {
                 'authorization': JSON.stringify({ user: 'andrey' }),
                 "resource-token": parentToken

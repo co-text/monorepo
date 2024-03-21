@@ -133,23 +133,6 @@
   dependencies:
     bind-decorator "^1.0.11"
 
-"@cmmn/domain@2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@cmmn/domain/-/domain-2.2.3.tgz#a1d9a619ad9648d786da39c41f43352c6133f54c"
-  integrity sha512-lM0CQv0pgHiolAjRAI6c5vfXXViUdzvvWy8rvN5L07Wuw8z9mwLsTn60JUB1QRZKIj/UpbMuvt+qVzhFtDVV5A==
-  dependencies:
-    "@cmmn/cell" "2.2.3"
-    "@cmmn/core" "2.2.3"
-    msgpackr "1.10.0"
-
-"@cmmn/infr@2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@cmmn/infr/-/infr-2.2.3.tgz#5a7c6c67c3d68ca01be0dd722a40d0b7827928c8"
-  integrity sha512-W13fgqgbhnKVk0Eu4HXn9K03nYhez3p4zrJp6L3pBFXfE/FMuSw3H5fbhhONkh0Pk3t9APE23HyFUovfjoLGrA==
-  dependencies:
-    "@cmmn/cell" "2.2.3"
-    "@cmmn/core" "2.2.3"
-
 "@cmmn/server@2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@cmmn/server/-/server-2.2.3.tgz#88c1506dc69f14b32b0b120bfbaae53d55960bdb"
@@ -754,7 +737,7 @@
 
 "@msgpackr-extract/msgpackr-extract-linux-x64@3.0.2":
   version "3.0.2"
-  resolved "https://registry.npmjs.org/@msgpackr-extract/msgpackr-extract-linux-x64/-/msgpackr-extract-linux-x64-3.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-linux-x64/-/msgpackr-extract-linux-x64-3.0.2.tgz#091b1218b66c341f532611477ef89e83f25fae4f"
   integrity sha512-gsWNDCklNy7Ajk0vBBf9jEx04RUxuDQfBse918Ww+Qb9HCPoGzS+XJTLe96iN3BVK7grnLiYghP/M4L8VsaHeA==
 
 "@msgpackr-extract/msgpackr-extract-win32-x64@3.0.2":
@@ -2953,7 +2936,7 @@ ms@2.1.3, ms@^2.1.1:
 
 msgpackr-extract@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.npmjs.org/msgpackr-extract/-/msgpackr-extract-3.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/msgpackr-extract/-/msgpackr-extract-3.0.2.tgz#e05ec1bb4453ddf020551bcd5daaf0092a2c279d"
   integrity sha512-SdzXp4kD/Qf8agZ9+iTu6eql0m3kWm1A2y1hkpTeVNENutaB0BwHlSvAIaMxwntmRUAUjon2V4L8Z/njd0Ct8A==
   dependencies:
     node-gyp-build-optional-packages "5.0.7"
@@ -2965,10 +2948,10 @@ msgpackr-extract@^3.0.2:
     "@msgpackr-extract/msgpackr-extract-linux-x64" "3.0.2"
     "@msgpackr-extract/msgpackr-extract-win32-x64" "3.0.2"
 
-msgpackr@1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/msgpackr/-/msgpackr-1.10.0.tgz#adbca9c951f06647a808f76bc00a519cf6f7fbe4"
-  integrity sha512-rVQ5YAQDoZKZLX+h8tNq7FiHrPJoeGHViz3U4wIcykhAEpwF/nH2Vbk8dQxmpX5JavkI8C7pt4bnkJ02ZmRoUw==
+msgpackr@1.10.1:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/msgpackr/-/msgpackr-1.10.1.tgz#51953bb4ce4f3494f0c4af3f484f01cfbb306555"
+  integrity sha512-r5VRLv9qouXuLiIBrLpl2d5ZvPt8svdQTl5/vMvE4nzDMyEX4sgW5yWhuBBj5UmgwOTWj8CIdSXn5sAfsHAWIQ==
   optionalDependencies:
     msgpackr-extract "^3.0.2"
 
@@ -3106,7 +3089,7 @@ node-forge@^1.1.0:
 
 node-gyp-build-optional-packages@5.0.7:
   version "5.0.7"
-  resolved "https://registry.npmjs.org/node-gyp-build-optional-packages/-/node-gyp-build-optional-packages-5.0.7.tgz"
+  resolved "https://registry.yarnpkg.com/node-gyp-build-optional-packages/-/node-gyp-build-optional-packages-5.0.7.tgz#5d2632bbde0ab2f6e22f1bbac2199b07244ae0b3"
   integrity sha512-YlCCc6Wffkx0kHkmam79GKvDQ6x+QZkMjFGrIMxgFNILFvGSbCp2fCBC55pGTT9gVaz8Na5CLmxt/urtzRv36w==
 
 normalize-path@^2.1.1:

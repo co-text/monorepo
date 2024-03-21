@@ -4,7 +4,7 @@ import style from "./app-root.style.less";
 import {Fn, Injectable} from "@cmmn/core";
 import {UserStore} from "@stores/user.store";
 import { Router } from '@cmmn/app'
-import { DomainProxy, IContextProxy } from '@proxy'
+import { ContextClient, IContextProxy } from '@cotext/sdk/client'
 import { Cell } from '@cmmn/cell'
 import { Api } from '@infr/api'
 
@@ -15,7 +15,6 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
     constructor(
       private router: Router,
       private userStore: UserStore,
-      private domainProxy: DomainProxy,
       private api: Api
     ) {
         super();
@@ -28,12 +27,11 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         if (!sessionStorage.getItem('session')) {
             sessionStorage.setItem('session', Fn.ulid());
         }
-        domainProxy.Actions.SetSession(sessionStorage.getItem('session'));
-        Cell.OnChange(() => this.domainProxy.State.Contexts, async e => {
-            for (let id of e.value) {
-                await this.api.joinRoom(id);
-            }
-        });
+        // Cell.OnChange(() => this.domainProxy.State.Contexts, async e => {
+        //     for (let id of e.value) {
+        //         await this.api.joinRoom(id);
+        //     }
+        // });
     }
 
     get State() {
@@ -49,7 +47,7 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
     async setUser(user: string){
         this.userStore.user.set(user);
         const uri = this.getURI(user);
-        const context = this.domainProxy.getContext(uri);
+        const context = ContextClient.get(uri);
         await this.initContext(context);
         this.router.Route = {
             name: 'main',
@@ -68,21 +66,21 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         context.CreateMessage({
             Content: 'Inbox',
             id: 'inbox',
-            URI: this.getURI('inbox'),
+            ContextURI: this.getURI('root'),
             CreatedAt: new Date(),
             UpdatedAt: new Date()
         });
         context.CreateMessage({
             Content: 'Private',
             id: 'private',
-            URI: this.getURI('private'),
+            ContextURI: this.getURI('root'),
             CreatedAt: new Date(),
             UpdatedAt: new Date()
         });
         context.CreateMessage({
             Content: 'Public',
             id: 'public',
-            URI: this.getURI('public'),
+            ContextURI: this.getURI('root'),
             CreatedAt: new Date(),
             UpdatedAt: new Date()
         });

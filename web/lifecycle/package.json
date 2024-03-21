@@ -11,7 +11,6 @@
     "@cmmn/app": "2.2.3",
     "@cmmn/cell": "2.2.3",
     "@cmmn/core": "2.2.3",
-    "@cmmn/domain": "2.2.3",
     "@cmmn/ui": "2.2.3",
     "@cotext/sdk": "1.0.0",
     "@libp2p/webrtc": "3.2.11",
@@ -20,6 +19,7 @@
     "@libp2p/bootstrap": "10.0.16",
     "@multiformats/multiaddr": "12.1.10",
     "libp2p": "0.46.21",
+    "msgpackr": "1.10.1",
     "is-mobile": "^4.0.0"
   },
   "cmmn": {

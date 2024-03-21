@@ -8,10 +8,11 @@ import { EventEmitter } from '@cmmn/core'
 export class MessageStore extends EventEmitter<{change: void}>{
     constructor(private contextStore: ContextStore, private id: string) {
         super();
+        console.log(this.id);
     }
 
     @cell
-    private json = this.contextStore.model.api.node.get('message').get(this.id) as ObjApi<any>;
+    public json = this.contextStore.model.api.node.get('message').get(this.id) as ObjApi<any>;
 
     public get State() {
         return Message.FromJSON(this.json.view() as any)
