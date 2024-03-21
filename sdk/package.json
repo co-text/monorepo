@@ -22,7 +22,7 @@
     "@cmmn/core": "2.2.3",
     "@cmmn/domain": "2.2.3",
     "@cmmn/infr": "2.2.3",
-    "@cmmn/sync": "2.2.3",
+    "json-joy": "11.40.0",
     "lib0": "0.2.47",
     "jose": "^5.1.0"
   },

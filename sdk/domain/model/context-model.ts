@@ -5,11 +5,13 @@ import type {ModelLike} from "@cmmn/domain/worker";
 import {ContextStore} from "../../sync/contextStore";
 import {Fn, getOrAdd, remove} from "@cmmn/core";
 import {DomainLocator} from "@domain/model/domain-locator.service";
+import { cell } from '@cmmn/cell'
 
 export class ContextModel implements ModelLike<Context, IContextActions>, IContextActions {
 
     Actions = this;
-    public contextStore: ContextStore = new ContextStore(this.URI, this.locator.Root.Session);
+    @cell
+    public contextStore: ContextStore = new ContextStore(this.URI);
     constructor(public URI: string, private locator: DomainLocator) {
     }
 

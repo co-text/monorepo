@@ -1,27 +1,27 @@
 import {cell} from "@cmmn/cell";
-import {MessageJSON} from "@domain";
 import {Message} from "@model";
 import {ContextStore} from "./contextStore";
+import { ObjApi } from 'json-joy/es2020/json-crdt'
+import { MessageJSON } from '@domain'
+import { EventEmitter } from '@cmmn/core'
 
-export class MessageStore {
+export class MessageStore extends EventEmitter<{change: void}>{
     constructor(private contextStore: ContextStore, private id: string) {
-        // activate sync
-        this.json.on('change', (e) => {
-        });
+        super();
     }
 
     @cell
-    private json = this.contextStore.getObjectCell<MessageJSON>(this.id);
+    private json = this.contextStore.model.api.node.get('message').get(this.id) as ObjApi<any>;
 
     public get State() {
-        return Message.FromJSON(this.json.Value)
+        return Message.FromJSON(this.json.view() as any)
     }
 
     public set State(message: Message) {
-        this.json.Diff(Message.ToJSON(message))
+        this.json.set(Message.ToJSON(message))
+        this.emit('change');
     }
 
     public dispose(){
-        this.json.dispose();
     }
 }

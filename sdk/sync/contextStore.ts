@@ -1,45 +1,59 @@
-import {BroadcastSync, SyncStore} from "@cmmn/sync";
-import {AsyncCell, cell, Cell} from "@cmmn/cell";
-import {compare, Fn, getOrAdd, orderBy, utc} from "@cmmn/core";
+import {cell, Cell} from "@cmmn/cell";
+import { compare, EventEmitter, Fn, getOrAdd, orderBy, utc } from '@cmmn/core'
 import {ContextJSON} from "@domain";
 import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
 import {MessageStore} from "./messageStore";
-import {CRuntime} from "@collabs/collabs";
-
-export class ContextStore extends SyncStore{
-    constructor(protected URI: string, private session: string) {
-        super(URI, `${session}.${URI}`);
-        this.addSync(new BroadcastSync(this.URI+'.out'));
+import { crdt } from './crdt'
+import { contextDB } from './context.db'
+// @ts-ignore
+export class ContextStore extends EventEmitter<{change: void}>{
+    private channel = new BroadcastChannel(this.URI + ".out");
+    constructor(protected URI: string) {
+        super();
+        // this.addSync(new BroadcastSync(this.URI) as any);
         // activate sync
         this.$state.active();
+        window.addEventListener('beforeunload', () => {
+        });
+        this.model.api.onChanges.listen(async e => {
+            const binary = this.model.toBinary();
+            await contextDB.set(this.URI, binary);
+        });
+        this.model.api.onLocalChanges.listen(e => {
+            console.log(this.model.api.flush().toBinary());
+        });
+        contextDB.get(this.URI).then(x => {
+
+        });
     }
-    @cell
-    private messages = this.getSet<string>('messages');
+    public model = crdt();
+    private messagesNode = this.model.api.node.get('message');
 
-    @cell
-    private context = this.getObjectCell<ContextJSON>('context');
+    private context = this.model.api.node.get('context');
 
+    private get messages(): string[] {
+        return Object.keys(this.messagesNode.view()) as string[];
+    }
 
     DeleteMessage(item: Pick<Message, "id">) {
-        this.messages.delete(item.id);
+        this.messagesNode.del([item.id]);
     }
 
     AddMessage(id: string) {
-        if (this.messages.has(id))
+        if (this.messages.includes(id))
             return;
-        this.messages.add(id);
+        this.messagesNode.set({
+            [id]: {Content: ''}
+        });
     }
 
     private getState(){
-        if (!this.context?.Value || !this.context.Value.URI)
-            return Context.FromJSON({
-                URI: this.URI,
-                CreatedAt: new Date().toISOString(),
-                UpdatedAt: new Date().toISOString(),
-            });
-        const permutation = this.context.Value.Permutation ? Permutation.Parse(this.context.Value.Permutation) : null;
-        const context = Context.FromJSON(this.context.Value);
+        const value = this.context.view();
+        if (!value)
+            return Context.FromJSON({URI: this.URI} as any);
+        const permutation = value.Permutation ? Permutation.Parse(value.Permutation) : null;
+        const context = Context.FromJSON(value);
         const ordered = orderBy(this.messages, x => x);
         context.Messages = permutation?.Invoke(ordered) ?? ordered.slice();
         return context;
@@ -50,7 +64,7 @@ export class ContextStore extends SyncStore{
             orderBy(value.Messages, x => x),
             value.Messages
         );
-        this.context.Diff({
+        this.context.set({
             ...Context.ToJSON(value),
             Permutation: permutation.toString()
         });
@@ -67,6 +81,7 @@ export class ContextStore extends SyncStore{
                 id: id
             })
         }
+        this.emit('change');
     }
 
     public $state = new Cell(() => this.getState(), {
@@ -76,6 +91,12 @@ export class ContextStore extends SyncStore{
 
     private messageCells = new Map<string, MessageStore>();
     GetMessageStore(id: string) {
+        if (!this.messages.includes(id)){
+            this.messagesNode.set({
+                [id]: {}
+            });
+            this.emit('change');
+        }
         return getOrAdd(this.messageCells,  id,id => new MessageStore(this, id));
     }
 }

@@ -4,6 +4,7 @@ import {ModelLike} from "@cmmn/domain/worker";
 import {ContextModel} from "./context-model";
 import {DomainLocator} from "@domain/model/domain-locator.service";
 import {MessageStore} from "../../sync/messageStore";
+import { cell } from '@cmmn/cell'
 
 export class MessageModel implements ModelLike<Message, IMessageActions>, IMessageActions {
 
@@ -18,12 +19,13 @@ export class MessageModel implements ModelLike<Message, IMessageActions>, IMessa
             ? this.locator.GetOrCreateContext(this.store.State.SubContextURI, this.State.URI) // TODO: this.id
             : null;
     }
-
+    @cell
+    private store: MessageStore;
 
     constructor(private readonly locator: DomainLocator,
-                private store: MessageStore,
+                store: MessageStore,
                 public id: string) {
-
+        this.store = store;
     }
 
     public get State() {

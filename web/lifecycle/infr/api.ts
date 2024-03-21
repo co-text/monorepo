@@ -22,6 +22,7 @@ export class Api {
     }
 
     public async joinRoom(uri: string){
+        return;
         if (!this.p2p.isActive && this.clientStore.isMain){
             await this.p2p.init(await this.getPeerId());
         }

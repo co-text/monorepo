@@ -11,6 +11,6 @@ export class InboxStore extends ContextStore{
     }
 
     MoveToCurrent(id: string) {
-        // this.context.MessageMap.get(id).MoveTo(this.proxy.getContext(CurrentStore.URI), 0)
+        // this.context.MessageMap.get(id).MoveTo(this.client.getContext(CurrentStore.URI), 0)
     }
 }
