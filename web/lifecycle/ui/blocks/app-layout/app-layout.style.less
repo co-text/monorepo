@@ -1,29 +1,33 @@
 app-layout {
-    height: 100%;
-    display: flex;
-    flex: 1;
-    grid-template-columns: 0fr 2fr 0fr;
-    grid-template-rows: 2em 4fr 1fr;
-    gap: 10px;
+  height: 100%;
+  display: flex;
+  flex: 1;
+  grid-template-columns: 0fr 2fr 0fr;
+  grid-template-rows: 2em 4fr 1fr;
+  gap: 10px;
 
-    app-inbox{
-        grid-row: 2;
-        grid-column: 2;
-    }
-    app-high{
-        grid-row: 1;
-        grid-column: 1/4;
-    }
-    app-main{
-        grid-row: 2;
-        grid-column: 2;
-    }
-    app-under{
-        grid-row: 3;
-        grid-column: 1/4;
-    }
-    app-result{
-        grid-row: 2;
-        grid-column: 3;
-    }
+  app-inbox {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  app-high {
+    grid-row: 1;
+    grid-column: 1/4;
+  }
+
+  app-main {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  app-under {
+    grid-row: 3;
+    grid-column: 1/4;
+  }
+
+  app-result {
+    grid-row: 2;
+    grid-column: 3;
+  }
 }

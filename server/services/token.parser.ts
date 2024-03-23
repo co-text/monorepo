@@ -1,7 +1,7 @@
-import {Injectable} from "@cmmn/core";
-import {jwtVerify, SignJWT} from "jose";
-import {jwtDecode} from "jwt-decode";
-import {CryptoKeyStorage} from "./crypto-key-storage.service";
+import { Injectable } from "@cmmn/core";
+import { jwtVerify, SignJWT } from "jose";
+import { jwtDecode } from "jwt-decode";
+import { CryptoKeyStorage } from "./crypto-key-storage.service";
 
 @Injectable()
 export class TokenParser {
@@ -20,7 +20,7 @@ export class TokenParser {
                 return null;
             const decrypted = jwtDecode(token);
             return decrypted as any as TokenType;
-        }catch (e){
+        } catch (e) {
             throw new Error(`invalid token`)
         }
     }

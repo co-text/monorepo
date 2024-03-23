@@ -1,17 +1,17 @@
 import { Cell } from '@cmmn/cell'
 
 export class LWWCell<T> extends Cell<T> {
-  private clock = this.now();
+    private clock = this.now();
 
-  public setAt(clock: Clock, value: T): void {
-    if (clock >= this.clock) {
-      this.set(value);
+    public setAt(clock: Clock, value: T): void {
+        if (clock >= this.clock) {
+            this.set(value);
+        }
     }
-  }
 
-  now(): Clock{
-    return performance.now();
-  }
+    now(): Clock {
+        return performance.now();
+    }
 
 }
 

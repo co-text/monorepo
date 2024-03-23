@@ -18,7 +18,7 @@ export class ContextClient extends Client<Context> implements IContextProxy {
         super();
     }
 
-    get path(){
+    get path() {
         return this.uri;
     }
 
@@ -29,7 +29,7 @@ export class ContextClient extends Client<Context> implements IContextProxy {
 
     @cell
     public get Messages() {
-        return this.State?.Messages.map(x => MessageClient.get(this.uri +'#'+ x) as IMessageProxy) ?? [];
+        return this.State?.Messages.map(x => MessageClient.get(this.uri + '#' + x) as IMessageProxy) ?? [];
     }
 
 
@@ -44,35 +44,35 @@ export class ContextClient extends Client<Context> implements IContextProxy {
             ]
         };
         this.action(state, Op.addMessage, [index, message.id]);
-        const result = MessageClient.get(this.uri +'#'+ message.id);
+        const result = MessageClient.get(this.uri + '#' + message.id);
         result.patch(message);
         return result;
     }
 
-  public InsertMessage(id: string, index: number): void {
-      const state = {
-          ...this.State,
-          Messages:  [
-              ...this.State.Messages.slice(0, index),
-              id,
-              ...this.State.Messages.slice(index),
-          ]
-      }
-      this.action(state, Op.addMessage, [index, id]);
-  }
+    public InsertMessage(id: string, index: number): void {
+        const state = {
+            ...this.State,
+            Messages: [
+                ...this.State.Messages.slice(0, index),
+                id,
+                ...this.State.Messages.slice(index),
+            ]
+        }
+        this.action(state, Op.addMessage, [index, id]);
+    }
 
 
-  get Parents(): ReadonlyArray<IMessageProxy> {
-    return undefined;
-  }
+    get Parents(): ReadonlyArray<IMessageProxy> {
+        return undefined;
+    }
 
-  RemoveMessage(id: string): void {
-      const state = {
-          ...this.State,
-          Messages:  this.State.Messages.filter(x => x !== id)
-      };
+    RemoveMessage(id: string): void {
+        const state = {
+            ...this.State,
+            Messages: this.State.Messages.filter(x => x !== id)
+        };
 
-      this.action( state, Op.removeMessage, [id]);
-  }
+        this.action(state, Op.removeMessage, [id]);
+    }
 }
 

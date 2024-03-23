@@ -1,16 +1,16 @@
-import {component,HtmlComponent, property, ExtendedElement, effect} from "@cmmn/ui";
+import { component, effect, ExtendedElement, HtmlComponent, property } from "@cmmn/ui";
 import "./editor.style.less";
-import {compare, Injectable} from "@cmmn/core";
-import {cell} from "@cmmn/cell";
-import {DomainCollection} from "./domain-collection";
-import {IEvents, IState, template} from "./editor.template";
+import { compare, Injectable } from "@cmmn/core";
+import { cell } from "@cmmn/cell";
+import { DomainCollection } from "./domain-collection";
+import { IEvents, IState, template } from "./editor.template";
 import { ContextClient, IContextProxy } from "@cotext/sdk/client";
-import {TextMeasure} from "./text.measure";
-import {CursorController} from "./cursor.controller";
-import {ItemComponent} from "./item.component";
-import {SelectionController} from "./selection.controller";
-import {PointerController} from "./pointer.controller";
-import {KeyboardController} from "./keyboard.controller";
+import { TextMeasure } from "./text.measure";
+import { CursorController } from "./cursor.controller";
+import { ItemComponent } from "./item.component";
+import { SelectionController } from "./selection.controller";
+import { PointerController } from "./pointer.controller";
+import { KeyboardController } from "./keyboard.controller";
 import { ActionsController } from './actions.controller'
 
 @Injectable(true)
@@ -52,10 +52,12 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> implement
     get model() {
         return new DomainCollection(this.ContextProxy);
     }
+
     @cell
-    get items(){
+    get items() {
         return [...this.model];
     }
+
     get State() {
         return {
             Items: this.items,
@@ -66,7 +68,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> implement
         };
     }
 
-    get item(){
+    get item() {
         return this.focus.element?.item;
     }
 
@@ -78,7 +80,7 @@ export class DivEditorComponent extends HtmlComponent<IState, IEvents> implement
     public pointer = new PointerController(this);
     public keyboard = new KeyboardController(this);
 
-    addItem(input: HTMLInputElement){
+    addItem(input: HTMLInputElement) {
         this.model.addLast(input.value);
         input.value = '';
     }

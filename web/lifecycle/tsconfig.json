@@ -4,16 +4,21 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
-      "@ui": ["./ui/container.ts"],
-      "@stores/*": ["./stores/*"],
-      "@infr/*": ["./infr/*"]
+      "@ui": [
+        "./ui/container.ts"
+      ],
+      "@stores/*": [
+        "./stores/*"
+      ],
+      "@infr/*": [
+        "./infr/*"
+      ]
     },
     "lib": [
       "DOM",
       "ES2020"
     ]
   },
-
   "include": [
     "**/*.json",
     "**/*.ts",

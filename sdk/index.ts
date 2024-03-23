@@ -6,14 +6,14 @@ export * from "./domain";
 export * from "./infr";
 export * from "./sync/contextStore";
 
-export function run(){
+export function run() {
     const domain = new Domain(getInstance);
 
     domain.subscribe();
 
-    function getInstance(id: string){
+    function getInstance(id: string) {
         const [contextURI, messageID] = id.split('#');
-        if (messageID){
+        if (messageID) {
             return MessageModel.get(messageID, contextURI)
         } else {
             return ContextModel.get(contextURI);

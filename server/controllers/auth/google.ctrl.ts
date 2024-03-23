@@ -1,13 +1,12 @@
-import {controller, Get} from "@cmmn/server";
-import {FastifyReply, FastifyRequest} from "fastify";
+import { controller, Get } from "@cmmn/server";
+import { FastifyReply, FastifyRequest } from "fastify";
 import fetch from "node-fetch";
-import * as fs from "fs";
-import {domain, rootDir} from "../../const";
+import { domain } from "../../const";
 
 const config = {} as any;//JSON.parse(fs.readFileSync(`${rootDir}/credentials/google.app.json`, 'utf8'));
 
 @controller("/api/auth/google")
-export class GoogleCtrl{
+export class GoogleCtrl {
     private redirectUrl = `https://${domain}/api/auth/google/onsuccess`;
     private scopes = [
         'https://www.googleapis.com/auth/drive',
@@ -15,12 +14,13 @@ export class GoogleCtrl{
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile'
     ]
+
     @Get("url")
     getRedirectUrl(request: FastifyRequest<{
         Querystring: {
             redirect: string;
         }
-    }>){
+    }>) {
         const url = `https://accounts.google.com/o/oauth2/v2/auth`;
         const query = new URLSearchParams({
             scope: this.scopes.join(' '),
@@ -64,7 +64,7 @@ export class GoogleCtrl{
         }>);
         console.log(res);
         reply.setCookie('jwt:google', res.access_token, {
-            expires: new Date(+new Date()+res.expires_in*1000*100),
+            expires: new Date(+new Date() + res.expires_in * 1000 * 100),
             httpOnly: false,
             path: '/',
             secure: false,

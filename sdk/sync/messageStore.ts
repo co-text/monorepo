@@ -1,11 +1,10 @@
-import {cell} from "@cmmn/cell";
-import {Message} from "@model";
-import {ContextStore} from "./contextStore";
+import { cell } from "@cmmn/cell";
+import { Message } from "@model";
+import { ContextStore } from "./contextStore";
 import { ObjApi } from 'json-joy/es2020/json-crdt'
-import { MessageJSON } from '@domain'
 import { EventEmitter } from '@cmmn/core'
 
-export class MessageStore extends EventEmitter<{change: void}>{
+export class MessageStore extends EventEmitter<{ change: void }> {
     constructor(private contextStore: ContextStore, private id: string) {
         super();
         console.log(this.id);
@@ -23,6 +22,6 @@ export class MessageStore extends EventEmitter<{change: void}>{
         this.emit('change');
     }
 
-    public dispose(){
+    public dispose() {
     }
 }

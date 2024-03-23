@@ -1,7 +1,7 @@
-import {component, HtmlComponent, property} from "@cmmn/ui";
-import {template, IState, IEvents} from "./app-layout.template";
+import { component, HtmlComponent } from "@cmmn/ui";
+import { IEvents, IState, template } from "./app-layout.template";
 import style from "./app-layout.style.less";
-import {Injectable} from "@cmmn/core";
+import { Injectable } from "@cmmn/core";
 
 @Injectable(true)
 @component({name: 'app-layout', template, style})

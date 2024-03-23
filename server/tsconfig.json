@@ -7,7 +7,6 @@
     "paths": {
     }
   },
-
   "include": [
     "**/*.json",
     "**/*.ts",

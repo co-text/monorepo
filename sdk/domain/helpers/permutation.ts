@@ -1,6 +1,6 @@
 // import {registerSerializer} from "@cmmn/core";
 
-import {distinct} from "@cmmn/core";
+import { distinct } from "@cmmn/core";
 
 export class Permutation {
 
@@ -67,6 +67,7 @@ export class Permutation {
             this.values.reduce((a, b) => a + b) !== this.values.length * (this.values.length - 1) / 2;
     }
 }
+
 //
 // registerSerializer<Permutation, ReadonlyArray<number>>(10, Permutation,
 //     perm => perm.ToArray(),

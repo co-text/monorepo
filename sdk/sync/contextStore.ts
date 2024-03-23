@@ -1,15 +1,14 @@
-import {cell, Cell} from "@cmmn/cell";
-import { compare, EventEmitter, Fn, getOrAdd, orderBy, utc } from '@cmmn/core'
-import {ContextJSON} from "@domain";
-import {Context, Message} from "@model";
-import {Permutation} from "@domain/helpers/permutation";
-import {MessageStore} from "./messageStore";
+import { EventEmitter, orderBy } from '@cmmn/core'
+import { ContextJSON } from "@domain";
+import { Context, Message } from "@model";
+import { Permutation } from "@domain/helpers/permutation";
 import { crdt } from './crdt'
-import {contextDB} from "./context.db";
+import { contextDB } from "./context.db";
 // import { contextDB } from './context.db'
 // @ts-ignore
-export class ContextStore extends EventEmitter<{change: void}>{
+export class ContextStore extends EventEmitter<{ change: void }> {
     private channel = new BroadcastChannel(this.URI + ".out");
+
     constructor(protected URI: string) {
         super();
         // this.addSync(new BroadcastSync(this.URI) as any);
@@ -37,7 +36,7 @@ export class ContextStore extends EventEmitter<{change: void}>{
         return Object.keys(this.messagesNode.view()) as string[];
     }
 
-    getState(){
+    getState() {
         const value = this.context.view();
         if (!value)
             return Context.FromJSON({URI: this.URI} as any);

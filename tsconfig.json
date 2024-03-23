@@ -7,8 +7,14 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "./sdk" },
-    { "path": "./web/lifecycle" },
-    { "path": "./server" }
+    {
+      "path": "./sdk"
+    },
+    {
+      "path": "./web/lifecycle"
+    },
+    {
+      "path": "./server"
+    }
   ]
 }

@@ -1,7 +1,7 @@
-import {SymmetricCryptor} from "./yWebRtc/symmetric-cryptor";
-import {Cryptor} from "@infr/yjs/yWebRtc/cryptor";
-import {ResourceTokenApi} from "@infr/resource-token-api.service";
-import {TokenVerifier} from "@infr/token-verifier.service";
+import { SymmetricCryptor } from "./yWebRtc/symmetric-cryptor";
+import { Cryptor } from "@infr/yjs/yWebRtc/cryptor";
+import { ResourceTokenApi } from "@infr/resource-token-api.service";
+import { TokenVerifier } from "@infr/token-verifier.service";
 
 export class TokenCryptor extends Cryptor {
     private token = this.api.GetToken(this.uri);

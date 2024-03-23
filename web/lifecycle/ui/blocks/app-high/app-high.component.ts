@@ -1,7 +1,7 @@
-import {component, HtmlComponent, property} from "@cmmn/ui";
-import {template, IState, IEvents} from "./app-high.template";
+import { component, HtmlComponent, property } from "@cmmn/ui";
+import { IEvents, IState, template } from "./app-high.template";
 import style from "./app-high.style.less";
-import {Injectable} from "@cmmn/core";
+import { Injectable } from "@cmmn/core";
 
 @Injectable(true)
 @component({name: 'app-high', template, style})

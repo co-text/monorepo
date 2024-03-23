@@ -1,17 +1,16 @@
-import {ResolvablePromise} from "@cmmn/core";
-import {BroadcastSyncMessage} from "./p2p.service";
-import {P2pStream} from "@infr/p2p.stream";
-import {GossipSub} from "@chainsafe/libp2p-gossipsub";
-import {Packr} from 'msgpackr/pack';
+import { ResolvablePromise } from "@cmmn/core";
+import { BroadcastSyncMessage } from "./p2p.service";
+import { GossipSub } from "@chainsafe/libp2p-gossipsub";
+import { Packr } from 'msgpackr/pack';
 
 export class P2PRoom {
-    private channel = new BroadcastChannel(this.uri+".out");
+    private channel = new BroadcastChannel(this.uri + ".out");
     private dataTopic = `cotext:${this.uri}.data`;
     public peers = new Set<string>([this.myPeerId]);
     private replicaID = new ResolvablePromise<string>();
     private packr = new Packr({
         structuredClone: true,
-    }) as Packr & {offset: number;};
+    }) as Packr & { offset: number; };
 
     constructor(private uri: string,
                 private myPeerId: string,
@@ -38,7 +37,7 @@ export class P2PRoom {
             this.channel.postMessage(message);
         })
         this.channel.addEventListener('message', async (e: MessageEvent<BroadcastSyncMessage>) => {
-            if (e.data.targetID === 'p2p'){
+            if (e.data.targetID === 'p2p') {
                 this.replicaID.resolve(e.data.senderID);
             } else {
                 await this.sendToOthers(e.data);
@@ -50,7 +49,7 @@ export class P2PRoom {
         } as BroadcastSyncMessage);
     }
 
-    async welcome(peer){
+    async welcome(peer) {
         await this.sendToOthers({
             type: 'getState',
             targetID: peer.toString(),
@@ -58,7 +57,8 @@ export class P2PRoom {
             data: null
         });
     }
-    sendToOthers(data: BroadcastSyncMessage){
+
+    sendToOthers(data: BroadcastSyncMessage) {
         // console.log(`publish ${data.type} to ${data.targetID ?? 'everybody'}`);
         return this.pubsub.publish(this.dataTopic, this.packr.encode(data))
     }

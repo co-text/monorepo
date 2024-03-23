@@ -1,13 +1,14 @@
-import {test, suite, timeout} from "@cmmn/tools/test";
-import {node} from "../p2p/index";
-import {createLibp2p} from "libp2p";
-import {noise} from "@chainsafe/libp2p-noise";
-import {yamux} from "@chainsafe/libp2p-yamux";
-import {tcp} from "@libp2p/tcp";
+import { suite, test, timeout } from "@cmmn/tools/test";
+import { node } from "../p2p/index";
+import { createLibp2p } from "libp2p";
+import { noise } from "@chainsafe/libp2p-noise";
+import { yamux } from "@chainsafe/libp2p-yamux";
+import { tcp } from "@libp2p/tcp";
+
 @suite
 export class P2PSpec {
 
-    async getNewNode(){
+    async getNewNode() {
         const newNode = await createLibp2p({
             transports: [
                 tcp()
@@ -45,7 +46,7 @@ export class P2PSpec {
 
     @test
     @timeout(2 ** 30)
-    async testNodeMaxCount(){
+    async testNodeMaxCount() {
         let count = 0;
         try {
             while (true) {
@@ -53,7 +54,7 @@ export class P2PSpec {
                 count++;
                 console.log(count);
             }
-        }catch (e){
+        } catch (e) {
             console.log(count, e);
         }
     }

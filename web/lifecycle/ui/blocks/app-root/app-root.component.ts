@@ -1,8 +1,8 @@
-import {component, HtmlComponent, property} from "@cmmn/ui";
-import {template, IState, IEvents} from "./app-root.template";
+import { component, HtmlComponent } from "@cmmn/ui";
+import { IEvents, IState, template } from "./app-root.template";
 import style from "./app-root.style.less";
-import {Fn, Injectable} from "@cmmn/core";
-import {UserStore} from "@stores/user.store";
+import { Fn, Injectable } from "@cmmn/core";
+import { UserStore } from "@stores/user.store";
 import { Router } from '@cmmn/app'
 import { ContextClient, IContextProxy } from '@cotext/sdk/client'
 import { Cell } from '@cmmn/cell'
@@ -13,12 +13,12 @@ import { Api } from '@infr/api'
 export class AppRootComponent extends HtmlComponent<IState, IEvents> implements IEvents {
 
     constructor(
-      private router: Router,
-      private userStore: UserStore,
-      private api: Api
+        private router: Router,
+        private userStore: UserStore,
+        private api: Api
     ) {
         super();
-        if (!this.router.Route?.params.id && this.userStore.user.get()){
+        if (!this.router.Route?.params.id && this.userStore.user.get()) {
             this.router.Route = {
                 name: 'main',
                 params: {id: this.userStore.user.get()}
@@ -40,11 +40,11 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         };
     }
 
-    private getURI(id: string){
+    private getURI(id: string) {
         return `${location.origin}/c/${id}`
     }
 
-    async setUser(user: string){
+    async setUser(user: string) {
         this.userStore.user.set(user);
         const uri = this.getURI(user);
         const context = ContextClient.get(uri);
@@ -57,7 +57,7 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         }
     }
 
-    private async initContext(context: IContextProxy){
+    private async initContext(context: IContextProxy) {
         if (!context.State)
             await new Cell(() => context.State).onceAsync('change');
         if (context.State.Messages.length > 0)

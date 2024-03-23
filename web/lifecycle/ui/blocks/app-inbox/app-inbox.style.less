@@ -1,46 +1,49 @@
 app-inbox {
-    display: flex;
-    flex-direction: column;
-    background: var(--light-blue);
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--light-blue);
+  position: relative;
 
-    .add {
-        position: absolute;
-        z-index: 1;
-        right: 0;
-        bottom: 0;
-        background: var(--blue);
-        color: var(--white);
-        margin: 1em;
-        border: none;
-        padding: 1em;
-        border-radius: 1em;
-    }
-
-}
-
-dialog[open]{
-    &::backdrop{
-        transition: 1s ease allow-discrete;
-        backdrop-filter: blur(2px);
-        background-color: #FFF3;
-    }
-    transition: 1s ease allow-discrete;
-    opacity: 1;
-    background-color: #4285f4;
+  .add {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    background: var(--blue);
+    color: var(--white);
+    margin: 1em;
     border: none;
-    border-radius: 6px;
-    box-shadow: #666666 0 0 6px;
-    min-width: 300px;
     padding: 1em;
+    border-radius: 1em;
+  }
+
 }
+
+dialog[open] {
+  &::backdrop {
+    transition: 1s ease allow-discrete;
+    backdrop-filter: blur(2px);
+    background-color: #FFF3;
+  }
+
+  transition: 1s ease allow-discrete;
+  opacity: 1;
+  background-color: #4285f4;
+  border: none;
+  border-radius: 6px;
+  box-shadow: #666666 0 0 6px;
+  min-width: 300px;
+  padding: 1em;
+}
+
 @starting-style {
-    dialog[open] {
-        &::backdrop{
-            backdrop-filter: blur(0px);
-            background-color: rgb(0 0 0 / 0);
-        }
-        background-color: #A66666;
-        opacity: 0;
+  dialog[open] {
+    &::backdrop {
+      backdrop-filter: blur(0px);
+      background-color: rgb(0 0 0 / 0);
     }
+
+    background-color: #A66666;
+    opacity: 0;
+  }
 }

@@ -1,15 +1,16 @@
-import {test, suite, expect} from "@cmmn/tools/test";
-import {createLibp2p} from "libp2p";
-import {pipe} from "it-pipe";
-import {tcp} from "@libp2p/tcp";
-import {noise} from "@chainsafe/libp2p-noise";
-import {yamux} from "@chainsafe/libp2p-yamux";
-import {Uint8ArrayList} from "uint8arraylist";
+import { expect, suite, test } from "@cmmn/tools/test";
+import { createLibp2p } from "libp2p";
+import { pipe } from "it-pipe";
+import { tcp } from "@libp2p/tcp";
+import { noise } from "@chainsafe/libp2p-noise";
+import { yamux } from "@chainsafe/libp2p-yamux";
+import { Uint8ArrayList } from "uint8arraylist";
+
 @suite
 export class P2PSpec {
 
     @test
-    async getNewNode(){
+    async getNewNode() {
         const server = await createLibp2p({
             transports: [
                 tcp()
@@ -34,8 +35,8 @@ export class P2PSpec {
                 resolve(data);
             }
         }))
-        const stream = await client.dialProtocol(serverAddress,  '/test/data/1.0.0');
-        const raw = [1,2,3,4,5];
+        const stream = await client.dialProtocol(serverAddress, '/test/data/1.0.0');
+        const raw = [1, 2, 3, 4, 5];
         await pipe([new Uint8Array(raw)], stream);
         const data = await promise;
         expect([...[...data][0].values()]).toEqual(raw);

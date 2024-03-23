@@ -1,6 +1,6 @@
-import {MessageItem} from "./message-item";
-import {IContextProxy, IMessageProxy} from "@cotext/sdk/client";
-import {Fn, getOrAdd} from "@cmmn/core";
+import { MessageItem } from "./message-item";
+import { IContextProxy } from "@cotext/sdk/client";
+import { Fn } from "@cmmn/core";
 
 export class DomainCollection {
     static MaxDepth = 5;
@@ -12,7 +12,7 @@ export class DomainCollection {
         return this.iterate(this.root);
     }
 
-    protected *iterate(context: IContextProxy, parent: MessageItem = null): IterableIterator<MessageItem> {
+    protected* iterate(context: IContextProxy, parent: MessageItem = null): IterableIterator<MessageItem> {
         for (let msg of context.Messages) {
             const item = MessageItem.getOrAdd(msg, parent?.path ?? [], context)
             yield item;
@@ -23,6 +23,7 @@ export class DomainCollection {
             }
         }
     }
+
     addChild(item: MessageItem, text: string, index: number): MessageItem {
         const context = item?.Message.GetOrCreateSubContext() ?? this.root;
         const id = Fn.ulid();
@@ -34,9 +35,9 @@ export class DomainCollection {
             UpdatedAt: new Date(),
         }, index);
         return MessageItem.getOrAdd(
-          message,
-          item?.path ?? [],
-          context,
+            message,
+            item?.path ?? [],
+            context,
         );
     }
 
@@ -50,7 +51,7 @@ export class DomainCollection {
         return this.addChild(parent, text, index);
     }
 
-    addLast(text: string){
+    addLast(text: string) {
         const id = Fn.ulid();
         this.root.CreateMessage({
             ContextURI: this.root.State.URI,

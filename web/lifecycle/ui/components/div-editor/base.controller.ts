@@ -1,25 +1,30 @@
-import {EditorContext} from "./types";
+import { EditorContext } from "./types";
 
 export class BaseController {
     constructor(protected editorContext: EditorContext) {
     }
 
-    protected get element(){
+    protected get element() {
         return this.editorContext.element;
     }
-    protected get selection(){
+
+    protected get selection() {
         return this.editorContext.selection;
     }
-    protected get anchor(){
+
+    protected get anchor() {
         return this.editorContext.anchor;
     }
-    protected get item(){
+
+    protected get item() {
         return this.editorContext.item;
     }
-    protected get focus(){
+
+    protected get focus() {
         return this.editorContext.focus;
     }
-    protected get domain(){
+
+    protected get domain() {
         return this.editorContext.model;
     }
 }

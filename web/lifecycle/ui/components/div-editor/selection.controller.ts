@@ -1,12 +1,11 @@
-import {CursorController} from "./cursor.controller";
+import { CursorController } from "./cursor.controller";
 import { CursorMove, EditorContext, Point, SelectionBlock } from './types'
-import { BaseCell, Cell } from '@cmmn/cell'
-import {ExtendedElement} from "@cmmn/ui";
-import {ItemComponent} from "./item.component";
-import {node} from "@cotext/server/p2p";
+import { Cell } from '@cmmn/cell'
+import { ExtendedElement } from "@cmmn/ui";
+import { ItemComponent } from "./item.component";
 import { BaseController } from './base.controller'
 
-export class SelectionController extends BaseController{
+export class SelectionController extends BaseController {
 
     constructor(editorContext: EditorContext) {
         super(editorContext);
@@ -41,13 +40,15 @@ export class SelectionController extends BaseController{
         // })
     }
 
-    setFromWindow(){
+    setFromWindow() {
         const selection = getSelection();
-        function getItemComponent(node: Node){
+
+        function getItemComponent(node: Node) {
             if (node.parentElement instanceof HTMLSpanElement)
                 return node.parentElement.parentElement;
             return node.parentElement;
         }
+
         const anchor = getItemComponent(selection.anchorNode);
         this.anchor.itemId = anchor.id;
         this.anchor.lineIndex = selection.anchorOffset;
@@ -76,7 +77,7 @@ export class SelectionController extends BaseController{
     }
 
     private get orderedCursors(): [CursorController, CursorController] {
-        if (this.isOneItem){
+        if (this.isOneItem) {
             return this.anchor.index > this.focus.index
                 ? [this.focus, this.anchor]
                 : [this.anchor, this.focus]
@@ -99,7 +100,7 @@ export class SelectionController extends BaseController{
         }
 
         if (from.element == to.element) {
-            if (from.lineNumber == to.lineNumber){
+            if (from.lineNumber == to.lineNumber) {
                 yield {
                     element: from.element,
                     range: [from.index, to.index],
@@ -149,7 +150,7 @@ export class SelectionController extends BaseController{
         yield {
             element: to.element,
             range: [0, to.index],
-            lines: [ ...getElementLines(to.element, 0, to.lineNumber), {
+            lines: [...getElementLines(to.element, 0, to.lineNumber), {
                 number: to.lineNumber,
                 range: [0, to.lineIndex],
             },]
@@ -238,26 +239,28 @@ export class SelectionController extends BaseController{
         to.to(from);
     }
 
-    insert (lines: string[]) {
+    insert(lines: string[]) {
         this.removeContent();
 
         if (lines.length > 1) {
-            let item =this.domain.addBefore(this.focus.element.item,
-              this.focus.element.item.Content.slice(0, this.focus.index) +
+            let item = this.domain.addBefore(this.focus.element.item,
+                this.focus.element.item.Content.slice(0, this.focus.index) +
                 lines.shift().trim()
             );
             let level = 0;
-            function setItem(line: string){
+
+            function setItem(line: string) {
                 const tabCount = line.match(/^\t*/)[0].length;
                 while (level > tabCount) {
                     item = item.parent;
                     level--;
                 }
-                if (level < tabCount){
+                if (level < tabCount) {
                     level++;
                     item.Message.GetOrCreateSubContext();
                 }
             }
+
             for (let line of lines.slice(0, -1)) {
                 setItem(line);
                 item = this.domain.addAfter(item, line.trim());
@@ -265,26 +268,26 @@ export class SelectionController extends BaseController{
             const lastLine = lines.pop();
             setItem(lastLine);
             this.focus.element.item.Message.UpdateContent(
-              lastLine.trim()+
-              this.focus.element.item.Content.slice(this.focus.index)
+                lastLine.trim() +
+                this.focus.element.item.Content.slice(this.focus.index)
             );
             const index = item.Message.SubContext ? 0 : item.index + 1;
             this.focus.element.item.Message.Move(
-              this.focus.element.item.context,
-              item.Message.SubContext ?? item.context,
-              index
+                this.focus.element.item.context,
+                item.Message.SubContext ?? item.context,
+                index
             );
-        }else {
+        } else {
             this.focus.element.item.Message.UpdateContent(
-              this.focus.element.item.Content.slice(0, this.focus.index) +
-              lines[0] +
-              this.focus.element.item.Content.slice(this.focus.index)
+                this.focus.element.item.Content.slice(0, this.focus.index) +
+                lines[0] +
+                this.focus.element.item.Content.slice(this.focus.index)
             )
         }
     }
 
-    input () {
-        if (this.isOneItem){
+    input() {
+        if (this.isOneItem) {
             this.focus.element.item.Content = this.focus.element.element.innerText;
         } else {
             const [from, to] = this.orderedCursors;
@@ -292,11 +295,11 @@ export class SelectionController extends BaseController{
             const [toA, toB] = to.contentParts;
             const fromText = from.element.element.innerText;
             let inputText = fromText.substring(from.index);
-            if (inputText == fromB){
+            if (inputText == fromB) {
                 inputText = to.element.element.innerText.substring(0, to.element.element.innerText.length
-                  -(to.element.item.Content.length - to.index));
+                    - (to.element.item.Content.length - to.index));
             }
-            this.removeContent( fromA + inputText + toB);
+            this.removeContent(fromA + inputText + toB);
         }
         this.setFromWindow();
     }

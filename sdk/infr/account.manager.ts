@@ -1,6 +1,5 @@
 import { Cell } from "@cmmn/cell";
-import {Injectable} from "@cmmn/core";
-import {ResolvablePromise} from "@cmmn/core";
+import { Injectable, ResolvablePromise } from "@cmmn/core";
 
 @Injectable()
 export class AccountManager {
@@ -20,7 +19,7 @@ export class AccountManager {
     }
 
 
-    private async addAccount(info: IAccountInfo){
+    private async addAccount(info: IAccountInfo) {
         this.$accounts.set([
             ...this.$accounts.get(),
             info

@@ -1,10 +1,10 @@
-import {component, HtmlComponent, property} from "@cmmn/ui";
-import {template, IState, IEvents} from "./test-root.template";
+import { component, HtmlComponent, property } from "@cmmn/ui";
+import { IEvents, IState, template } from "./test-root.template";
 import style from "./test-root.style.less";
-import {Fn, Injectable} from "@cmmn/core";
-import {cell, Cell} from "@cmmn/cell";
-import {P2PService} from "@infr/p2p.service";
-import {Api} from "@infr/api";
+import { Injectable } from "@cmmn/core";
+import { cell } from "@cmmn/cell";
+import { P2PService } from "@infr/p2p.service";
+import { Api } from "@infr/api";
 
 @Injectable(true)
 @component({name: 'app-root', template, style})
@@ -18,16 +18,18 @@ export class TestRootComponent extends HtmlComponent<IState, IEvents> {
             nodesCount: this.nodesCount
         }
     }
+
     @cell
     nodesCount = 0;
-    constructor(private api: Api){
+
+    constructor(private api: Api) {
         super();
         this.runTest();
     }
 
-    async runTest(){
+    async runTest() {
         const peerId = await this.api.getPeerId();
-        while (true){
+        while (true) {
             const p2p = new P2PService();
             await p2p.init(peerId);
             await p2p.stop();

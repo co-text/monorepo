@@ -7,10 +7,10 @@ export class Domain {
 
     private cache = new Map<string, InstanceData>();
 
-    constructor(private getInstance: (id: string) => {get State(): any;}) {
+    constructor(private getInstance: (id: string) => { get State(): any; }) {
     }
 
-    subscribe(){
+    subscribe() {
         this.channel.on(Channel.ANY, (message) => {
             if (!message.data) return;
             if (!message.id) return;

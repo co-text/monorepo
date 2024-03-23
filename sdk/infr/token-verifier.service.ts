@@ -1,4 +1,4 @@
-import {importSPKI, jwtVerify} from "jose";
+import { importSPKI, jwtVerify } from "jose";
 import { Api } from "./api";
 
 export class TokenVerifier {

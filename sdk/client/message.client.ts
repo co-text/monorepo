@@ -12,22 +12,24 @@ export class MessageClient extends Client<Message> implements IMessageProxy {
         super();
         this.uri = uri;
     }
+
     @cell
     private uri: string;
 
-    get id(){
+    get id() {
         return this.uri.split('#').pop();
     }
 
-    get path(){
+    get path() {
         return this.uri;
     }
+
     @cell
     public get State() {
         return this.get()
     }
 
-    public get SubContext(){
+    public get SubContext() {
         return this.State?.SubContextURI ? ContextClient.get(this.State.SubContextURI) : null;
     }
 
@@ -47,7 +49,7 @@ export class MessageClient extends Client<Message> implements IMessageProxy {
         const id = Fn.ulid();
         const uri = this.State.ContextURI.split('/').slice(0, -1).concat(id).join('/');
 
-        this.patch({ SubContextURI: uri });
+        this.patch({SubContextURI: uri});
         const context = this.SubContext;
         context.patch({
             id,
@@ -61,10 +63,11 @@ export class MessageClient extends Client<Message> implements IMessageProxy {
         return context;
     }
 
-    Merge(message: IMessageProxy): void {if (!message.SubContext) return;
+    Merge(message: IMessageProxy): void {
+        if (!message.SubContext) return;
         const context = this.GetOrCreateSubContext();
         const toMove = message.SubContext.Messages.slice();
-        for (let i = 0; i < toMove.length; i++){
+        for (let i = 0; i < toMove.length; i++) {
             let m = toMove[i];
             m.Move(message.SubContext, context, i);
         }
@@ -77,7 +80,7 @@ export class MessageClient extends Client<Message> implements IMessageProxy {
     }
 
     UpdateContent(content: string): void {
-        this.patch({ Content: content });
+        this.patch({Content: content});
     }
 
 

@@ -1,5 +1,4 @@
-
-export class MessageJSON{
+export class MessageJSON {
     public ContextURI: string;
     // public URI: string;
     public SubContextURI?: string;

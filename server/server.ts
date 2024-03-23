@@ -1,9 +1,9 @@
-import {Server} from "@cmmn/server";
+import { Server } from "@cmmn/server";
 import fastify from "fastify";
 import websocketPlugin from "@fastify/websocket";
 import cookiePlugin from "@fastify/cookie";
-import {InhauthContainer} from "./inhauth/index";
-import {ServerContainer} from "./container";
+import { InhauthContainer } from "./inhauth/index";
+import { ServerContainer } from "./container";
 import * as controllers from "./controllers/index";
 import cors from "@fastify/cors";
 import "./p2p/index";
@@ -20,12 +20,12 @@ async function run() {
     // const server = new http.Server();
 }
 
-function getFastify(opts){
+function getFastify(opts) {
     const instance = fastify({
         ...opts,
         logger: false
     });
-    instance.register(cors,{
+    instance.register(cors, {
         origin: true,
         allowedHeaders: 'resource-token, Authorization',
         exposedHeaders: 'resource-token',

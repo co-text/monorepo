@@ -1,5 +1,5 @@
-import {AccessInheritanceRule, IRuleStore, URI} from "@inhauth/core";
-import {getOrAdd} from "@cmmn/core";
+import { AccessInheritanceRule, IRuleStore, URI } from "@inhauth/core";
+import { getOrAdd } from "@cmmn/core";
 
 export class RuleStore implements IRuleStore {
 

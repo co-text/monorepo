@@ -1,15 +1,16 @@
-import {Context, Message}from "@model";
-import {ContextModel} from "./context-model";
-import {MessageStore} from "../../sync/messageStore";
+import { Message } from "@model";
+import { ContextModel } from "./context-model";
+import { MessageStore } from "../../sync/messageStore";
 import { cell } from '@cmmn/cell'
 import { Op } from "../../common";
-import {compare, DeepPartial, Fn} from "@cmmn/core";
+import { compare, DeepPartial } from "@cmmn/core";
 
 export class MessageModel {
 
     public static get(id: string, contextURI: string): MessageModel {
         return new MessageModel(id, contextURI);
     }
+
     Actions = this;
 
 
@@ -18,11 +19,14 @@ export class MessageModel {
             ? ContextModel.get(this.store.State.SubContextURI)
             : null;
     }
+
     @cell
     public contextURI: string;
-    public get Context(){
+
+    public get Context() {
         return ContextModel.get(this.contextURI);
     }
+
     @cell
     private get store(): MessageStore {
         return new MessageStore(this.Context.store, this.id);
@@ -41,7 +45,7 @@ export class MessageModel {
         this.store.State = value;
     }
 
-    public [Op.patch](diff: DeepPartial<Message>){
+    public [Op.patch](diff: DeepPartial<Message>) {
         this.store.json.set(diff);
         this.store.emit('change')
     }

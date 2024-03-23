@@ -2,10 +2,10 @@ import { SyncStore } from '@cmmn/sync'
 import { ContextJSON } from '@domain'
 
 export class Store extends SyncStore {
-  constructor () {
-    super('ctx');
-  }
+    constructor() {
+        super('ctx');
+    }
 
-  private contexts = this.getArray<ContextJSON>('contexts');
+    private contexts = this.getArray<ContextJSON>('contexts');
 
 }

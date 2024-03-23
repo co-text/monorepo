@@ -1,6 +1,6 @@
-import {Injectable} from "@cmmn/core";
-import {AccessMode, Authenticator, ResourceToken} from "@inhauth/core";
-import {AclStore} from "./acl.store";
+import { Injectable } from "@cmmn/core";
+import { AccessMode, Authenticator, ResourceToken } from "@inhauth/core";
+import { AclStore } from "./acl.store";
 
 @Injectable()
 export class Authorizer {

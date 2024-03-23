@@ -1,7 +1,7 @@
 import * as string from "lib0/string";
 import * as decoding from "lib0/decoding";
 import * as encoding from "lib0/encoding";
-import {Cryptor} from "@infr/yjs/yWebRtc/cryptor";
+import { Cryptor } from "@infr/yjs/yWebRtc/cryptor";
 
 export class SymmetricCryptor extends Cryptor {
     private readonly key: PromiseLike<CryptoKey>;

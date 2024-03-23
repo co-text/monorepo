@@ -1,10 +1,10 @@
-import {MessageItem} from "./message-item";
-import {DomainCollection} from "./domain-collection";
-import {SelectionController} from "./selection.controller";
-import {TextMeasure} from "./text.measure";
-import {ExtendedElement} from "@cmmn/ui";
-import {DivEditorComponent} from "./editor.component";
-import {ItemComponent} from "./item.component";
+import { MessageItem } from "./message-item";
+import { DomainCollection } from "./domain-collection";
+import { SelectionController } from "./selection.controller";
+import { TextMeasure } from "./text.measure";
+import { ExtendedElement } from "@cmmn/ui";
+import { DivEditorComponent } from "./editor.component";
+import { ItemComponent } from "./item.component";
 import { CursorController } from './cursor.controller'
 import { ActionsController } from './actions.controller'
 
@@ -34,7 +34,7 @@ export type SelectionBlock = {
     text: string;
     level: number;
 }
-export type Point = {x: number, y: number;}
+export type Point = { x: number, y: number; }
 
 export type EditorContext = {
     actions: ActionsController;

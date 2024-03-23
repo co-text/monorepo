@@ -1,7 +1,7 @@
-import {component, HtmlComponent, property} from "@cmmn/ui";
-import {template, IState, IEvents} from "./under.template";
+import { component, HtmlComponent } from "@cmmn/ui";
+import { IEvents, IState, template } from "./under.template";
 import style from "./under.style.less";
-import {Injectable} from "@cmmn/core";
+import { Injectable } from "@cmmn/core";
 
 @Injectable(true)
 @component({name: 'app-under', template, style})

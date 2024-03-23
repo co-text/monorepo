@@ -1,5 +1,5 @@
-import {Fn, Injectable} from "@cmmn/core";
-import {AccountManager} from "@infr/account.manager";
+import { Fn, Injectable } from "@cmmn/core";
+import { AccountManager } from "@infr/account.manager";
 
 @Injectable()
 export class Api {
@@ -21,14 +21,14 @@ export class Api {
     public async GetUserInfo() {
         await this.accManager.init;
         const accs = this.accManager.$accounts.get();
-        if (!accs.length){
+        if (!accs.length) {
             return undefined;
         }
         return accs[0];
     }
 
     public async fetch(input: string, init?: RequestInit): Promise<Response> {
-        const user = await  this.GetUserInfo();
+        const user = await this.GetUserInfo();
         return fetch(input, {
             ...init,
             headers: {

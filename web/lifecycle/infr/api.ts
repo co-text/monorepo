@@ -1,11 +1,12 @@
-import {UserStore} from "@stores/user.store";
-import {Fn, Injectable} from "@cmmn/core";
+import { UserStore } from "@stores/user.store";
+import { Injectable } from "@cmmn/core";
 // import {P2PService} from "./p2p.service";
-import {ClientStore} from "@infr/client.store";
+import { ClientStore } from "@infr/client.store";
 
 @Injectable()
 export class Api {
     private clientStore = new ClientStore();
+
     constructor(
         private userStore: UserStore,
         // private p2p: P2PService
@@ -19,11 +20,12 @@ export class Api {
             // }
         })
     }
-    getPeerId(){
+
+    getPeerId() {
         return fetch(`/api/peer`).then(x => x.text());
     }
 
-    public async joinRoom(uri: string){
+    public async joinRoom(uri: string) {
         return;
         // if (!this.p2p.isActive && this.clientStore.isMain){
         //     await this.p2p.init(await this.getPeerId());

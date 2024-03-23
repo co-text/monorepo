@@ -1,6 +1,6 @@
-import {Injectable} from "@cmmn/core";
-import {promises} from "fs";
-import {exportPKCS8,exportSPKI,  importSPKI, generateKeyPair,CompactEncrypt, GenerateKeyPairResult, importPKCS8, KeyLike} from "jose";
+import { Injectable } from "@cmmn/core";
+import { promises } from "fs";
+import { exportPKCS8, exportSPKI, generateKeyPair, GenerateKeyPairResult, importPKCS8, importSPKI } from "jose";
 
 const {writeFile, readFile, stat} = promises;
 
@@ -53,6 +53,7 @@ export class CryptoKeyStorage {
     public getPublicKey() {
         return this.publicKey;
     }
+
     public getPublicKeyString() {
         return this.publicKey.then(exportSPKI)
     }

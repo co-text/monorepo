@@ -1,10 +1,10 @@
-import {Injectable} from "@cmmn/core";
-import {controller, Get, Post} from "@cmmn/server";
-import {FastifyReply, FastifyRequest} from "fastify";
-import {AccessMode, Issuer, ResourceToken} from "@inhauth/core";
-import {RuleStore} from "../inhauth/index";
-import {TokenParser} from "../services/token.parser";
-import {Authorizer} from "../services/authorizer.service";
+import { Injectable } from "@cmmn/core";
+import { controller, Get, Post } from "@cmmn/server";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { AccessMode, Issuer, ResourceToken } from "@inhauth/core";
+import { RuleStore } from "../inhauth/index";
+import { TokenParser } from "../services/token.parser";
+import { Authorizer } from "../services/authorizer.service";
 
 @Injectable()
 @controller('/api/context')

@@ -1,4 +1,4 @@
-import {ITemplate} from "@cmmn/ui";
+import { ITemplate } from "@cmmn/ui";
 
 export const template: ITemplate<IState, IEvents> = (html, state, events) => html`
     ${state.nodesCount}

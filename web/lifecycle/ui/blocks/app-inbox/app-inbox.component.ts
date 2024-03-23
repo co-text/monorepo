@@ -1,8 +1,8 @@
-import {component, HtmlComponent, event, select} from "@cmmn/ui";
-import {template, IState, IEvents} from "./app-inbox.template";
+import { component, HtmlComponent } from "@cmmn/ui";
+import { IEvents, IState, template } from "./app-inbox.template";
 import style from "./app-inbox.style.less";
-import {Injectable} from "@cmmn/core";
-import {Router} from "@cmmn/app";
+import { Injectable } from "@cmmn/core";
+import { Router } from "@cmmn/app";
 
 @Injectable(true)
 @component({name: 'app-inbox', template, style})

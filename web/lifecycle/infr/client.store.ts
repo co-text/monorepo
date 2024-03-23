@@ -1,28 +1,29 @@
-import {EventEmitter, Fn} from "@cmmn/core";
-import {Cell, ICellOptions} from "@cmmn/cell";
+import { EventEmitter, Fn } from "@cmmn/core";
+import { Cell, ICellOptions } from "@cmmn/cell";
 
 /**
  * Stores opened windows within one browser
  */
 export class ClientStore extends EventEmitter<{
-    change: {isMain: boolean}
-}>{
+    change: { isMain: boolean }
+}> {
     private mainWindowChannel = new BroadcastChannel('main');
     private id = Fn.ulid();
     private state = 'connected';
     private clients = new Set<string>();
     private mainClient = new LocalStorageCell<string>('ClientStoreMainClient');
+
     constructor() {
         super();
         this.mainWindowChannel.addEventListener('message', e => {
-            if (e.data.state == 'connected'){
+            if (e.data.state == 'connected') {
                 this.clients.add(e.data.id);
             }
-            if (e.data.state == 'disconnected'){
+            if (e.data.state == 'disconnected') {
                 this.clients.delete(e.data.id);
             }
             console.log(e.data);
-            if (e.data.newMain){
+            if (e.data.newMain) {
                 this.mainClient.set(e.data.newMain);
             }
         });
@@ -41,13 +42,13 @@ export class ClientStore extends EventEmitter<{
                 newMain
             });
         });
-        if (!this.mainClient.get()){
+        if (!this.mainClient.get()) {
             this.mainClient.set(this.id);
         }
         Cell.OnChange(() => this.isMain, e => this.emit('change', {isMain: e.value}))
     }
 
-    public get isMain(){
+    public get isMain() {
         return this.mainClient.get() == this.id;
     }
 

@@ -1,9 +1,11 @@
-import {Message} from "@model";
-import type {IContextProxy} from "./context-proxy";
+import { Message } from "@model";
+import type { IContextProxy } from "./context-proxy";
 
 export interface IMessageProxy {
     readonly id: string;
+
     get State(): Readonly<Message>;
+
     // Context: IContextProxy;
     get SubContext(): IContextProxy | null;
 

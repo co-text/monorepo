@@ -1,5 +1,5 @@
-import {Context} from "./context";
-import {Message} from "./message";
+import { Context } from "./context";
+import { Message } from "./message";
 
 export class Storage {
     public Root: Context;
@@ -24,6 +24,6 @@ export class DomainState {
 }
 
 export class SelectionState {
-    public Focus?: {Message; Offset};
-    public Anchor?: {Message; Offset};
+    public Focus?: { Message; Offset };
+    public Anchor?: { Message; Offset };
 }

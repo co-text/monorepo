@@ -1,9 +1,7 @@
-import {suite, test, expect, sinon} from "@cmmn/tools/test"
-import {P2PRoom} from "@infr/p2p.room";
-import {Stream} from "@libp2p/interface/connection";
-import {EventEmitter, Fn} from "@cmmn/core";
+import { suite, test } from "@cmmn/tools/test"
+
 @suite
-export class P2pRoomSpec{
+export class P2pRoomSpec {
     private bc1 = new BroadcastChannel("1");
     private bc2 = new BroadcastChannel("2");
 
@@ -11,7 +9,7 @@ export class P2pRoomSpec{
     // private room2 = new P2PRoom("2", "0");
 
     @test
-    async testStream(){
+    async testStream() {
         // const emitter = new EventEmitter();
         // async function *gen(){
         //     console.log('listen emiiter');

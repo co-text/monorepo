@@ -1,5 +1,5 @@
 export enum Op {
-  addMessage = 1,
-  patch = 2,
-  removeMessage = 3,
+    addMessage = 1,
+    patch = 2,
+    removeMessage = 3,
 }

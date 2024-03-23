@@ -1,8 +1,8 @@
 import { ITemplate } from "@cmmn/ui";
-import {MessageItem} from "./message-item";
-import {SelectionBlock} from "./types";
+import { MessageItem } from "./message-item";
+import { SelectionBlock } from "./types";
 
-export const template: ITemplate<IState, IEvents> = (html,state, events) => {
+export const template: ITemplate<IState, IEvents> = (html, state, events) => {
     return html`
         <div class="container">
             ${state.Cursor ? html('cursor')`
@@ -15,7 +15,7 @@ export const template: ITemplate<IState, IEvents> = (html,state, events) => {
                 ${state.Items.map(((item, index) => html(item.id)`
                     <ctx-editor-item id=${item.id} ?focus=${item == state.Focus}
                                      is-focused=${item == state.Focus} 
-                                     item=${item} style=${{ '--level': item.level }}/>
+                                     item=${item} style=${{'--level': item.level}}/>
                 `))}
             </div>
         </div>
@@ -26,8 +26,8 @@ export const template: ITemplate<IState, IEvents> = (html,state, events) => {
 export type IState = {
     Items: MessageItem[];
     Focus: MessageItem;
-    Cursor: {y: string; x: number;};
-    Anchor: {y: string; x: number;};
+    Cursor: { y: string; x: number; };
+    Anchor: { y: string; x: number; };
     Selection: Array<SelectionBlock>;
 }
 export type IEvents = {

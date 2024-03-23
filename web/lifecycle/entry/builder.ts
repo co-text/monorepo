@@ -5,26 +5,26 @@ import { Api } from "@infr/api";
 import { Builder } from '@cmmn/app';
 
 export const builder = new Builder()
-  .withRoutes({
-      routes: [{
-        path: '/',
-        name: 'root',
-      },{
-          path: '/:id',
-          name: 'main',
-      }],
-      // @ts-ignore
-      options: {
-      }
-  })
-  .with(storeContainer)
-  .with(Container.withProviders(Api))
-  .withUI(uiContainer)
+    .withRoutes({
+        routes: [{
+            path: '/',
+            name: 'root',
+        }, {
+            path: '/:id',
+            name: 'main',
+        }],
+        // @ts-ignore
+        options: {}
+    })
+    .with(storeContainer)
+    .with(Container.withProviders(Api))
+    .withUI(uiContainer)
 
 const useWorker = false;
 
 if (useWorker) {
-    globalThis.SharedWorker ??= class {} as any;
+    globalThis.SharedWorker ??= class {
+    } as any;
     new SharedWorker(PRODUCTION ? "/worker.min.js" : "/worker.js");
 } else {
     const script = document.createElement('script')

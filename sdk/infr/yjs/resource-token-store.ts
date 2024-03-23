@@ -1,4 +1,4 @@
-import {getOrAdd, Injectable} from "@cmmn/core";
+import { getOrAdd, Injectable } from "@cmmn/core";
 
 @Injectable()
 export class ResourceTokenStore {
@@ -11,7 +11,7 @@ export class ResourceTokenStore {
         const parentToken = parentURI && await this.tokens.get(parentURI);
         const request = await fetch('/api/context?uri=' + uri, {
             headers: {
-                'authorization': JSON.stringify({ user: 'andrey' }),
+                'authorization': JSON.stringify({user: 'andrey'}),
                 "resource-token": parentToken
             }
         });

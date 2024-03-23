@@ -1,4 +1,4 @@
-import {ITemplate} from "@cmmn/ui";
+import { ITemplate } from "@cmmn/ui";
 
 export const template: ITemplate<IState, IEvents> = (html, state, events) => html`
     <ul>
@@ -7,7 +7,7 @@ export const template: ITemplate<IState, IEvents> = (html, state, events) => htm
 `;
 
 export type IState = {
-    streams: Array<{id: string; type: string}>
+    streams: Array<{ id: string; type: string }>
 }
 
 export type IEvents = {}

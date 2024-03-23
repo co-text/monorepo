@@ -1,7 +1,7 @@
 import { MessageModel } from "./message-model";
-import { Context, Message } from "@model";
+import { Context } from "@model";
 import { ContextStore } from "../../sync/contextStore";
-import { DeepPartial, Fn, orderBy } from "@cmmn/core";
+import { Fn, orderBy } from "@cmmn/core";
 import { cell } from '@cmmn/cell'
 import { Op } from "../../common";
 import { Permutation } from "@domain/helpers/permutation";
@@ -35,6 +35,7 @@ export class ContextModel {
             }
         }
     }
+
     public [Op.addMessage](index: number, id: string) {
         const messages = this.State.Messages.slice();
         messages.splice(index, 0, id);
@@ -42,7 +43,8 @@ export class ContextModel {
         this.store.addMessage(id);
         this.store.Update({Permutation: perm.toString()});
     }
-    public [Op.removeMessage](id: string){
+
+    public [Op.removeMessage](id: string) {
         this.store.deleteMessage({id});
     }
 

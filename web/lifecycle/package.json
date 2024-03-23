@@ -25,7 +25,7 @@
   "cmmn": {
     "main": {
       "input": "dist/esm/entry/main.js",
-      "module": "es",         
+      "module": "es",
       "html": "./entry/index.html",
       "platform": "browser",
       "external": [
