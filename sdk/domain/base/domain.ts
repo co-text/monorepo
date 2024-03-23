@@ -3,7 +3,7 @@ import { Cell } from "@cmmn/cell";
 import { getOrAdd } from "@cmmn/core";
 
 export class Domain {
-    private channel = new Channel<any>("sdk");
+    private channel = new Channel<any>("sdk", Channel.domain);
 
     private cache = new Map<string, InstanceData>();
 

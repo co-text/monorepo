@@ -5,6 +5,7 @@ import {Context, Message} from "@model";
 import {Permutation} from "@domain/helpers/permutation";
 import {MessageStore} from "./messageStore";
 import { crdt } from './crdt'
+import {contextDB} from "./context.db";
 // import { contextDB } from './context.db'
 // @ts-ignore
 export class ContextStore extends EventEmitter<{change: void}>{
@@ -17,18 +18,19 @@ export class ContextStore extends EventEmitter<{change: void}>{
         });
         this.model.api.onChanges.listen(async e => {
             const binary = this.model.toBinary();
-            // await contextDB.set(this.URI, binary);
+            await contextDB.set(this.URI, binary);
         });
         this.model.api.onLocalChanges.listen(e => {
             console.log(this.model.api.flush().toBinary());
         });
-        // contextDB.get(this.URI).then(x => {
-        //
-        // });
+        contextDB.get(this.URI).then(x => {
+            console.log(x);
+            this.model = crdt(x);
+        });
     }
+
     public model = crdt();
     private messagesNode = this.model.api.node.get('message');
-
     public context = this.model.api.node.get('context');
 
     private get messages(): string[] {

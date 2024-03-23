@@ -31,6 +31,7 @@ export class MessageClient extends Client<Message> implements IMessageProxy {
         return this.State?.SubContextURI ? ContextClient.get(this.State.SubContextURI) : null;
     }
 
+    @Fn.cache()
     public static get(uri: string): MessageClient {
         return new MessageClient(uri);
     }

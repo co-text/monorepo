@@ -5,7 +5,9 @@ import { utc } from '@cmmn/core'
 
 const msgSchema = s.obj({
 });
-export const crdt = () => Model.withLogicalClock()
+export const crdt = (data?: Uint8Array) => (data
+    ? Model.fromBinary(data)
+    : Model.withLogicalClock())
   .setSchema(s.obj({
     message: s.obj<{
       [key: string]: typeof msgSchema

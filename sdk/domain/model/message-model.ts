@@ -3,7 +3,7 @@ import {ContextModel} from "./context-model";
 import {MessageStore} from "../../sync/messageStore";
 import { cell } from '@cmmn/cell'
 import { Op } from "../../common";
-import { DeepPartial, Fn } from "@cmmn/core";
+import {compare, DeepPartial, Fn} from "@cmmn/core";
 
 export class MessageModel {
 
@@ -32,6 +32,7 @@ export class MessageModel {
         this.contextURI = contextURI;
     }
 
+    @cell({compare})
     public get State() {
         return this.store.State;
     }

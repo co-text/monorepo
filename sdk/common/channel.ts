@@ -9,7 +9,8 @@ export class Channel<T> extends EventEmitter<Record<string, Message<T>> & {
   public static ANY: typeof ANY = ANY;
   private base = new BroadcastChannel(this.name);
   private connected = new ResolvablePromise<void>();
-  constructor(private name: string, private clientId: string = null) {
+  static domain: string = 'domain';
+  constructor(private name: string, private clientId: string) {
     super();
   }
 
@@ -32,14 +33,16 @@ export class Channel<T> extends EventEmitter<Record<string, Message<T>> & {
 
   private onMessage = (event: MessageEvent<string | {id: string; data: Message<any>}[]>) => {
     console.log(event.data ?? 'connected', globalThis);
-    if (typeof event.data === "string" || event.data == null) {
-      if (this.clientId == null) {
+    if (typeof event.data === "string") {
+      if (this.clientId == Channel.domain) {
         this.connected.resolve();
         this.base.postMessage(event.data);
+        return;
       }
-      if (event.data == null) {
+      if (event.data == Channel.domain) {
         this.connected.resolve();
         this.base.postMessage(this.clientId);
+        return;
       }
       if (event.data === this.clientId)
         this.connected.resolve();

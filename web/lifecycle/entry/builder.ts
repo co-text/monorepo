@@ -21,12 +21,15 @@ export const builder = new Builder()
   .with(Container.withProviders(Api))
   .withUI(uiContainer)
 
-const useWorker = true;
+const useWorker = false;
+
 if (useWorker) {
     globalThis.SharedWorker ??= class {} as any;
     new SharedWorker(PRODUCTION ? "/worker.min.js" : "/worker.js");
 } else {
-    const container = new Container();
+    const script = document.createElement('script')
+    script.src = '/worker.js';
+    document.head.appendChild(script);
     // container.provide(useStreamDomain());
     // container.provide([
     //     {provide: Locator, useFactory: c => c.get(DomainLocator)},
