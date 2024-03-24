@@ -19,7 +19,7 @@ export class P2PService {
     private node: Libp2p;
     private serverPeerId: string;
     private Init = new ResolvablePromise();
-    private baseUrl = `/dns/${location.hostname}/tcp/${location.port || (location.protocol == 'https:' ? 443 : 80)}`;
+    private baseUrl = `/dns/${location.hostname}/tcp/${4005 || (location.protocol == 'https:' ? 443 : 80)}`;
     public isActive: boolean;
 
     constructor() {

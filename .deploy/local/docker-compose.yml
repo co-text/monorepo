@@ -33,7 +33,6 @@ services:
     image: nginx
     networks:
       main:
-      host_local:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
@@ -51,5 +50,3 @@ services:
 networks:
   main:
     driver: bridge
-  host_local:
-    external: true

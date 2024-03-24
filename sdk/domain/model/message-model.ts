@@ -3,7 +3,7 @@ import { ContextModel } from "./context-model";
 import { MessageStore } from "../../sync/messageStore";
 import { cell } from '@cmmn/cell'
 import { Op } from "../../common";
-import { compare, DeepPartial } from "@cmmn/core";
+import { compare } from "@cmmn/core";
 
 export class MessageModel {
 
@@ -41,13 +41,8 @@ export class MessageModel {
         return this.store.State;
     }
 
-    public set State(value: Readonly<Message>) {
-        this.store.State = value;
-    }
-
-    public [Op.patch](diff: DeepPartial<Message>) {
-        this.store.json.set(diff);
-        this.store.emit('change')
+    public [Op.patch](diff: Partial<Message>) {
+        this.store.set(diff);
     }
 
 }

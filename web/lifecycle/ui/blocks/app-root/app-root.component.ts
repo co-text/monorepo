@@ -27,6 +27,10 @@ export class AppRootComponent extends HtmlComponent<IState, IEvents> implements 
         if (!sessionStorage.getItem('session')) {
             sessionStorage.setItem('session', Fn.ulid());
         }
+        Cell.OnChange(() => this.State, e => {
+            this.api.joinRoom(e.value.uri);
+        })
+        this.api.joinRoom(this.State.uri);
         // Cell.OnChange(() => this.domainProxy.State.Contexts, async e => {
         //     for (let id of e.value) {
         //         await this.api.joinRoom(id);

@@ -24,7 +24,7 @@ export const node = await createLibp2p({
             // '/ip4/0.0.0.0/udp/4005/p2p-circuit'
         ],
         announce: [
-            process.env.PUBLIC_MULTIADDR
+            process.env.PUBLIC_MULTIADDR ?? '/dns/127.0.0.1/tcp/4005/ws'
         ]
     },
     connectionManager: {
