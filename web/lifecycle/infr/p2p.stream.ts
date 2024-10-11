@@ -1,9 +1,9 @@
-import type {Stream} from "@libp2p/interface/connection";
 import {Packr} from 'msgpackr/pack';
 import {BroadcastSyncMessage} from "@infr/p2p.service";
 import {Uint8ArrayList} from "uint8arraylist";
 import {EventEmitter, ResolvablePromise} from "@cmmn/core";
 import {pipe} from "it-pipe";
+import type {Stream} from "@libp2p/interface";
 
 export class P2pStream extends EventEmitter<Record<string, BroadcastSyncMessage>>{
     private packr = new Packr({

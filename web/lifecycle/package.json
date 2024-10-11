@@ -14,12 +14,14 @@
     "@cmmn/domain": "2.2.3",
     "@cmmn/ui": "2.2.3",
     "@cotext/sdk": "1.0.0",
-    "@libp2p/webrtc": "3.2.11",
-    "@libp2p/pubsub": "8.0.10",
-    "@libp2p/webtransport": "3.1.10",
-    "@libp2p/bootstrap": "10.0.16",
-    "@multiformats/multiaddr": "12.1.10",
-    "libp2p": "0.46.21",
+    "@libp2p/pubsub": "10.0.8",
+    "@libp2p/bootstrap": "11.0.8",
+    "@libp2p/circuit-relay-v2": "2.1.4",
+    "@libp2p/identify": "3.0.8",
+    "@libp2p/webrtc": "5.0.12",
+    "@libp2p/webtransport": "5.0.12",
+    "@multiformats/multiaddr": "12.3.1",
+    "libp2p": "2.1.8",
     "is-mobile": "^4.0.0"
   },
   "cmmn": {
@@ -49,6 +51,9 @@
       "external": [
       ]
     }
+  },
+  "overrides": {
+    "proton-runtime": "5.5.0"
   },
   "author": "",
   "license": "ISC"

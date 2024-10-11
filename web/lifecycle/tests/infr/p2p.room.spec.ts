@@ -1,7 +1,4 @@
 import {suite, test, expect, sinon} from "@cmmn/tools/test"
-import {P2PRoom} from "@infr/p2p.room";
-import {Stream} from "@libp2p/interface/connection";
-import {EventEmitter, Fn} from "@cmmn/core";
 @suite
 export class P2pRoomSpec{
     private bc1 = new BroadcastChannel("1");

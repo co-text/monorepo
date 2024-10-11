@@ -13,7 +13,7 @@ export class P2PSpec {
                 tcp()
             ],
             // a connection encrypter is necessary to dial the relay
-            connectionEncryption: [noise()],
+            connectionEncrypters: [noise()],
             // a stream muxer is necessary to dial the relay
             streamMuxers: [yamux()],
             connectionGater: {
@@ -26,7 +26,6 @@ export class P2PSpec {
                 }
             },
             connectionManager: {
-                minConnections: 0
             }
         });
         await newNode.dial(node.getMultiaddrs());

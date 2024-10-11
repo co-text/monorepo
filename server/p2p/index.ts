@@ -1,13 +1,10 @@
 import { createLibp2p } from "libp2p";
 import { noise } from '@chainsafe/libp2p-noise'
 import { yamux } from '@chainsafe/libp2p-yamux'
-import {webRTC} from "@libp2p/webrtc";
 import { webSockets } from '@libp2p/websockets'
-import { WebRTC } from '@multiformats/mafmt'
 import * as filter from '@libp2p/websockets/filters'
-import { multiaddr } from '@multiformats/multiaddr'
-import {circuitRelayServer, circuitRelayTransport} from 'libp2p/circuit-relay'
-import {identifyService} from "libp2p/identify";
+import {circuitRelayServer, circuitRelayTransport, } from '@libp2p/circuit-relay-v2'
+import {identify} from "@libp2p/identify";
 import {gossipsub} from "@chainsafe/libp2p-gossipsub";
 import {pubsubPeerDiscovery} from "@libp2p/pubsub-peer-discovery";
 import * as process from "process";
@@ -31,9 +28,8 @@ export const node = await createLibp2p({
         ]
     },
     connectionManager: {
-        minConnections: 0,
     },
-    connectionEncryption: [
+    connectionEncrypters: [
         noise()
     ],
     streamMuxers: [
@@ -47,7 +43,6 @@ export const node = await createLibp2p({
     services: {
         pubsub: gossipsub({
             canRelayMessage: true,
-            allowPublishToZeroPeers: true,
 
             scoreThresholds: {
                 gossipThreshold: Number.NEGATIVE_INFINITY,
@@ -58,7 +53,7 @@ export const node = await createLibp2p({
             }
 
         }),
-        identify: identifyService(),
+        identify: identify(),
         relay: circuitRelayServer({
             // reservations: {
             //     maxReservations: 2

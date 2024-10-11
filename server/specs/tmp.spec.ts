@@ -14,14 +14,14 @@ export class P2PSpec {
             transports: [
                 tcp()
             ],
-            connectionEncryption: [noise()],
+            connectionEncrypters: [noise()],
             streamMuxers: [yamux()],
             addresses: {
                 listen: ['/ip4/127.0.0.1/tcp/4321']
             }
         });
         const client = await createLibp2p({
-            connectionEncryption: [noise()],
+            connectionEncrypters: [noise()],
             streamMuxers: [yamux()],
             transports: [
                 tcp()

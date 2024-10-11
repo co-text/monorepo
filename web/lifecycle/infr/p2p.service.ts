@@ -4,17 +4,14 @@ import {webRTC} from "@libp2p/webrtc";
 import {webSockets} from "@libp2p/websockets";
 import {all} from "@libp2p/websockets/filters";
 import {multiaddr} from "@multiformats/multiaddr";
-import {circuitRelayTransport} from "libp2p/circuit-relay";
+import {circuitRelayTransport} from "@libp2p/circuit-relay-v2";
 import {noise} from "@chainsafe/libp2p-noise";
-import {identifyService} from "libp2p/identify";
+import {identify} from "@libp2p/identify";
 import {yamux} from '@chainsafe/libp2p-yamux'
 import {gossipsub, GossipSub} from '@chainsafe/libp2p-gossipsub'
 import {pubsubPeerDiscovery} from '@libp2p/pubsub-peer-discovery'
 import {P2PRoom} from "./p2p.room";
-import type {Connection, Stream} from "@libp2p/interface/connection";
-import {cell, ObservableMap} from "@cmmn/cell";
-import { PeerId } from "@libp2p/interface/peer-id";
-import {P2pStream} from "@infr/p2p.stream";
+import type {Connection, PeerId} from "@libp2p/interface";
 
 @Injectable()
 export class P2PService {
@@ -68,7 +65,7 @@ export class P2PService {
                 })
             ],
             // a connection encrypter is necessary to dial the relay
-            connectionEncryption: [noise()],
+            connectionEncrypters: [noise()],
             // a stream muxer is necessary to dial the relay
             streamMuxers: [yamux()],
             connectionGater: {
@@ -81,16 +78,15 @@ export class P2PService {
                 }
             },
             connectionManager: {
-                minConnections: 6,
                 maxConnections: 9,
             },
             peerDiscovery: [
                 pubsubPeerDiscovery()
             ],
             services: {
-                identify: identifyService(),
+                identify: identify(),
                 pubsub: gossipsub({
-                    allowPublishToZeroPeers: true,
+                    // allowPublishToZeroPeers: true,
                 })
             }
         });
